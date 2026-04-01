@@ -11,7 +11,12 @@ const { title, description, themeColor } = Astro.props;
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width" />
 <meta name="description" content={description ?? "Xetera's Blog"} />
-<link rel="icon" type="image/png" href="/xetera_favicon.png?v=2" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="manifest" href="/site.webmanifest" />
 <!--
 This is a tracking script for selfhosted, privacy-conscious https://umami.is analytics.
 Feel free to block it if you want but the data collected is stored locally on my cluster and not by a 3rd party.

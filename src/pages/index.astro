@@ -1,17 +1,37 @@
 ---
-
+import Bio from '../components/Bio.astro';
+import Navbar from '../components/Navbar.astro';
+import Layout from "../layouts/Layout.astro";
+import Ultrawide from "../components/misc/Ultrawide.astro";
+import { LanyardStatus } from "../components/lanyard/LanyardStatus";
+import RecentTracks from "../components/RecentTracks.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Misa | Portfólio">
+  <Navbar />
+  
+  <main class="flex justify-center w-full my-7xl lg:my-[10%] homepage mx-6">
+    <div class="flex flex-col gap-8 md:gap-12 mx-auto max-w-7xl w-full px-4 md:px-6">
+      
+      <div class="mb-4">
+        <Bio />
+      </div>
+
+      <div class="grid grid-cols-3 gap-8">
+        
+        <div class="col-span-full lg:col-span-2 homepage-grid gap-8 flex flex-col">
+           <h2 class="text-2xl font-bold">Projetos & Artigos</h2>
+           <p class="text-white/50 italic">Em breve, meus projetos aparecerão aqui...</p>
+        </div>
+
+       <aside class="col-span-full lg:col-span-1 flex flex-col gap-8">
+   <LanyardStatus client:load discordId="1184574519692767272" />
+   <RecentTracks /> </aside>
+
+      </div>
+
+    </div>
+  </main>
+</Layout>
+
+<Ultrawide />

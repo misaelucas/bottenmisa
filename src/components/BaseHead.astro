@@ -1,0 +1,123 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+  themeColor?: string;
+}
+
+const { title, description, themeColor } = Astro.props;
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width" />
+<meta name="description" content={description ?? "Xetera's Blog"} />
+<link rel="icon" type="image/png" href="/xetera_favicon.png?v=2" />
+<!--
+This is a tracking script for selfhosted, privacy-conscious https://umami.is analytics.
+Feel free to block it if you want but the data collected is stored locally on my cluster and not by a 3rd party.
+https://github.com/xetera/infra
+-->
+<script
+  is:inline
+  defer
+  src="https://overtime-contingency.xetera.dev/selfhosted-umami"
+  data-website-id="fb997c11-6572-43df-bddf-9a64b1f2812d"></script>
+{
+  // ignoring local visit + forks
+  import.meta.env.DEV && (
+    <script is:inline type="module">
+      localStorage.setItem('umami.disabled', 1)
+    </script>
+  )
+}
+<!-- Repeating a little bit of code here to make sure this is inlined properly -->
+<script is:inline transition:persist>
+  const modes = ["dark", "light", "system"];
+
+  const DEFAULT_THEME_MODE = "system";
+  const THEME_KEY = "theme";
+
+  function isMode(input) {
+    return modes.includes(input);
+  }
+
+  function getColorMode() {
+    const preferenceRaw = document.cookie.match(/theme=(.+);?/)?.[1];
+    const isValid = preferenceRaw && isMode(preferenceRaw);
+
+    let preference = isValid ? preferenceRaw : DEFAULT_THEME_MODE;
+
+    if (!isValid) {
+      setThemeDisplay(DEFAULT_THEME_MODE);
+    }
+
+    return preference;
+  }
+
+  function setKnownTheme(theme) {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    document.cookie = `${THEME_KEY}=${theme}; SameSite=lax; Path=/; Max-Age=31536000`;
+  }
+
+  function setThemeDisplay(mode) {
+    if (mode === "system") {
+      const shouldBeDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
+      setKnownTheme(shouldBeDark ? "dark" : "light");
+    } else {
+      setKnownTheme(mode);
+    }
+  }
+
+  function addThemeChangeListener(f) {
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        console.info(`Theme was changed`);
+        const darkModeOn = e.matches;
+        f(darkModeOn ? "dark" : "light");
+      });
+  }
+
+  const theme = getColorMode();
+  addThemeChangeListener(setKnownTheme);
+  setThemeDisplay(theme);
+</script>
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+  rel="stylesheet"
+/>
+<meta name="theme-color" content={themeColor ?? "#f5c4c6"} />
+<meta name="generator" content={Astro.generator} />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;900&display=swap"
+  rel="stylesheet"
+/>
+<slot name="head" />
+<title>{title}</title>
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={title}
+  href={new URL("rss.xml", Astro.site)}
+/>
+
+<noscript>
+  <style>
+    /* We want some nice animation on hover for article cards for people without js */
+    .article-entry:hover {
+      transform: translateY(-5px);
+    }
+    /* can't get last read date without js */
+    .last-read {
+      display: none;
+    }
+  </style>
+</noscript>

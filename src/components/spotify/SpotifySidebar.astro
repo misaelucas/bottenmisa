@@ -1,0 +1,56 @@
+---
+import groupBy from "lodash/groupBy";
+import { formatDistance } from "date-fns";
+import SpotifySong from "./SpotifySong.astro";
+import SpotifyDateDivider from "./SpotifyDateDivider.astro";
+import HomepageSection from "🧱/HomepageSection.astro";
+import SectionHeader from "🧱/SectionHeader.astro";
+import { meQuery } from "🛠️/me";
+
+interface Props {
+  class?: string;
+}
+
+const { likedSongs } = await meQuery;
+
+const { class: className } = Astro.props;
+
+const augmented = groupBy(
+  likedSongs.map((track) => ({
+    ...track,
+    distance: formatDistance(new Date(track.likedAt as string), new Date(), {
+      addSuffix: true,
+    }),
+  })),
+  (val) => val.distance,
+);
+---
+
+<HomepageSection class:list={[className]}>
+  <SectionHeader>Liked Spotify Tracks 🎧</SectionHeader>
+
+  <aside class="grid gap-6 overflow-hidden grid-cols-1">
+    {
+      Object.entries(augmented).map(([distance, songs]) => {
+        return (
+          <div>
+            <SpotifyDateDivider class="mb-3">{distance}</SpotifyDateDivider>
+            <div class="flex flex-col gap-6">
+              {songs.map((song) => (
+                <a
+                  rel="noreferrer noopener"
+                  href={song.song.spotifyUrl}
+                  target="_blank"
+                  data-umami-event="spotify:song-click"
+                  data-umami-event-song={song.song.title}
+                >
+                  <SpotifySong {...song.song} />
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })
+    }
+  </aside>
+</HomepageSection>

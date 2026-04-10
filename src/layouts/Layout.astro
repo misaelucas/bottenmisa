@@ -5,6 +5,7 @@ import "💅/fonts.css";
 import "💅/links.css";
 import "💅/article.css";
 import BaseHead, { type Props as BaseHeadProps } from "🧱/BaseHead.astro";
+import Footer from "🧱/Footer.astro";
 
 export interface Props extends BaseHeadProps {
   class?: string;
@@ -21,24 +22,34 @@ const { class: className, style, ...rest } = Astro.props;
       <slot name="head" slot="head" />
     </BaseHead>
   </head>
-  <body style={style} class="overflow-x-hidden">
+  <body style={style} class="overflow-x-hidden app-shell">
     <script is:inline>
       0;
     </script>
     <div
       class:list={[
-        "overflow-hidden h-full flex bg-body-900 color-text-800 transition-colors",
+        "dark-shell overflow-hidden min-h-screen flex bg-body-900 color-text-800 transition-colors",
         className,
       ]}
     >
       <div class="overlay z-0"></div>
       <div class="flex flex-col items-center w-full z-1">
         <slot />
+        <Footer />
       </div>
     </div>
     <style is:global transition:persist>
       * {
         word-break: break-word;
+      }
+      html,
+      body,
+      .app-shell {
+        background-color: var(--body-900);
+      }
+
+      html.dark .dark-shell {
+        background-color: #02020a;
       }
       .prose
         :where(:not(pre) > code):not(:where(.not-prose, .not-prose *))::before,

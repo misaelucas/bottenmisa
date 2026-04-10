@@ -1,0 +1,13 @@
+---
+const { children, author } = Astro.props;
+---
+
+<blockquote class="relative mt-8 mb-6 pl-6 border-l border-gray-700">
+  <div class="space-y-3 text-gray-300 italic leading-relaxed">
+    <slot />
+  </div>
+
+  {author && (
+    <p class="mt-4 text-sm text-gray-500">— {author}</p>
+  )}
+</blockquote>

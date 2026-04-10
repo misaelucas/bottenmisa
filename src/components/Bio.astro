@@ -4,7 +4,6 @@ import ExternalLink from "./ExternalLink.astro";
 import Email from "./icons/Email.astro";
 import Github from "./icons/Github.astro";
 import Twitter from "./icons/Twitter.astro";
-import ItsMe from "./ItsMe.astro";
 import avatarMj from "@assets/avatars/itsmisa.png";
 import { getAllShorts } from "@scripts/content";
 import { format } from "date-fns";
@@ -116,7 +115,6 @@ Software Engineer (HealthTech) & Gestor Executivo | Desenvolvedor de EHR Proprie
       height={400}
       sizes=""
     />
-    <ItsMe />
   </div>
 </div>
 
@@ -129,22 +127,22 @@ Software Engineer (HealthTech) & Gestor Executivo | Desenvolvedor de EHR Proprie
 </noscript>
 
 <script>
-  const email = document.querySelector(
-    ".obfuscated-email",
-  )! as HTMLAnchorElement;
-  const emailTarget = document.querySelector(
-    ".email-target",
-  )! as HTMLDivElement;
+  const email = document.querySelector(".obfuscated-email");
+  const emailTarget = document.querySelector(".email-target");
 
-  const myEmail: number[] = JSON.parse(email.dataset.email ?? "[]");
-  emailTarget.setAttribute("href", `mailto:${String.fromCharCode(...myEmail)}`);
+  if (email instanceof HTMLElement && emailTarget instanceof HTMLElement) {
+    const myEmail = JSON.parse(email.dataset.email ?? "[]");
+    emailTarget.setAttribute("href", `mailto:${String.fromCharCode(...myEmail)}`);
+  }
 
-  const avatar = document.querySelector("#custom-avatar") as HTMLImageElement;
-  avatar!.addEventListener("load", () => {
-    avatar!.classList.add("fade-in");
-  });
+  const avatar = document.querySelector("#custom-avatar");
+  if (avatar instanceof HTMLImageElement) {
+    avatar.addEventListener("load", () => {
+      avatar.classList.add("fade-in");
+    });
 
-  if (avatar!.complete) {
-    avatar!.classList.add("fade-in");
+    if (avatar.complete) {
+      avatar.classList.add("fade-in");
+    }
   }
 </script>

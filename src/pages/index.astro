@@ -5,6 +5,24 @@ import Layout from "../layouts/Layout.astro";
 import Ultrawide from "../components/misc/Ultrawide.astro";
 import { LanyardStatus } from "../components/lanyard/LanyardStatus";
 import RecentTracks from "../components/RecentTracks.astro";
+import HomepageSection from "../components/HomepageSection.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import { getAllShorts } from "../scripts/content";
+import { format } from "date-fns";
+
+const visibleShorts = await getAllShorts();
+const latestShort = visibleShorts[0];
+
+function extractShortExcerpt(body: string) {
+  return body
+    .replace(/^---[\s\S]*?---/, "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/[*_>#`-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 120);
+}
 ---
 
 <Layout title="misa">
@@ -18,16 +36,44 @@ import RecentTracks from "../components/RecentTracks.astro";
       </div>
 
       <div class="grid grid-cols-3 gap-8">
-        
-        <div class="col-span-full lg:col-span-2 homepage-grid gap-8 flex flex-col">
-           <h2 class="text-2xl font-bold">Projetos & Artigos</h2>
-           <p class="text-white/50 italic">Em breve, meus projetos aparecerão aqui...</p>
+        <div
+          class="col-span-full lg:col-span-2 homepage-grid gap-8 flex flex-col"
+        >
+          {
+            latestShort && (
+              <HomepageSection>
+                <SectionHeader>
+                  Shorts
+                </SectionHeader>
+                <a
+                  href="/shorts"
+                  rel="prefetch"
+                  class="latest-short-entry article-entry flex group @container h-full transition-transform duration-300 transform-gpu rounded decoration-none"
+                >
+                  <div class="flex flex-row flex-1 relative h-full">
+                    <div class="z-1 flex-1">
+                      <div class="flex flex-col gap-2">
+                        <h2 class="article-title latest-short-title text-lg font-medium leading-5 w-fit">
+                          {latestShort.data.title}
+                        </h2>
+                        <time class="text-sm color-text-300 leading-3" datetime={latestShort.data.date.toString()}>
+                          {format(latestShort.data.date, "LLL d, yyyy")}
+                        </time>
+                        <p class="latest-short-excerpt text-sm leading-relaxed max-w-2xl">
+                          {extractShortExcerpt(latestShort.body)}...
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </HomepageSection>
+            )
+          }
         </div>
-
-       <aside class="col-span-full lg:col-span-1 flex flex-col gap-8">
-   <LanyardStatus client:load discordId="1184574519692767272" />
-   <RecentTracks /> </aside>
-
+        <div class="col-span-full lg:col-span-1 flex flex-col gap-8">
+          <LanyardStatus client:load discordId="1184574519692767272" />
+          <RecentTracks />
+        </div>
       </div>
 
     </div>
@@ -35,3 +81,54 @@ import RecentTracks from "../components/RecentTracks.astro";
 </Layout>
 
 <Ultrawide />
+
+<script>
+  import { annotate } from "rough-notation";
+
+  type Annotation = ReturnType<typeof annotate>;
+  const highlightColor = getComputedStyle(
+    document.documentElement,
+  ).getPropertyValue("--text-100");
+
+  document.querySelectorAll(".latest-short-entry").forEach((entry) => {
+    if (!(entry instanceof HTMLElement)) {
+      return;
+    }
+
+    let annotation: Annotation | undefined;
+
+    entry.addEventListener("mouseenter", () => {
+      const title = entry.querySelector(".latest-short-title");
+      if (!(title instanceof HTMLElement)) {
+        return;
+      }
+
+      annotation = annotate(title, {
+        type: "underline",
+        color: highlightColor,
+      });
+      annotation.show();
+    });
+
+    entry.addEventListener("mouseleave", () => {
+      if (annotation) {
+        annotation.remove();
+        annotation = undefined;
+      }
+    });
+  });
+</script>
+
+<style>
+  .latest-short-title {
+    margin: 0;
+    color: var(--text-800);
+    line-height: 1.05;
+  }
+
+  .latest-short-excerpt {
+    margin: 0;
+    color: var(--text-400);
+    max-width: 38rem;
+  }
+</style>

@@ -1,0 +1,165 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import { format, formatDistance } from "date-fns";
+import { HiChevronDoubleUp } from "react-icons/hi";
+import Layout from "@layouts/Layout.astro";
+import Navbar from "@components/Navbar.astro";
+import NextArticleLinks from "@components/NextArticleLinks.astro";
+import TwitterCTA from "@components/TwitterCTA.astro";
+import { routes } from "src/routing";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+
+  return posts
+    .filter((post) => !post.data.draft)
+    .map((post) => ({
+      params: { article: post.id },
+      props: { post },
+    }));
+}
+
+type ArticleType = Awaited<ReturnType<typeof getCollection<"blog">>>[number];
+
+let post: ArticleType;
+
+if (Astro.props.post) {
+  post = Astro.props.post;
+} else if (Astro.params.article) {
+  post = (await getEntry("blog", Astro.params.article)) as ArticleType;
+} else {
+  throw new Error("Invalid render condition");
+}
+
+const { Content } = await render(post);
+const minutesRead = Math.max(1, Math.ceil(post.body.split(/\s+/).length / 200));
+const isPlaceholder = post.data.tags.some(
+  (tag) => tag.toLowerCase() === "placeholder",
+);
+---
+
+<Layout title={`${post.data.title} • misa`} description={post.data.description}>
+  <Navbar />
+
+  <article
+    class="flex flex-col mx-auto prose prose-invert max-w-full prose-code:before:content-none prose-code:after:content-none text-base w-full"
+  >
+    <header class="w-full px-6 pt-20 pb-12 article-grid">
+      <a
+        class="underlined color-text-400 no-underline! text-sm uppercase tracking-[0.24em]"
+        href={routes.home()}
+      >
+        Voltar para a home
+      </a>
+
+      <div class="flex flex-col gap-6">
+        <div class="flex flex-wrap items-center gap-3 text-sm color-text-400">
+          <span class="uppercase tracking-[0.24em]">Artigo</span>
+          <span aria-hidden="true" class="color-text-600">•</span>
+          <time datetime={post.data.date.toISOString()}>
+            {format(post.data.date, "dd 'de' MMMM 'de' yyyy")}
+          </time>
+          <span aria-hidden="true" class="color-text-600">•</span>
+          <span>
+            {minutesRead} min de leitura
+          </span>
+          <span aria-hidden="true" class="color-text-600">•</span>
+          <span>
+            Posted {formatDistance(post.data.date, new Date(), { addSuffix: true })}
+          </span>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <h1 class="text-4xl md:text-6xl font-900 leading-tight max-w-4xl m-0">
+            {post.data.title}
+          </h1>
+          <p class="text-xl color-text-300 max-w-3xl m-0">
+            {post.data.description}
+          </p>
+        </div>
+
+        {
+          isPlaceholder && (
+            <div class="not-prose rounded-2xl border border-body-700 bg-body-800/70 px-5 py-4 max-w-2xl">
+              <p class="text-sm uppercase tracking-[0.24em] color-text-400 mb-2">
+              </p>
+              <p class="m-0 color-text-300">
+              </p>
+            </div>
+          )
+        }
+      </div>
+    </header>
+
+    <main
+      class="main-article article-grid px-6 lg:px-0 larger-line-height text-lg md:text-xl leading-10 my-8 color-text-700 leading-looser w-full"
+    >
+      <Content />
+    </main>
+
+    <div class="w-full h-full relative">
+      <hr
+        class="mt-2 mb-2 border-top-1 w-full h-[1px] bg-body-800 col-span-full transition-all"
+      />
+      <div class="article-grid relative z-2 py-12 px-6 lg:px-0 gap-8">
+        <TwitterCTA class="z-2" />
+        <NextArticleLinks id={post.id} />
+      </div>
+      <div class="overlay rotate-180 z-0"></div>
+    </div>
+  </article>
+</Layout>
+
+<div class="article-data hidden" data-article-id={post.id}></div>
+
+<button
+  class="z-1 to-top-button items-center gap-2 opacity-0 transition-all appearance-none hidden xl:flex fixed bottom-4 left-16 color-text-200 duration-300 hover:color-text-900 font-sans bg-transparent border-none cursor-pointer"
+>
+  <HiChevronDoubleUp />
+  <span>Voltar ao topo</span>
+</button>
+
+<script>
+  function throttle(callback, wait) {
+    let waiting = false;
+
+    return () => {
+      if (waiting) {
+        return;
+      }
+
+      waiting = true;
+      callback();
+      window.setTimeout(() => {
+        waiting = false;
+      }, wait);
+    };
+  }
+
+  const articleElement = document.querySelector(".article-data");
+  if (articleElement instanceof HTMLElement) {
+    localStorage.setItem(`article-${articleElement.dataset.articleId}`, "1");
+  }
+
+  const toTop = document.querySelector(".to-top-button");
+  if (toTop instanceof HTMLButtonElement) {
+    document.addEventListener(
+      "scroll",
+      throttle(() => {
+        if (window.scrollY > 1000) {
+          toTop.classList.remove("opacity-0");
+        } else {
+          toTop.classList.add("opacity-0");
+        }
+      }, 200),
+    );
+
+    toTop.addEventListener("click", () => {
+      window.scrollTo({
+        behavior: "smooth",
+        top: 0,
+        left: 0,
+      });
+    });
+  }
+</script>

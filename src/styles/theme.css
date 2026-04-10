@@ -22,12 +22,12 @@
     text-rendering: optimizeLegibility;
     /* body light */
 
-    --highlight: #ff0061;
-    --brand-100: #fde6f5;
+    --highlight: #15803d;
+    --brand-100: #dcfce7;
 
-    --brand-rgb-900: 220 17 95;
+    --brand-rgb-900: 22 163 74;
     --brand-900: rgb(var(--brand-rgb-900));
-    --brand-500: #a55087;
+    --brand-500: #16a34a;
 
     --grid-color: red;
 
@@ -88,13 +88,13 @@
     color-scheme: dark;
     /* brand dark */
     --brand-rgb-100: 15 17 23;
-    --brand-100: #380f20;
+    --brand-100: #052e16;
 
-    --brand-rgb-900: 230 0 103;
+    --brand-rgb-900: 34 197 94;
     --brand-900: rgb(var(--brand-rgb-900));
-    --brand-500: #c968a7;
+    --brand-500: #22c55e;
 
-    --highlight: yellow;
+    --highlight: #86efac;
 
     --grid-color: red;
 
@@ -165,12 +165,12 @@
   /* including p3 versions of vivid colors */
   @media (color-gamut: p3) {
     html {
-      --brand-900: color(display-p3 0.785 0.071 0.547);
+      --brand-900: color(display-p3 0.16 0.62 0.31);
       --astro-code-token-string-expression: color(display-p3 0.034 0.53 0.034);
     }
     html.dark {
-      --brand-900: color(display-p3 0.935 0.098 0.391);
-      --highlight: color(display-p3 1 1 0.13);
+      --brand-900: color(display-p3 0.2 0.76 0.35);
+      --highlight: color(display-p3 0.62 0.95 0.69);
     }
   }
 }

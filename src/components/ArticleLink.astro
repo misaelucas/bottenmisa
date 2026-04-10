@@ -39,44 +39,21 @@ const { data, id, isNew } = Astro.props;
 </a>
 
 <script>
-  import { annotate } from "rough-notation";
-
-  type Annotation = ReturnType<typeof annotate>;
-  const highlightColor = getComputedStyle(
-    document.documentElement,
-  ).getPropertyValue("--text-100");
-
   document.querySelectorAll(".article-entry").forEach((article) => {
-    if (article instanceof HTMLElement) {
-      let annotation: Annotation | undefined;
-      article.addEventListener("mouseenter", (event) => {
-        if (event.target instanceof HTMLElement) {
-          const title = event.target?.querySelector(".article-title");
-          if (!title) return;
-
-          annotation = annotate(title as HTMLElement, {
-            type: "underline",
-            color: highlightColor,
-          });
-          annotation.show();
-        }
-      });
-
-      article.addEventListener("mouseleave", () => {
-        if (annotation) {
-          annotation.remove();
-        }
-      });
-
-      if (article.dataset.isNew === "false") {
-        return;
-      }
-      const id = article.dataset.articleId;
-      if (localStorage.getItem(`article-${id}`)) {
-        return;
-      }
-      article.classList.add("unread");
+    if (!(article instanceof HTMLElement)) {
+      return;
     }
+
+    if (article.dataset.isNew === "false") {
+      return;
+    }
+
+    const id = article.dataset.articleId;
+    if (localStorage.getItem(`article-${id}`)) {
+      return;
+    }
+
+    article.classList.add("unread");
   });
 </script>
 
@@ -93,5 +70,11 @@ const { data, id, isNew } = Astro.props;
 
   .unread .new-tag {
     display: block;
+  }
+
+  .article-entry:hover .article-title {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.18em;
   }
 </style>

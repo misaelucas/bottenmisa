@@ -28,7 +28,7 @@ const { class: className, style, ...rest } = Astro.props;
     </script>
     <div
       class:list={[
-        "dark-shell overflow-hidden min-h-screen flex bg-body-900 color-text-800 transition-colors",
+        "dark-shell relative overflow-hidden min-h-screen w-full flex bg-body-900 color-text-800 transition-colors",
         className,
       ]}
     >
@@ -46,8 +46,12 @@ const { class: className, style, ...rest } = Astro.props;
       body,
       .app-shell {
         background-color: var(--body-900);
+        overflow-x: clip;
       }
 
+      html.dark,
+      html.dark body,
+      html.dark .app-shell,
       html.dark .dark-shell {
         background-color: #02020a;
       }
@@ -84,11 +88,11 @@ const { class: className, style, ...rest } = Astro.props;
       }
 
       .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        position: fixed;
+        inset: 0;
+        width: auto;
+        height: auto;
+        pointer-events: none;
         stroke: var(--grid-color);
         -webkit-mask-image: linear-gradient(0deg, transparent, black);
         background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(148 163 184 / 0.05)'><path d='M0 .5H31.5V32'/></svg>");

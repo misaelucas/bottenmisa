@@ -17,13 +17,15 @@ const latestShort = (await getAllShorts())[0];
       Hi, I'm Misa.
     </h1>
 
-  <div class="color-text-400 flex flex-col gap-4">
+    <div class="color-text-400 flex flex-col gap-4">
       <p>
-Software Engineer (HealthTech) & Gestor Executivo | Desenvolvedor de EHR Proprietário (MERN / Cloud)
+        Software Developer (HealthTech) & Gestor Executivo | Desenvolvedor de EHR
+        Proprietário (MERN / Cloud)
       </p>
-      
+
       <p>
-        Gosto de construir ferramentas que resolvem problemas reais. Sou apaixonado por muay thai e cybersecurity - opsec.
+        Gosto de construir ferramentas que resolvem problemas reais. Sou
+        apaixonado por muay thai e cybersecurity - opsec.
       </p>
 
       <p>
@@ -37,22 +39,22 @@ Software Engineer (HealthTech) & Gestor Executivo | Desenvolvedor de EHR Proprie
     </div>
     <div class="flex flex-col gap-2">
       <div class="flex gap-4 text-3xl color-text-700">
-       <ExternalLink
-  noIcon
-  href="https://github.com/misaelucas"
-  target="_blank"
-  class="hover:color-text-900"
->
-  <Github />
-</ExternalLink>
         <ExternalLink
-  noIcon
-  href="https://x.com/misaelucas22"
-  target="_blank"
-  class="hover:color-text-900"
->
-  <Twitter />
-</ExternalLink>
+          noIcon
+          href="https://github.com/misaelucas"
+          target="_blank"
+          class="inline-flex transition-transform duration-200 hover:scale-110 hover:color-text-900"
+        >
+          <Github />
+        </ExternalLink>
+        <ExternalLink
+          noIcon
+          href="https://x.com/misaelucas22"
+          target="_blank"
+          class="inline-flex transition-transform duration-200 hover:scale-110 hover:color-text-900"
+        >
+          <Twitter />
+        </ExternalLink>
         {
           import.meta.env.SOCIAL_EMAIL && (
             <ExternalLink

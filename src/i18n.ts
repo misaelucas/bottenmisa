@@ -21,7 +21,7 @@ export const homeCopy = {
   pt: {
     title: "misa",
     description:
-      "Site pessoal de Misael Lucas: notas, shorts e pequenos registros.",
+      "misa the botter.",
     latestShort: "Último short",
     shortsSection: "Shorts",
     shortsHref: languages.pt.shortsPath,
@@ -39,7 +39,7 @@ export const homeCopy = {
   en: {
     title: "misa",
     description:
-      "Misael Lucas' personal site: notes, shorts, and small records.",
+      "misa the botter.",
     latestShort: "Latest short",
     shortsSection: "Shorts",
     shortsHref: languages.en.shortsPath,

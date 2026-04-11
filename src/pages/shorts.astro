@@ -48,9 +48,8 @@ const shorts = await Promise.all(
         {
           shorts.map(({ post, short, prev }) => (
             <li class="shorts-section flex flex-col mx-auto prose max-w-full prose-code:before:content-none prose-code:after:content-none text-base w-full">
-              <header class="w-full px-8 article-grid">
-                <li class="shorts-timeline ps-0 md:ps-8 !max-md:list-none">
-                  <div class="shorts-outline border-body-600 max-md:hidden" />
+              <article class="w-full px-8 article-grid">
+                <div class="shorts-timeline">
                   <div class="text-sm md:text-base color-text-600 font-mono">
                     <time datetime={short.data.date.toISOString()}>
                       {format(short.data.date, "LLL d, yyyy")}
@@ -69,15 +68,12 @@ const shorts = await Promise.all(
                   <h2 class="shorts-title font-500 lg:text-4xl mt-8 mb-6 lg:mb-8">
                     {short.data.title}
                   </h2>
-                </li>
-              </header>
 
-              <main class="main-article article-grid px-8 pt-2 lg:px-0 text-base lg:text-xl leading-10 color-text-700 leading-loose w-full">
-                <div class="shorts-timeline ps-0 md:ps-8 pb-20">
-                  <div class="shorts-outline border-body-600 max-md:hidden" />
-                  <post.Content />
+                  <div class="main-article pt-2 text-base lg:text-xl leading-10 color-text-700 leading-loose w-full">
+                    <post.Content />
+                  </div>
                 </div>
-              </main>
+              </article>
             </li>
           ))
         }
@@ -90,48 +86,50 @@ const shorts = await Promise.all(
   .shorts-title {
     font-family: var(--font-family-article-title);
   }
-  .shorts-outline {
-    z-index: -1;
-    position: absolute;
-    left: 0;
-    border-width: 1px;
-    border-style: dashed;
-    margin-left: -20.5px;
-    margin-top: 10px;
-    width: 0px;
-    height: 100%;
-  }
-  .shorts-outline.first {
-    border-style: dashed;
-  }
   .shorts-timeline {
     z-index: 1;
     position: relative;
-    list-style-type: disc;
+    border-left: 1px solid var(--body-700);
+    padding-left: 1rem;
+    padding-bottom: 5rem;
     min-width: 0;
   }
-  .shorts-timeline::marker {
-    color: var(--body-200);
-    font-size: 1.5rem;
+
+  .shorts-timeline::before {
+    content: "";
+    position: absolute;
+    top: 0.62rem;
+    left: -4px;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--body-300);
+    box-shadow: 0 0 0 4px #02020a;
   }
 
-  .main-article .shorts-timeline :global(p) {
+  @media (min-width: 768px) {
+    .shorts-timeline {
+      padding-left: 2rem;
+    }
+  }
+
+  .main-article :global(p) {
     margin-top: 0;
     margin-bottom: 0;
   }
 
-  .main-article .shorts-timeline :global(p + p) {
+  .main-article :global(p + p) {
     margin-top: 1.35em;
   }
 
-  .main-article .shorts-timeline :global(a:not(.shorts-track)) {
+  .main-article :global(a:not(.shorts-track)) {
     display: inline;
     word-break: break-word;
     overflow-wrap: anywhere;
     white-space: normal;
   }
 
-  .main-article .shorts-timeline :global(.shorts-mixtape) {
+  .main-article :global(.shorts-mixtape) {
     margin-top: 2.4em;
     padding-top: 1.1em;
     display: grid;
@@ -139,7 +137,7 @@ const shorts = await Promise.all(
     border-top: 1px solid rgb(148 163 184 / 0.14);
   }
 
-  .main-article .shorts-timeline :global(.shorts-mixtape-label) {
+  .main-article :global(.shorts-mixtape-label) {
     margin: 0;
     font-size: 0.8rem;
     letter-spacing: 0.08em;
@@ -147,7 +145,7 @@ const shorts = await Promise.all(
     color: var(--text-300);
   }
 
-  .main-article .shorts-timeline :global(.shorts-track) {
+  .main-article :global(.shorts-track) {
     display: grid;
     width: 100%;
     max-width: 100%;
@@ -163,13 +161,13 @@ const shorts = await Promise.all(
       background-color 180ms ease;
   }
 
-  .main-article .shorts-timeline :global(.shorts-track:hover) {
+  .main-article :global(.shorts-track:hover) {
     transform: translateY(-2px);
     border-color: rgb(148 163 184 / 0.28);
     background: rgb(255 255 255 / 0.04);
   }
 
-  .main-article .shorts-timeline :global(.shorts-track-kicker) {
+  .main-article :global(.shorts-track-kicker) {
     margin-top: 0.1rem;
     font-size: 0.78rem;
     letter-spacing: 0.06em;
@@ -177,7 +175,7 @@ const shorts = await Promise.all(
     color: var(--text-300);
   }
 
-  .main-article .shorts-timeline :global(.shorts-track-thumb) {
+  .main-article :global(.shorts-track-thumb) {
     width: 100%;
     max-width: 100%;
     aspect-ratio: 16 / 9;
@@ -188,7 +186,7 @@ const shorts = await Promise.all(
     margin: 0 0 0.35rem;
   }
 
-  .main-article .shorts-timeline :global(.shorts-track strong) {
+  .main-article :global(.shorts-track strong) {
     font-size: 1rem;
     line-height: 1.45;
     color: var(--text-800);

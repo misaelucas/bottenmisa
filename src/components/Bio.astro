@@ -12,30 +12,29 @@ const latestShort = (await getAllShorts())[0];
 ---
 
 <div class="flex flex-col md:flex-row justify-between w-full gap-8">
-  <div class="flex flex-col gap-4 flex-grow-0 max-w-[44rem] text-xl leading-8">
+  <div class="flex flex-col gap-6 flex-grow-0 max-w-[44rem] text-xl leading-8">
     <h1 class="text-5xl sm:text-6xl lg:text-7xl font-900 mb-2">
       Hi, I'm Misa.
     </h1>
 
-    <div class="color-text-400 flex flex-col gap-4">
-      <p>
-        Software Developer (HealthTech) & Gestor Executivo | Desenvolvedor de EHR
-        Proprietário (MERN / Cloud)
+    <div class="color-text-400 flex flex-col gap-4 max-w-[38rem]">
+      <p class="text-base uppercase tracking-[0.18em] color-text-500">
+        Fullstack Developer • MERN
       </p>
 
-      <p>
-        Gosto de construir ferramentas que resolvem problemas reais. Sou
-        apaixonado por muay thai e cybersecurity - opsec.
-      </p>
+      <p>Gosto de construir ferramentas que resolvem problemas reais.</p>
 
       <p>
-        <span class="color-highlight">
-        </span>
+        Atualmente trabalho na gestão de uma clínica, lidando com todos os
+        aspectos operacionais, além de desenvolver um ERP próprio (MERN + Cloud +
+        Metabase).
       </p>
 
-      <p class="text-base color-text-300">
-        Santana do Ipanema, Alagoas. 🌵
+      <p class="text-sm color-text-300 tracking-wide font-bold">
+        opsec • cybersecurity • white hat • muay thai • weight lifting
       </p>
+
+      <p class="text-base color-text-300">Santana do Ipanema, Alagoas. 🌵</p>
     </div>
     <div class="flex flex-col gap-2">
       <div class="flex gap-4 text-3xl color-text-700">
@@ -111,7 +110,7 @@ const latestShort = (await getAllShorts())[0];
       id="custom-avatar"
       alt="Profile picture"
       quality={100}
-      class="rounded-md z-2 outline outline-1 rounded outline-body-500 h-full bg-body-900"
+      class="rounded-md z-2 outline outline-1 outline-body-500 h-full bg-body-900 transition-transform duration-300 group-hover:scale-[1.01]"
       src={avatarMj}
       width={400}
       height={400}
@@ -134,7 +133,10 @@ const latestShort = (await getAllShorts())[0];
 
   if (email instanceof HTMLElement && emailTarget instanceof HTMLElement) {
     const myEmail = JSON.parse(email.dataset.email ?? "[]");
-    emailTarget.setAttribute("href", `mailto:${String.fromCharCode(...myEmail)}`);
+    emailTarget.setAttribute(
+      "href",
+      `mailto:${String.fromCharCode(...myEmail)}`,
+    );
   }
 
   const avatar = document.querySelector("#custom-avatar");

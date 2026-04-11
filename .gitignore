@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# local Codex workspace metadata
+.codex
+
 # macOS-specific files
 .DS_Store
 

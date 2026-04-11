@@ -1,43 +1,155 @@
-# Astro Starter Kit: Minimal
+# bottenmisa
+
+Personal site built with Astro, UnoCSS, React islands, bilingual routes, shorts,
+and a small Last.fm-powered recent tracks section.
+
+Production URL: https://bottenmisa.vercel.app
+
+## Credits
+
+This site started from the template/source code of
+[Xetera/xetera.dev](https://github.com/Xetera/xetera.dev). The current project
+has been customized for my own content, routes, styling, metadata, and assets,
+but the original work deserves attribution.
+
+Before reusing this repository as a template, review the upstream repository's
+license/permission terms as well.
+
+## Requirements
+
+- Node.js `>=22.12.0`
+- Corepack enabled
+- pnpm
+
+If pnpm is not available directly, use Corepack:
 
 ```sh
-pnpm create astro@latest -- --template minimal
+corepack enable
+corepack pnpm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Local Development
 
-## 🚀 Project Structure
+Install dependencies:
 
-Inside of your Astro project, you'll see the following folders and files:
+```sh
+corepack pnpm install
+```
+
+Start the dev server:
+
+```sh
+corepack pnpm dev
+```
+
+Build the static site:
+
+```sh
+corepack pnpm build
+```
+
+Preview the production build locally:
+
+```sh
+corepack pnpm preview
+```
+
+## Environment Variables
+
+The site builds without every optional integration configured, but these
+variables are used when available:
+
+```sh
+SITE=https://bottenmisa.vercel.app
+LASTFM_API_KEY=...
+LASTFM_USERNAME=...
+SOCIAL_EMAIL=...
+SOCIAL_TWITTER=...
+ME_API_GRAPHQL_URL=...
+```
+
+Notes:
+
+- `SITE` is used by Astro for canonical URLs and sitemap generation.
+- `LASTFM_API_KEY` and `LASTFM_USERNAME` power the recent tracks section.
+- If Last.fm is not configured correctly, the build may log a non-fatal warning
+  while still completing.
+- `SOCIAL_EMAIL` enables the email icon/link.
+- `ME_API_GRAPHQL_URL` is kept for inherited Spotify/Lanyard-related code paths.
+
+## Content
+
+Shorts live in:
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/content/shorts/
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+The current language setup uses:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+```text
+/              Portuguese home
+/en/           English home
+/shorts/       Portuguese shorts
+/en/shorts/    English shorts
+```
 
-Any static assets, like images, can be placed in the `public/` directory.
+Shared text and route metadata live in:
 
-## 🧞 Commands
+```text
+src/i18n.ts
+```
 
-All commands are run from the root of the project, from a terminal:
+## Deploying to Vercel
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+### Dashboard Deploy
 
-## 👀 Want to learn more?
+1. Import the GitHub repository into Vercel.
+2. Set the framework preset to `Astro`.
+3. Use the default output directory:
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```text
+dist
+```
+
+4. Use this build command:
+
+```sh
+corepack pnpm build
+```
+
+5. Add the environment variables you need in Vercel Project Settings.
+6. Deploy.
+
+### CLI Deploy
+
+Install and link Vercel:
+
+```sh
+npm i -g vercel
+vercel login
+vercel link
+```
+
+Add environment variables as needed:
+
+```sh
+vercel env add SITE production
+vercel env add LASTFM_API_KEY production
+vercel env add LASTFM_USERNAME production
+```
+
+Deploy to production:
+
+```sh
+vercel --prod
+```
+
+## Useful Commands
+
+| Command | Action |
+| :-- | :-- |
+| `corepack pnpm dev` | Start local dev server |
+| `corepack pnpm build` | Build the static site into `dist/` |
+| `corepack pnpm preview` | Preview the production build locally |
+| `corepack pnpm astro ...` | Run Astro CLI commands |

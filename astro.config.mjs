@@ -3,7 +3,7 @@ import react from '@astrojs/react';
 import UnoCSS from 'unocss/astro';
 
 export default defineConfig({
-  site: 'https://placeholder.com',
+  site: process.env.SITE ?? 'https://bottenmisa.vercel.app',
   integrations: [
     react(),
     UnoCSS({

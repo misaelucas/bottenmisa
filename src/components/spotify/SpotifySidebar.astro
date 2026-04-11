@@ -41,8 +41,6 @@ const augmented = groupBy(
                   rel="noreferrer noopener"
                   href={song.song.spotifyUrl}
                   target="_blank"
-                  data-umami-event="spotify:song-click"
-                  data-umami-event-song={song.song.title}
                 >
                   <SpotifySong {...song.song} />
                 </a>

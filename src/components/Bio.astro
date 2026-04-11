@@ -16,6 +16,10 @@ interface Props {
 const { language = "pt" } = Astro.props;
 const copy = homeCopy[language];
 const latestShort = (await getAllShorts(language))[0];
+const socialEmail = "misaelucas@gmail.com";
+const socialEmailCodePoints = socialEmail
+  .split("")
+  .map((char) => char.charCodeAt(0));
 ---
 
 <div class="flex flex-col md:flex-row justify-between w-full gap-8">
@@ -45,6 +49,7 @@ const latestShort = (await getAllShorts(language))[0];
           noIcon
           href="https://github.com/misaelucas"
           target="_blank"
+          aria-label="GitHub"
           class="inline-flex transition-transform duration-200 hover:scale-110 hover:color-text-900"
         >
           <Github />
@@ -53,30 +58,23 @@ const latestShort = (await getAllShorts(language))[0];
           noIcon
           href="https://x.com/misaelucas22"
           target="_blank"
+          aria-label="Twitter"
           class="inline-flex transition-transform duration-200 hover:scale-110 hover:color-text-900"
         >
           <Twitter />
         </ExternalLink>
-        {
-          import.meta.env.SOCIAL_EMAIL && (
-            <ExternalLink
-              noIcon
-              href=""
-              target="_blank"
-              class="email-target hover:color-text-900 relative"
-            >
-              <div
-                class="obfuscated-email hidden"
-                data-email={JSON.stringify(
-                  import.meta.env.SOCIAL_EMAIL.split("").map((char: string) =>
-                    char.codePointAt(0),
-                  ),
-                )}
-              />
-              <Email />
-            </ExternalLink>
-          )
-        }
+        <ExternalLink
+          noIcon
+          href=""
+          aria-label="Email"
+          class="email-target inline-flex transition-transform duration-200 hover:scale-110 hover:color-text-900 relative"
+        >
+          <div
+            class="obfuscated-email hidden"
+            data-email={JSON.stringify(socialEmailCodePoints)}
+          />
+          <Email />
+        </ExternalLink>
       </div>
     </div>
     {

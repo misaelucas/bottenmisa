@@ -1,0 +1,207 @@
+---
+import { render } from "astro:content";
+import { differenceInDays, format, formatDistance } from "date-fns";
+import Navbar from "@components/Navbar.astro";
+import Layout from "@layouts/Layout.astro";
+import { getAllShorts } from "@scripts/content";
+import { languages, shortsCopy, type Language } from "../i18n";
+
+interface Props {
+  language?: Language;
+}
+
+const { language = "pt" } = Astro.props;
+const copy = shortsCopy[language];
+const visibleShorts = await getAllShorts(language);
+
+const shorts = await Promise.all(
+  visibleShorts.map(async (short, i, arr) => {
+    return {
+      post: await render(short),
+      short,
+      prev: i > 0 ? arr[i - 1] : undefined,
+    };
+  }),
+);
+---
+
+<Layout
+  title={copy.title}
+  description={copy.description}
+  lang={languages[language].locale}
+  themeColor="#101a2b"
+  class="overflow-x-hidden"
+  style="--un-skew: 5deg; --un-rotate: 9deg; --un-scale: 1.2"
+  alternateLanguages={[
+    { lang: languages.pt.locale, href: new URL(languages.pt.shortsPath, Astro.site).toString() },
+    { lang: languages.en.locale, href: new URL(languages.en.shortsPath, Astro.site).toString() },
+  ]}
+>
+  <Navbar />
+
+  <main class="flex justify-center w-full mt-xl lg:mt-[3%] homepage px-4 md:px-6">
+    {
+      shorts.length === 0 && (
+        <div class="flex flex-col gap-2">
+          <h1>{copy.emptyTitle}</h1>
+          <a href={languages[language].homePath} class="color-highlight font-500">
+            {copy.homeLink}
+          </a>
+        </div>
+      )
+    }
+    <div class="w-full max-w-6xl">
+      <header class="article-grid w-full mx-auto px-8 mb-24">
+        <h1 class="font-600 text-4xl lg:text-5xl xl:text-7xl mb-6 ps-0 md:ps-8">
+          {copy.title}
+        </h1>
+      </header>
+      <ul class="flex flex-col list-none m-0 p-0">
+        {
+          shorts.map(({ post, short, prev }) => (
+            <li class="shorts-section flex flex-col mx-auto prose max-w-full prose-code:before:content-none prose-code:after:content-none text-base w-full">
+              <article class="w-full px-8 article-grid">
+                <div class="shorts-timeline">
+                  <div class="text-sm md:text-base color-text-600 font-mono">
+                    <time datetime={short.data.date.toISOString()}>
+                      {format(short.data.date, "LLL d, yyyy")}
+                    </time>
+                    {
+                      prev &&
+                        differenceInDays(prev.data.date, short.data.date) > 0 && (
+                          <span class="text-sm md:text-base color-text-300">
+                            ({formatDistance(prev.data.date, short.data.date)}{" "}
+                            {copy.distanceSuffix})
+                          </span>
+                        )
+                    }
+                  </div>
+
+                  <h2 class="shorts-title font-500 lg:text-4xl mt-8 mb-6 lg:mb-8">
+                    {short.data.title}
+                  </h2>
+
+                  <div class="main-article pt-2 text-base lg:text-xl leading-10 color-text-700 leading-loose w-full">
+                    <post.Content />
+                  </div>
+                </div>
+              </article>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .shorts-title {
+    font-family: var(--font-family-article-title);
+  }
+  .shorts-timeline {
+    z-index: 1;
+    position: relative;
+    border-left: 1px solid var(--body-700);
+    padding-left: 1rem;
+    padding-bottom: 5rem;
+    min-width: 0;
+  }
+
+  .shorts-timeline::before {
+    content: "";
+    position: absolute;
+    top: 0.62rem;
+    left: -4px;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--body-300);
+    box-shadow: 0 0 0 4px #02020a;
+  }
+
+  @media (min-width: 768px) {
+    .shorts-timeline {
+      padding-left: 2rem;
+    }
+  }
+
+  .main-article :global(p) {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .main-article :global(p + p) {
+    margin-top: 1.35em;
+  }
+
+  .main-article :global(a:not(.shorts-track)) {
+    display: inline;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .main-article :global(.shorts-mixtape) {
+    margin-top: 2.4em;
+    padding-top: 1.1em;
+    display: grid;
+    gap: 0.9em;
+    border-top: 1px solid rgb(148 163 184 / 0.14);
+  }
+
+  .main-article :global(.shorts-mixtape-label) {
+    margin: 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-300);
+  }
+
+  .main-article :global(.shorts-track) {
+    display: grid;
+    width: 100%;
+    max-width: 100%;
+    gap: 0.2em;
+    padding: 0.9rem 1rem 1rem;
+    border: 1px solid rgb(148 163 184 / 0.14);
+    border-radius: 14px;
+    background: rgb(255 255 255 / 0.02);
+    text-decoration: none;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .main-article :global(.shorts-track:hover) {
+    transform: translateY(-2px);
+    border-color: rgb(148 163 184 / 0.28);
+    background: rgb(255 255 255 / 0.04);
+  }
+
+  .main-article :global(.shorts-track-kicker) {
+    margin-top: 0.1rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-300);
+  }
+
+  .main-article :global(.shorts-track-thumb) {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid rgb(148 163 184 / 0.12);
+    background: rgb(255 255 255 / 0.03);
+    margin: 0 0 0.35rem;
+  }
+
+  .main-article :global(.shorts-track strong) {
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--text-800);
+    font-weight: 600;
+  }
+</style>

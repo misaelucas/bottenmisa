@@ -3,9 +3,13 @@ export interface Props {
   title: string;
   description?: string;
   themeColor?: string;
+  alternateLanguages?: {
+    href: string;
+    lang: string;
+  }[];
 }
 
-const { title, description, themeColor } = Astro.props;
+const { title, description, themeColor, alternateLanguages = [] } = Astro.props;
 const defaultDescription =
   "botten misa.";
 const metaDescription = description ?? defaultDescription;
@@ -95,6 +99,11 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 <slot name="head" />
 <title>{title}</title>
 <link rel="canonical" href={canonicalUrl} />
+{
+  alternateLanguages.map((alternate) => (
+    <link rel="alternate" hreflang={alternate.lang} href={alternate.href} />
+  ))
+}
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content={siteName} />
 <meta property="og:title" content={title} />

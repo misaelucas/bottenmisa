@@ -7,34 +7,37 @@ import Twitter from "./icons/Twitter.astro";
 import avatarMj from "@assets/avatars/itsmisa.png";
 import { getAllShorts } from "@scripts/content";
 import { format } from "date-fns";
+import { homeCopy, type Language } from "../i18n";
 
-const latestShort = (await getAllShorts())[0];
+interface Props {
+  language?: Language;
+}
+
+const { language = "pt" } = Astro.props;
+const copy = homeCopy[language];
+const latestShort = (await getAllShorts(language))[0];
 ---
 
 <div class="flex flex-col md:flex-row justify-between w-full gap-8">
   <div class="flex flex-col gap-6 flex-grow-0 max-w-[44rem] text-xl leading-8">
     <h1 class="text-5xl sm:text-6xl lg:text-7xl font-900 mb-2">
-      Hi, I'm Misa.
+      {copy.bio.heading}
     </h1>
 
     <div class="color-text-400 flex flex-col gap-4 max-w-[38rem]">
       <p class="text-base uppercase tracking-[0.18em] color-text-500">
-        Fullstack Developer • MERN
+        {copy.bio.role}
       </p>
 
-      <p>Gosto de construir ferramentas que resolvem problemas reais.</p>
+      <p>{copy.bio.intro}</p>
 
-      <p>
-        Atualmente trabalho na gestão de uma clínica, lidando com todos os
-        aspectos operacionais, além de desenvolver um ERP próprio (MERN + Cloud +
-        Metabase).
-      </p>
+      {copy.bio.work.map((paragraph) => <p>{paragraph}</p>)}
 
       <p class="text-sm color-text-300 tracking-wide font-bold">
-        opsec • cybersecurity • white hat • muay thai • weight lifting
+        {copy.bio.interests}
       </p>
 
-      <p class="text-base color-text-300">Santana do Ipanema, Alagoas. 🌵</p>
+      <p class="text-base color-text-300">{copy.bio.location} 🌵</p>
     </div>
     <div class="flex flex-col gap-2">
       <div class="flex gap-4 text-3xl color-text-700">
@@ -80,14 +83,14 @@ const latestShort = (await getAllShorts())[0];
       latestShort && (
         <div class="flex flex-col gap-2 items-center mt-6 group self-start max-md:w-full">
           <div class="md:hidden self-start flex gap-2 justify-between w-full text-base">
-            <span class="color-text-500">Latest Short</span>
+            <span class="color-text-500">{copy.latestShort}</span>
             <time datetime={latestShort.data.date.toISOString()}>
               {format(latestShort.data.date, "LLL do yyyy")}
             </time>
           </div>
           <a
             class="inline-flex flex-col max-md:w-full md:flex-row transition-all gap-3 md:items-center outline outline-1 outline-body-500 group-hover:outline-body-300 md:rounded-[20px] ps-[10px] pe-[20px] py-1 text-base"
-            href="/shorts"
+            href={copy.shortsHref}
           >
             <h3 class="text-sm transition-all bg-body-600 group-hover:bg-body-300 rounded-[10px] px-3 text-nowrap max-md:hidden">
               Shorts

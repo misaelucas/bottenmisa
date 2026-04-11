@@ -1,0 +1,134 @@
+---
+import Bio from "./Bio.astro";
+import HomepageSection from "./HomepageSection.astro";
+import SectionHeader from "./SectionHeader.astro";
+import RecentTracks from "./RecentTracks.astro";
+import Ultrawide from "./misc/Ultrawide.astro";
+import { LanyardStatus } from "./lanyard/LanyardStatus";
+import { getAllShorts } from "../scripts/content";
+import { format } from "date-fns";
+import { homeCopy, type Language } from "../i18n";
+
+interface Props {
+  language?: Language;
+}
+
+const { language = "pt" } = Astro.props;
+const copy = homeCopy[language];
+const visibleShorts = await getAllShorts(language);
+const latestShort = visibleShorts[0];
+
+function extractShortExcerpt(body: string) {
+  return body
+    .replace(/^---[\s\S]*?---/, "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/[*_>#`-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 120);
+}
+---
+
+<main class="flex justify-center w-full my-7xl lg:my-[10%] homepage mx-6">
+  <div class="flex flex-col gap-8 md:gap-12 mx-auto max-w-7xl w-full px-4 md:px-6">
+    <div class="mb-4">
+      <Bio language={language} />
+    </div>
+
+    <div class="grid grid-cols-3 gap-8">
+      <div
+        class="col-span-full lg:col-span-2 homepage-grid gap-8 flex flex-col"
+      >
+        {
+          latestShort && (
+            <HomepageSection>
+              <SectionHeader>{copy.shortsSection}</SectionHeader>
+              <a
+                href={copy.shortsHref}
+                rel="prefetch"
+                class="latest-short-entry article-entry flex group @container h-full transition-transform duration-300 transform-gpu rounded decoration-none"
+              >
+                <div class="flex flex-row flex-1 relative h-full">
+                  <div class="z-1 flex-1">
+                    <div class="flex flex-col gap-2">
+                      <h2 class="article-title latest-short-title text-lg font-medium leading-5 w-fit">
+                        {latestShort.data.title}
+                      </h2>
+                      <time
+                        class="text-sm color-text-300 leading-3"
+                        datetime={latestShort.data.date.toString()}
+                      >
+                        {format(latestShort.data.date, "LLL d, yyyy")}
+                      </time>
+                      <p class="latest-short-excerpt text-sm leading-relaxed max-w-2xl">
+                        {extractShortExcerpt(latestShort.body)}...
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </HomepageSection>
+          )
+        }
+      </div>
+      <div class="col-span-full lg:col-span-1 flex flex-col gap-8">
+        <LanyardStatus client:load discordId="1184574519692767272" />
+        <RecentTracks />
+      </div>
+    </div>
+  </div>
+</main>
+
+<Ultrawide />
+
+<script>
+  import { annotate } from "rough-notation";
+
+  type Annotation = ReturnType<typeof annotate>;
+  const highlightColor = getComputedStyle(
+    document.documentElement,
+  ).getPropertyValue("--text-100");
+
+  document.querySelectorAll(".latest-short-entry").forEach((entry) => {
+    if (!(entry instanceof HTMLElement)) {
+      return;
+    }
+
+    let annotation: Annotation | undefined;
+
+    entry.addEventListener("mouseenter", () => {
+      const title = entry.querySelector(".latest-short-title");
+      if (!(title instanceof HTMLElement)) {
+        return;
+      }
+
+      annotation = annotate(title, {
+        type: "underline",
+        color: highlightColor,
+      });
+      annotation.show();
+    });
+
+    entry.addEventListener("mouseleave", () => {
+      if (annotation) {
+        annotation.remove();
+        annotation = undefined;
+      }
+    });
+  });
+</script>
+
+<style>
+  .latest-short-title {
+    margin: 0;
+    color: var(--text-800);
+    line-height: 1.05;
+  }
+
+  .latest-short-excerpt {
+    margin: 0;
+    color: var(--text-400);
+    max-width: 38rem;
+  }
+</style>

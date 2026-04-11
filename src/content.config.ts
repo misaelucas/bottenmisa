@@ -26,6 +26,7 @@ const shortsCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
+    language: z.enum(["pt", "en"]).default("pt"),
     draft: z.boolean().default(false),
   }),
 });

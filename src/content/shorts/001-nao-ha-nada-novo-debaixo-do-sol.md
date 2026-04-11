@@ -1,6 +1,7 @@
 ---
 title: "Não há nada novo debaixo do sol"
 date: "2026-04-10T09:00:00"
+language: "pt"
 draft: false
 ---
 

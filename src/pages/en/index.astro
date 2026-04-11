@@ -2,9 +2,9 @@
 import Navbar from "@components/Navbar.astro";
 import HomePage from "@components/HomePage.astro";
 import Layout from "@layouts/Layout.astro";
-import { homeCopy, languages } from "../i18n";
+import { homeCopy, languages } from "../../i18n";
 
-const language = "pt";
+const language = "en";
 const copy = homeCopy[language];
 ---
 
@@ -17,6 +17,6 @@ const copy = homeCopy[language];
     { lang: languages.en.locale, href: new URL("/en/", Astro.site).toString() },
   ]}
 >
-  <Navbar showHomeIcon />
+  <Navbar />
   <HomePage language={language} />
 </Layout>

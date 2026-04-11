@@ -1,13 +1,27 @@
 ---
 import { Image } from "astro:assets";
 import avatar from "../assets/avatars/edward.png";
+import brFlag from "../assets/flags/br-flag.svg?url";
+import usaFlag from "../assets/flags/usa-flag.svg?url";
+import {
+  getAlternateLanguage,
+  getAlternatePath,
+  getLanguageFromPath,
+  languages,
+} from "../i18n";
+
+const currentLanguage = getLanguageFromPath(Astro.url.pathname);
+const nextLanguage = getAlternateLanguage(currentLanguage);
+const nextLanguageConfig = languages[nextLanguage];
+const nextLanguageFlag = nextLanguage === "en" ? usaFlag : brFlag;
+const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
 ---
 
 <nav class="px-6 py-4 top-0 w-full navbar" id="navbar">
   <ul class="w-full flex justify-between">
     <li>
       {
-        Astro.url.pathname !== "/" && (
+        showHomeIcon && (
           <a href="/" rel="prefetch">
             <Image
               class="hover:scale-110 transition-all w-[50px]"
@@ -21,24 +35,42 @@ import avatar from "../assets/avatars/edward.png";
         )
       }
     </li>
-    <li role="button" id="theme-switcher" aria-label="Switch theme">
-      <div
-        class="p-2 rounded-lg bg-body-800 hover:bg-body-700 outline outline-1 outline-body-700 transition-all"
+    <li class="flex items-center gap-2">
+      <a
+        href={getAlternatePath(Astro.url.pathname)}
+        class="nav-control language-toggle flex items-center gap-2 bg-body-800 color-text-800 font-700 rounded-lg transition-all duration-300 no-underline text-sm"
+        aria-label={`Switch language to ${nextLanguageConfig.locale}`}
+      >
+        <img
+          src={nextLanguageFlag}
+          alt=""
+          width="20"
+          height="20"
+          class="language-flag"
+          loading="eager"
+        />
+        <span>{nextLanguageConfig.label}</span>
+      </a>
+      <button
+        type="button"
+        id="theme-switcher"
+        aria-label="Switch theme"
+        class="nav-control theme-toggle rounded-lg bg-body-800 transition-all color-text-800 border-none cursor-pointer"
       >
         <svg
           stroke="currentColor"
           fill="currentColor"
           stroke-width="0"
           viewBox="0 0 20 20"
-          height="30px"
-          width="30px"
+          height="20px"
+          width="20px"
           xmlns="http://www.w3.org/2000/svg"
           ><path
             fill-rule="evenodd"
             d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
             clip-rule="evenodd"></path></svg
         >
-      </div>
+      </button>
     </li>
   </ul>
 </nav>
@@ -53,6 +85,49 @@ import avatar from "../assets/avatars/edward.png";
 <style>
   .navbar {
     z-index: 2;
+  }
+
+  .nav-control {
+    min-width: 54px;
+    min-height: 34px;
+    padding: 0.45rem 0.6rem;
+    transform-origin: center;
+  }
+
+  .language-toggle,
+  .theme-toggle {
+    transform-origin: center;
+  }
+
+  .language-toggle:hover,
+  .theme-toggle:hover {
+    background: rgb(255 255 255 / 0.92);
+    color: #02020a;
+    transform: scale(1.035);
+  }
+
+  html:not(.dark) .language-toggle:hover,
+  html:not(.dark) .theme-toggle:hover {
+    background: #02020a;
+    color: white;
+  }
+
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .language-toggle:hover .language-flag {
+    transform: rotate(-6deg) scale(1.08);
+  }
+
+  .language-flag {
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    object-fit: cover;
+    transition: transform 180ms ease;
   }
 </style>
 

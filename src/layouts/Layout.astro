@@ -10,13 +10,14 @@ import Footer from "🧱/Footer.astro";
 export interface Props extends BaseHeadProps {
   class?: string;
   style?: string;
+  lang?: string;
 }
 
-const { class: className, style, ...rest } = Astro.props;
+const { class: className, style, lang = "pt-BR", ...rest } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <BaseHead {...rest}>
       <slot name="head" slot="head" />

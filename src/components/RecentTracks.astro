@@ -2,6 +2,16 @@
 import { getRecentTracks } from "../scripts/lastfm";
 
 const tracks = await getRecentTracks(5); // Pega as últimas 5
+const apiKey = import.meta.env.LASTFM_API_KEY;
+const username = import.meta.env.LASTFM_USERNAME;
+
+function getTrackImage(track: any) {
+  return (
+    track.image?.find((image: any) => image.size === "large")?.["#text"] ||
+    track.image?.[2]?.["#text"] ||
+    "/favicon.svg"
+  );
+}
 ---
 
 <div class="flex flex-col gap-4 mt-8">
@@ -9,7 +19,7 @@ const tracks = await getRecentTracks(5); // Pega as últimas 5
     Recent Tracks <span class="text-lg">🎧</span>
   </div>
 
-  <div class="flex flex-col gap-6">
+  <div class="flex flex-col gap-6" data-recent-tracks-list>
     {tracks.map((track: any) => (
       <a
         href={track.url}
@@ -19,7 +29,7 @@ const tracks = await getRecentTracks(5); // Pega as últimas 5
       >
         <div class="relative flex-shrink-0">
           <img
-            src={track.image[2]['#text'] || '/placeholder-album.png'}
+            src={getTrackImage(track)}
             alt={track.name}
             class="w-12 h-12 rounded-md object-cover outline outline-1 outline-body-700 group-hover:scale-105 transition-transform duration-300"
           />
@@ -37,3 +47,92 @@ const tracks = await getRecentTracks(5); // Pega as últimas 5
     ))}
   </div>
 </div>
+
+<script define:vars={{ apiKey, username, limit: 5 }}>
+  const list = document.querySelector("[data-recent-tracks-list]");
+  const lastfmUrl = new URL("https://ws.audioscrobbler.com/2.0/");
+
+  lastfmUrl.searchParams.set("method", "user.getrecenttracks");
+  lastfmUrl.searchParams.set("user", username);
+  lastfmUrl.searchParams.set("api_key", apiKey);
+  lastfmUrl.searchParams.set("format", "json");
+  lastfmUrl.searchParams.set("limit", String(limit));
+
+  function getText(value) {
+    return typeof value === "string" ? value : "";
+  }
+
+  function getImage(track) {
+    const images = Array.isArray(track.image) ? track.image : [];
+
+    return (
+      getText(images.find((image) => image.size === "large")?.["#text"]) ||
+      getText(images[2]?.["#text"]) ||
+      "/favicon.svg"
+    );
+  }
+
+  function createTrack(track) {
+    const link = document.createElement("a");
+    const name = getText(track.name);
+    const artist = getText(track.artist?.["#text"]);
+
+    link.href = getText(track.url) || `https://www.last.fm/user/${username}`;
+    link.target = "_blank";
+    link.rel = "noreferrer noopener";
+    link.className =
+      "flex items-center gap-4 group cursor-pointer no-underline";
+
+    const imageWrap = document.createElement("div");
+    imageWrap.className = "relative flex-shrink-0";
+
+    const image = document.createElement("img");
+    image.src = getImage(track);
+    image.alt = name || "Album artwork";
+    image.className =
+      "w-12 h-12 rounded-md object-cover outline outline-1 outline-body-700 group-hover:scale-105 transition-transform duration-300";
+    image.loading = "lazy";
+
+    imageWrap.append(image);
+
+    const textWrap = document.createElement("div");
+    textWrap.className = "flex flex-col overflow-hidden";
+
+    const nameEl = document.createElement("span");
+    nameEl.className =
+      "text-sm font-bold color-text-800 group-hover:color-brand-500 transition-colors truncate";
+    nameEl.textContent = name;
+
+    const artistEl = document.createElement("span");
+    artistEl.className = "text-xs color-text-400 truncate";
+    artistEl.textContent = artist;
+
+    textWrap.append(nameEl, artistEl);
+    link.append(imageWrap, textWrap);
+
+    return link;
+  }
+
+  async function refreshRecentTracks() {
+    if (!list || !apiKey || !username) return;
+
+    try {
+      const response = await fetch(lastfmUrl);
+
+      if (!response.ok) return;
+
+      const data = await response.json();
+      const tracks = Array.isArray(data?.recenttracks?.track)
+        ? data.recenttracks.track
+        : [];
+
+      if (!tracks.length) return;
+
+      list.replaceChildren(...tracks.slice(0, limit).map(createTrack));
+    } catch (error) {
+      console.error("Erro ao atualizar músicas do Last.fm:", error);
+    }
+  }
+
+  refreshRecentTracks();
+</script>

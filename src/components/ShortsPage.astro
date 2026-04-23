@@ -1,6 +1,7 @@
 ---
 import { render } from "astro:content";
 import { differenceInDays, format, formatDistance } from "date-fns";
+import { enUS, ptBR } from "date-fns/locale";
 import Navbar from "@components/Navbar.astro";
 import Layout from "@layouts/Layout.astro";
 import { getAllShorts } from "@scripts/content";
@@ -12,6 +13,8 @@ interface Props {
 
 const { language = "pt" } = Astro.props;
 const copy = shortsCopy[language];
+const dateLocale = language === "pt" ? ptBR : enUS;
+const dateFormat = language === "pt" ? "d LLL yyyy" : "LLL d, yyyy";
 const visibleShorts = await getAllShorts(language);
 
 const shorts = await Promise.all(
@@ -64,13 +67,15 @@ const shorts = await Promise.all(
                 <div class="shorts-timeline">
                   <div class="text-sm md:text-base color-text-600 font-mono">
                     <time datetime={short.data.date.toISOString()}>
-                      {format(short.data.date, "LLL d, yyyy")}
+                      {format(short.data.date, dateFormat, { locale: dateLocale })}
                     </time>
                     {
                       prev &&
                         differenceInDays(prev.data.date, short.data.date) > 0 && (
                           <span class="text-sm md:text-base color-text-300">
-                            ({formatDistance(prev.data.date, short.data.date)}{" "}
+                            ({formatDistance(prev.data.date, short.data.date, {
+                              locale: dateLocale,
+                            })}{" "}
                             {copy.distanceSuffix})
                           </span>
                         )

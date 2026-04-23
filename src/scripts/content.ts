@@ -16,3 +16,7 @@ export async function getAllShorts(language?: Language) {
 		)
 		.sort((a, b) => (a.data.date < b.data.date ? 1 : -1));
 }
+
+export function getShortAnchor(id: string) {
+	return `short-${id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
+}

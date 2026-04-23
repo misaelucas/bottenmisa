@@ -7,6 +7,7 @@ import Twitter from "./icons/Twitter.astro";
 import avatarMj from "@assets/avatars/itsmisa.png";
 import { getAllShorts } from "@scripts/content";
 import { format } from "date-fns";
+import { enUS, ptBR } from "date-fns/locale";
 import { homeCopy, type Language } from "../i18n";
 
 interface Props {
@@ -16,19 +17,21 @@ interface Props {
 const { language = "pt" } = Astro.props;
 const copy = homeCopy[language];
 const latestShort = (await getAllShorts(language))[0];
+const dateLocale = language === "pt" ? ptBR : enUS;
+const dateFormat = language === "pt" ? "d LLL yyyy" : "LLL do yyyy";
 const socialEmail = "misaelucas@gmail.com";
 const socialEmailCodePoints = socialEmail
   .split("")
   .map((char) => char.charCodeAt(0));
 ---
 
-<div class="flex flex-col md:flex-row justify-between w-full gap-8">
-  <div class="flex flex-col gap-6 flex-grow-0 max-w-[44rem] text-xl leading-8">
+<div class="flex flex-col md:flex-row justify-between w-full min-w-0 gap-8">
+  <div class="bio-copy flex flex-col gap-6 flex-grow-0 w-full min-w-0 max-w-[44rem] text-xl leading-8">
     <h1 class="text-5xl sm:text-6xl lg:text-7xl font-900 mb-2">
       {copy.bio.heading}
     </h1>
 
-    <div class="color-text-400 flex flex-col gap-4 max-w-[38rem]">
+    <div class="color-text-400 flex flex-col gap-4 w-full min-w-0 max-w-[38rem]">
       <p class="text-base uppercase tracking-[0.18em] color-text-500">
         {copy.bio.role}
       </p>
@@ -37,7 +40,7 @@ const socialEmailCodePoints = socialEmail
 
       {copy.bio.work.map((paragraph) => <p>{paragraph}</p>)}
 
-      <p class="text-sm color-text-300 tracking-wide font-bold">
+      <p class="bio-interests text-sm color-text-300 tracking-wide font-bold">
         {copy.bio.interests}
       </p>
 
@@ -80,10 +83,10 @@ const socialEmailCodePoints = socialEmail
     {
       latestShort && (
         <div class="flex flex-col gap-2 items-center mt-6 group self-start max-md:w-full">
-          <div class="md:hidden self-start flex gap-2 justify-between w-full text-base">
+          <div class="md:hidden self-start flex flex-col gap-1 w-full text-base">
             <span class="color-text-500">{copy.latestShort}</span>
-            <time datetime={latestShort.data.date.toISOString()}>
-              {format(latestShort.data.date, "LLL do yyyy")}
+            <time class="color-text-300" datetime={latestShort.data.date.toISOString()}>
+              {format(latestShort.data.date, dateFormat, { locale: dateLocale })}
             </time>
           </div>
           <a
@@ -150,3 +153,14 @@ const socialEmailCodePoints = socialEmail
     }
   }
 </script>
+
+<style>
+  .bio-copy {
+    max-width: min(44rem, calc(100vw - 4rem));
+  }
+
+  .bio-interests {
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+</style>

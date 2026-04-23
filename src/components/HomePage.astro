@@ -5,8 +5,9 @@ import SectionHeader from "./SectionHeader.astro";
 import RecentTracks from "./RecentTracks.astro";
 import Ultrawide from "./misc/Ultrawide.astro";
 import { LanyardStatus } from "./lanyard/LanyardStatus";
-import { getAllShorts } from "../scripts/content";
+import { getAllShorts, getShortAnchor } from "../scripts/content";
 import { format } from "date-fns";
+import { enUS, ptBR } from "date-fns/locale";
 import { homeCopy, type Language } from "../i18n";
 
 interface Props {
@@ -16,7 +17,9 @@ interface Props {
 const { language = "pt" } = Astro.props;
 const copy = homeCopy[language];
 const visibleShorts = await getAllShorts(language);
-const latestShort = visibleShorts[0];
+const homepageShorts = visibleShorts.slice(0, 2);
+const dateLocale = language === "pt" ? ptBR : enUS;
+const dateFormat = language === "pt" ? "d LLL yyyy" : "LLL d, yyyy";
 
 function extractShortExcerpt(body: string) {
   return body
@@ -30,49 +33,62 @@ function extractShortExcerpt(body: string) {
 }
 ---
 
-<main class="flex justify-center w-full my-7xl lg:my-[10%] homepage mx-6">
-  <div class="flex flex-col gap-8 md:gap-12 mx-auto max-w-7xl w-full px-4 md:px-6">
+<main class="flex justify-center w-full my-7xl lg:my-[10%] homepage px-4 md:px-6">
+  <div class="flex flex-col gap-8 md:gap-12 mx-auto max-w-7xl w-full min-w-0 px-4 md:px-6">
     <div class="mb-4">
       <Bio language={language} />
     </div>
 
-    <div class="grid grid-cols-3 gap-8">
+    <div class="grid grid-cols-3 gap-8 min-w-0">
       <div
-        class="col-span-full lg:col-span-2 homepage-grid gap-8 flex flex-col"
+        class="col-span-full lg:col-span-2 homepage-grid gap-8 flex flex-col min-w-0"
       >
         {
-          latestShort && (
+          homepageShorts.length > 0 && (
             <HomepageSection>
               <SectionHeader>{copy.shortsSection}</SectionHeader>
-              <a
-                href={copy.shortsHref}
-                rel="prefetch"
-                class="latest-short-entry article-entry flex group @container h-full transition-transform duration-300 transform-gpu rounded decoration-none"
-              >
-                <div class="flex flex-row flex-1 relative h-full">
-                  <div class="z-1 flex-1">
-                    <div class="flex flex-col gap-2">
-                      <h2 class="article-title latest-short-title text-lg font-medium leading-5 w-fit">
-                        {latestShort.data.title}
-                      </h2>
-                      <time
-                        class="text-sm color-text-300 leading-3"
-                        datetime={latestShort.data.date.toString()}
-                      >
-                        {format(latestShort.data.date, "LLL d, yyyy")}
-                      </time>
-                      <p class="latest-short-excerpt text-sm leading-relaxed max-w-2xl">
-                        {extractShortExcerpt(latestShort.body)}...
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </a>
+              <div class="latest-shorts-list">
+                {
+                  homepageShorts.map((short) => (
+                    <a
+                      href={`${copy.shortsHref}#${getShortAnchor(short.id)}`}
+                      rel="prefetch"
+                      class="latest-short-entry article-entry flex group @container h-full transition-transform duration-300 transform-gpu rounded decoration-none"
+                    >
+                      <div class="flex flex-row flex-1 relative h-full">
+                        <div class="z-1 flex-1">
+                          <div class="flex flex-col gap-2">
+                            <h2 class="article-title latest-short-title text-xl md:text-2xl font-medium leading-tight w-fit">
+                              {short.data.title}
+                            </h2>
+                            <time
+                              class="text-sm color-text-300 leading-3"
+                              datetime={short.data.date.toString()}
+                            >
+                              {format(short.data.date, dateFormat, { locale: dateLocale })}
+                            </time>
+                            <p class="latest-short-excerpt text-sm leading-relaxed max-w-2xl">
+                              {extractShortExcerpt(short.body)}...
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  ))
+                }
+                <a
+                  href={copy.shortsHref}
+                  rel="prefetch"
+                  class="shorts-view-all text-sm font-500 w-fit"
+                >
+                  {language === "pt" ? "Ver todos os shorts" : "View all shorts"}
+                </a>
+              </div>
             </HomepageSection>
           )
         }
       </div>
-      <div class="col-span-full lg:col-span-1 flex flex-col gap-8">
+      <div class="col-span-full lg:col-span-1 flex flex-col gap-8 min-w-0">
         <LanyardStatus client:load discordId="1184574519692767272" />
         <RecentTracks />
       </div>
@@ -120,6 +136,21 @@ function extractShortExcerpt(body: string) {
 </script>
 
 <style>
+  .latest-shorts-list {
+    display: grid;
+    gap: 1.15rem;
+  }
+
+  .latest-short-entry {
+    padding: 0 0 1.1rem;
+    border-bottom: 1px solid rgb(148 163 184 / 0.16);
+  }
+
+  .latest-short-entry:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0.25rem;
+  }
+
   .latest-short-title {
     margin: 0;
     color: var(--text-800);
@@ -130,5 +161,15 @@ function extractShortExcerpt(body: string) {
     margin: 0;
     color: var(--text-400);
     max-width: 38rem;
+  }
+
+  .shorts-view-all {
+    color: var(--text-500);
+    text-decoration: none;
+    transition: color 180ms ease;
+  }
+
+  .shorts-view-all:hover {
+    color: var(--text-800);
   }
 </style>

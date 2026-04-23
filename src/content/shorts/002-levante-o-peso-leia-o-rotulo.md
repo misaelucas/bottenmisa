@@ -21,7 +21,7 @@ Por que você não gastaria uma ou duas horas para entender sobre algo que você
   </a>
   <div class="shorts-reference">
     <span class="shorts-reference-kicker">Livro</span>
-    <strong>Estratégias nutricionais - Dudu Haluch</strong>
+    <strong>Estratégias Nutricionais - Dudu Haluch</strong>
   </div>
   <div class="shorts-reference">
     <span class="shorts-reference-kicker">Livro</span>

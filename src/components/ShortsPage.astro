@@ -70,7 +70,7 @@ const shorts = await Promise.all(
               id={getShortAnchor(short.id)}
               class="shorts-section flex flex-col mx-auto prose max-w-full prose-code:before:content-none prose-code:after:content-none text-base w-full scroll-mt-10"
             >
-              <article class="w-full px-4 md:px-8 article-grid">
+              <article class="w-full px-3 md:px-8 article-grid">
                 <div class="shorts-timeline">
                   <div class="text-sm md:text-base color-text-600 font-mono">
                     <time datetime={short.data.date.toISOString()}>
@@ -145,12 +145,13 @@ const shorts = await Promise.all(
     }
 
     .shorts-timeline {
-      width: calc(100vw - 6rem);
-      max-width: calc(100vw - 6rem);
+      width: 100%;
+      max-width: 100%;
     }
 
     .shorts-title,
     .main-article {
+      width: 100%;
       max-width: 100%;
       overflow-wrap: break-word;
     }
@@ -160,13 +161,13 @@ const shorts = await Promise.all(
     }
 
     .main-article {
-      width: calc(100vw - 10rem);
-      max-width: calc(100vw - 10rem);
+      font-size: 1.05rem;
+      line-height: 1.85;
     }
 
     .main-article :global(p) {
-      width: calc(100vw - 10rem);
-      max-width: calc(100vw - 10rem);
+      width: 100%;
+      max-width: 100%;
     }
   }
 

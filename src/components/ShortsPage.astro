@@ -1,6 +1,6 @@
 ---
 import { render } from "astro:content";
-import { differenceInDays, format, formatDistance } from "date-fns";
+import { format } from "date-fns";
 import { enUS, ptBR } from "date-fns/locale";
 import Navbar from "@components/Navbar.astro";
 import Layout from "@layouts/Layout.astro";
@@ -17,16 +17,11 @@ const dateLocale = language === "pt" ? ptBR : enUS;
 const dateFormat = language === "pt" ? "d LLL yyyy" : "LLL d, yyyy";
 const visibleShorts = await getAllShorts(language);
 
-function getDistanceLabel(previousDate: Date, currentDate: Date) {
-  return `${formatDistance(previousDate, currentDate, { locale: dateLocale })} ${copy.distanceSuffix}`;
-}
-
 const shorts = await Promise.all(
-  visibleShorts.map(async (short, i, arr) => {
+  visibleShorts.map(async (short) => {
     return {
       post: await render(short),
       short,
-      prev: i > 0 ? arr[i - 1] : undefined,
     };
   }),
 );
@@ -65,7 +60,7 @@ const shorts = await Promise.all(
       </header>
       <ul class="flex flex-col list-none m-0 p-0">
         {
-          shorts.map(({ post, short, prev }) => (
+          shorts.map(({ post, short }) => (
             <li
               id={getShortAnchor(short.id)}
               class="shorts-section flex flex-col mx-auto prose max-w-full prose-code:before:content-none prose-code:after:content-none text-base w-full scroll-mt-10"
@@ -76,14 +71,12 @@ const shorts = await Promise.all(
                     <time datetime={short.data.date.toISOString()}>
                       {format(short.data.date, dateFormat, { locale: dateLocale })}
                     </time>
-                    {
-                      prev &&
-                        differenceInDays(prev.data.date, short.data.date) > 0 && (
-                          <span class="text-sm md:text-base color-text-300">
-                            ({getDistanceLabel(prev.data.date, short.data.date)})
-                          </span>
-                        )
-                    }
+                    <span
+                      class="text-sm md:text-base color-text-300"
+                      data-short-age
+                      data-date={format(short.data.date, "yyyy-MM-dd")}
+                      data-language={language}
+                    />
                   </div>
 
                   <h2 class="shorts-title font-500 text-3xl md:text-4xl leading-tight mt-7 md:mt-8 mb-5 lg:mb-8">
@@ -102,6 +95,44 @@ const shorts = await Promise.all(
     </div>
   </main>
 </Layout>
+
+<script>
+  const dayInMs = 24 * 60 * 60 * 1000;
+
+  function getLocalDate(value: string) {
+    const [year, month, day] = value.split("-").map(Number);
+    return new Date(year, month - 1, day);
+  }
+
+  function startOfToday() {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  }
+
+  function getAgeLabel(days: number, language: string) {
+    if (language === "pt") {
+      if (days <= 0) return "hoje";
+      if (days === 1) return "há 1 dia";
+      return `há ${days} dias`;
+    }
+
+    if (days <= 0) return "today";
+    if (days === 1) return "1 day ago";
+    return `${days} days ago`;
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-short-age]").forEach((element) => {
+    const date = element.dataset.date;
+    const language = element.dataset.language ?? "pt";
+    if (!date) return;
+
+    const days = Math.max(
+      0,
+      Math.floor((startOfToday().getTime() - getLocalDate(date).getTime()) / dayInMs),
+    );
+    element.textContent = `(${getAgeLabel(days, language)})`;
+  });
+</script>
 
 <style>
   .shorts-title {

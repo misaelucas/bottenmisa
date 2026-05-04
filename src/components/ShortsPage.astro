@@ -180,6 +180,32 @@ const shorts = await Promise.all(
     margin-top: 1.35em;
   }
 
+  .main-article :global(ul) {
+    margin: 1.35em 0;
+    padding: 0;
+    display: grid;
+    gap: 0.85em;
+    list-style: none;
+  }
+
+  .main-article :global(ul li) {
+    position: relative;
+    padding-left: 1.15em;
+    color: var(--text-700);
+  }
+
+  .main-article :global(ul li::before) {
+    content: "";
+    position: absolute;
+    top: 0.82em;
+    left: 0;
+    width: 0.34em;
+    height: 0.34em;
+    border-radius: 999px;
+    background: var(--highlight);
+    box-shadow: 0 0 0 3px rgb(134 239 172 / 0.12);
+  }
+
   .main-article :global(a:not(.shorts-track):not(.shorts-reference)) {
     display: inline;
     word-break: break-word;

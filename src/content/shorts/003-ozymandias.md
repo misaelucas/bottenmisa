@@ -20,3 +20,20 @@ Percebo que essas coisas são correntes para a minha criatividade e capacidade d
 
 
 Mas tudo isso, esses sentimentos, desaparecerão como o orvalho da manhã.
+
+<section class="shorts-references">
+  <p class="shorts-reference-label">PARA LER.</p>
+  <div class="shorts-reference">
+    <span class="shorts-reference-kicker">Livro</span>
+    <strong>Siddhartha - Hermann Hesse</strong>
+  </div>
+</section>
+
+<section class="shorts-mixtape">
+  <p class="shorts-mixtape-label">MY STATE OF MIND RIGHT NOW.</p>
+  <a class="shorts-track" href="https://www.youtube.com/watch?v=TNRCvG9YtYI" target="_blank" rel="noopener noreferrer">
+    <img class="shorts-track-thumb" src="https://i.ytimg.com/vi/TNRCvG9YtYI/hqdefault.jpg" alt="Thumbnail de Radiohead - Weird Fishes / Arpeggi" loading="lazy" />
+    <span class="shorts-track-kicker">YouTube</span>
+    <strong>Radiohead - Weird Fishes / Arpeggi</strong>
+  </a>
+</section>

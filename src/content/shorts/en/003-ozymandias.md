@@ -19,3 +19,20 @@ I realize these things are chains to my creativity and capacity for creation. Ho
 - A conversation with a simple elderly man who showed respect and kindness a few months ago. To this day, it still remains in my mind and brings me a breath of life. He was herding some cows, just passed by, and greeted me with a genuine smile.
 
 But all of that, those feelings, will fade away like the morning dew.
+
+<section class="shorts-references">
+  <p class="shorts-reference-label">READ NEXT.</p>
+  <div class="shorts-reference">
+    <span class="shorts-reference-kicker">Book</span>
+    <strong>Siddhartha - Hermann Hesse</strong>
+  </div>
+</section>
+
+<section class="shorts-mixtape">
+  <p class="shorts-mixtape-label">MY STATE OF MIND RIGHT NOW.</p>
+  <a class="shorts-track" href="https://www.youtube.com/watch?v=TNRCvG9YtYI" target="_blank" rel="noopener noreferrer">
+    <img class="shorts-track-thumb" src="https://i.ytimg.com/vi/TNRCvG9YtYI/hqdefault.jpg" alt="Thumbnail for Radiohead - Weird Fishes / Arpeggi" loading="lazy" />
+    <span class="shorts-track-kicker">YouTube</span>
+    <strong>Radiohead - Weird Fishes / Arpeggi</strong>
+  </a>
+</section>

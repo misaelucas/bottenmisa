@@ -18,7 +18,7 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
 ---
 
 <nav class="px-6 py-4 top-0 w-full navbar" id="navbar">
-  <ul class="w-full flex justify-between">
+  <ul class="w-full flex justify-between nav-row">
     <li>
       {
         showHomeIcon && (
@@ -34,6 +34,11 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
           </a>
         )
       }
+    </li>
+    <li class="nav-center">
+      <a href={languages[currentLanguage].productivityPath} class="productivity-nav-link">
+        productivity
+      </a>
     </li>
     <li class="flex items-center gap-2">
       <a
@@ -84,7 +89,48 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
 </noscript>
 <style>
   .navbar {
+    position: relative;
     z-index: 2;
+  }
+
+  .nav-row {
+    position: relative;
+    min-height: 50px;
+  }
+
+  .nav-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    list-style: none;
+  }
+
+  .productivity-nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0.25rem 0.55rem;
+    color: var(--text-700);
+    font-family: "Jetbrains Mono", ui-monospace, monospace;
+    font-size: 0.86rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-decoration: none;
+    text-transform: lowercase;
+    text-shadow: 0 0 14px rgb(185 140 255 / 0.48);
+    transition:
+      color 180ms ease,
+      text-shadow 180ms ease,
+      transform 180ms ease;
+  }
+
+  .productivity-nav-link:hover {
+    color: var(--text-100);
+    text-shadow:
+      0 0 12px rgb(201 166 255 / 0.72),
+      0 0 24px rgb(122 78 180 / 0.36);
+    transform: translateY(-1px);
   }
 
   .nav-control {

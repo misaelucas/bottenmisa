@@ -1,0 +1,16 @@
+---
+export interface Props {
+  depth: number;
+  title: string;
+  id?: string;
+  aliases?: string[];
+}
+
+const { depth, title, id, aliases = [] } = Astro.props;
+const Tag = depth <= 2 ? "h2" : "h3";
+---
+
+<div class:list={["section-header", `section-header--h${Math.min(depth, 3)}`]} id={id}>
+  {aliases.map((alias) => <span class="pdf-anchor" id={alias}></span>)}
+  <Tag>{title}</Tag>
+</div>

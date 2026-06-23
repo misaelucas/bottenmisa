@@ -1,5 +1,7 @@
 # build output
 dist/
+output/
+reports/
 # generated types
 .astro/
 

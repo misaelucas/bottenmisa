@@ -1,0 +1,11 @@
+---
+export interface Props {
+  imageSrc: string;
+}
+
+const { imageSrc } = Astro.props;
+---
+
+<section class="pdf-cover" aria-label="Capa">
+  <img class="pdf-cover__image" src={imageSrc} alt="" />
+</section>

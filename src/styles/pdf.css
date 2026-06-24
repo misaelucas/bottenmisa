@@ -266,14 +266,48 @@ li {
 
   .pdf-flow,
   .pdf-cover {
-    width: 210mm;
+    width: min(210mm, calc(100vw - 48px));
     margin-right: auto;
     margin-left: auto;
     box-shadow: 0 20px 80px rgba(0, 0, 0, 0.32);
   }
 
+  .pdf-cover {
+    min-height: auto;
+    aspect-ratio: 210 / 297;
+  }
+
   .pdf-flow {
     padding: 18mm 18mm 22mm;
     background: #f8f4ff;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  body {
+    padding: 12px;
+  }
+
+  .pdf-flow,
+  .pdf-cover {
+    width: calc(100vw - 24px);
+  }
+
+  .pdf-flow {
+    padding: 12mm 7mm 14mm;
+  }
+
+  .chapter-opener h1 {
+    font-size: 19pt;
+  }
+
+  .section-header h2 {
+    font-size: 14.5pt;
+  }
+
+  .numbered-concept-table li {
+    grid-template-columns: 10mm 1fr;
+    gap: 3mm;
+    padding: 3mm;
   }
 }

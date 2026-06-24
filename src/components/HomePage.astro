@@ -20,6 +20,9 @@ const visibleShorts = await getAllShorts(language);
 const homepageShorts = visibleShorts.slice(0, 2);
 const dateLocale = language === "pt" ? ptBR : enUS;
 const dateFormat = language === "pt" ? "d LLL yyyy" : "LLL d, yyyy";
+const donationAddress =
+  "85mpeMoAmjKj7xDKLFJyToPX4Cbw2ZoT7SvW2AbHNe5wVYwY9pMygurDPkFDPXT11JENjwjeJUEZv5wgKDx7EmzZB6DFXJM";
+const donationHref = `monero:${donationAddress}`;
 
 function extractShortExcerpt(body: string) {
   return body
@@ -93,6 +96,11 @@ function extractShortExcerpt(body: string) {
         <RecentTracks />
       </div>
     </div>
+
+    <footer class="donation-footer">
+      <span>{language === "pt" ? "donations xmr" : "donations xmr"}</span>
+      <a href={donationHref}>{donationAddress}</a>
+    </footer>
   </div>
 </main>
 
@@ -173,4 +181,40 @@ function extractShortExcerpt(body: string) {
     color: var(--text-800);
   }
 
+  .donation-footer {
+    display: grid;
+    gap: 0.45rem;
+    max-width: 100%;
+    padding-top: 1rem;
+    border-top: 1px solid rgb(148 163 184 / 0.16);
+    color: var(--text-300);
+    font-family: "Jetbrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .donation-footer span {
+    color: var(--text-500);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: lowercase;
+  }
+
+  .donation-footer a {
+    max-width: 100%;
+    color: inherit;
+    overflow-wrap: anywhere;
+    text-decoration: none;
+    transition:
+      color 220ms ease,
+      text-shadow 220ms ease;
+  }
+
+  .donation-footer a:hover {
+    color: var(--text-800);
+    text-shadow:
+      0 0 8px rgb(201 166 255 / 0.62),
+      0 0 18px rgb(122 78 180 / 0.32);
+  }
 </style>

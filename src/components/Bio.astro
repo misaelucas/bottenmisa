@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import ExternalLink from "./ExternalLink.astro";
 import Email from "./icons/Email.astro";
 import Github from "./icons/Github.astro";
+import Pinterest from "./icons/Pinterest.astro";
 import Twitter from "./icons/Twitter.astro";
 import avatarMj from "@assets/avatars/itsmisa.png";
 import { getAllShorts } from "@scripts/content";
@@ -26,8 +27,8 @@ const socialEmailCodePoints = socialEmail
 ---
 
 <div class="flex flex-col md:flex-row justify-between w-full min-w-0 gap-8">
-  <div class="bio-copy flex flex-col gap-6 flex-grow-0 w-full min-w-0 max-w-[44rem] text-xl leading-8">
-    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-900 mb-2">
+  <div class="bio-copy flex flex-col gap-5 flex-grow-0 w-full min-w-0 max-w-[44rem] text-lg leading-7">
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-900 mb-2">
       {copy.bio.heading}
     </h1>
 
@@ -44,7 +45,7 @@ const socialEmailCodePoints = socialEmail
         {copy.bio.interests}
       </p>
 
-      <p class="text-base color-text-300">{copy.bio.location} 🌵</p>
+      <p class="text-base color-text-300">{copy.bio.location}</p>
     </div>
     <div class="flex flex-col gap-2">
       <div class="flex gap-4 text-3xl color-text-700">
@@ -65,6 +66,15 @@ const socialEmailCodePoints = socialEmail
           class="inline-flex transition-transform duration-200 hover:scale-110 hover:color-text-900"
         >
           <Twitter />
+        </ExternalLink>
+        <ExternalLink
+          noIcon
+          href="https://br.pinterest.com/misaelucas/"
+          target="_blank"
+          aria-label="Pinterest"
+          class="inline-flex transition-transform duration-200 hover:scale-110 hover:color-text-900"
+        >
+          <Pinterest />
         </ExternalLink>
         <ExternalLink
           noIcon
@@ -157,6 +167,8 @@ const socialEmailCodePoints = socialEmail
 <style>
   .bio-copy {
     max-width: min(44rem, calc(100vw - 4rem));
+    font-family: "Jetbrains Mono", ui-monospace, monospace;
+    letter-spacing: 0;
   }
 
   .bio-interests {

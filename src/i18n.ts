@@ -27,20 +27,15 @@ export const homeCopy = {
     latestShort: "Último short",
     shortsSection: "Shorts",
     shortsHref: languages.pt.shortsPath,
-    productivitySection: "Produtividade",
-    productivityHref: languages.pt.productivityPath,
-    productivityTitle: "OPSEC Bible: Produtividade",
-    productivityDescription:
-      "Edição PDF editorial em português, gerada a partir de Markdown com Astro, CSS print e Playwright.",
     bio: {
       heading: "Hi, I'm Misa.",
-      role: "Fullstack Developer • MERN",
-      intro: "Gosto de construir ferramentas que resolvem problemas reais.",
+      role: "Fullstack Developer",
+      intro: "Humanos foram feitos para criar, não para consumir.",
       work: [
-        "Atualmente trabalho na gestão de uma clínica, lidando com todos os aspectos operacionais, além de desenvolver um ERP próprio (MERN + Cloud + Metabase).",
+        "Eu crio software para ajudar a mim mesmo e outras pessoas, e também sou meio escritor. Meus principais projetos públicos provavelmente estão no GitHub. Esta é minha página pessoal e, por enquanto, ela ainda está mal escrita.",
       ],
-      interests: "opsec • cybersecurity • white hat • muay thai • weight lifting",
-      location: "Santana do Ipanema, Alagoas.",
+      interests: "agorism • ethical hacking • muay thai • weight lifting",
+      location: "Brasil.",
     },
   },
   en: {
@@ -50,20 +45,15 @@ export const homeCopy = {
     latestShort: "Latest short",
     shortsSection: "Shorts",
     shortsHref: languages.en.shortsPath,
-    productivitySection: "Productivity",
-    productivityHref: languages.en.productivityPath,
-    productivityTitle: "OPSEC Bible: Productivity",
-    productivityDescription:
-      "English editorial PDF edition, generated from Markdown with Astro, print CSS, and Playwright.",
     bio: {
       heading: "Hi, I'm Misa.",
-      role: "Fullstack Developer • MERN",
-      intro: "I like building tools that solve real problems.",
+      role: "Fullstack Developer",
+      intro: "Humans were made to create and not to consume.",
       work: [
-        "Currently, I work in the management of a medical clinic, handling all operational aspects, while also developing an in-house ERP (MERN + Cloud + Metabase).",
+        "I do create software to help myself and others and am a kinda of writer myself. My main public projects you probably can find them at my GitHub. This is my personal page and it's poorly written for now.",
       ],
-      interests: "opsec • cybersecurity • white hat • muay thai • weight lifting",
-      location: "Santana do Ipanema, Alagoas.",
+      interests: "agorism • ethical hacking • muay thai • weight lifting",
+      location: "Brazil.",
     },
   },
 } as const;

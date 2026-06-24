@@ -1,0 +1,78 @@
+---
+import Cover from "./Cover.astro";
+import ChapterOpener from "./ChapterOpener.astro";
+import EditorialCallout from "./EditorialCallout.astro";
+import ImageBlock from "./ImageBlock.astro";
+import NumberedConceptTable from "./NumberedConceptTable.astro";
+import QuoteBlock from "./QuoteBlock.astro";
+import SectionHeader from "./SectionHeader.astro";
+import { parseProductivityMarkdown } from "../../lib/productivity-markdown";
+import "../../styles/pdf.css";
+
+export interface Props {
+  markdown: string;
+  lang: "pt-BR" | "en";
+}
+
+const { markdown, lang } = Astro.props;
+const blocks = parseProductivityMarkdown(markdown);
+let chapterNumber = 0;
+const chapterLabel = lang === "en" ? "Chapter" : "Capítulo";
+
+const titleBlock = blocks.find((block) => block.type === "heading" && block.depth === 1);
+const title = titleBlock?.type === "heading" ? titleBlock.text : "Productivity";
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title} | OPSEC Bible</title>
+  </head>
+  <body class="pdf-document" id="top">
+    <Cover imageSrc="/pdf-assets/cover-aha.png" />
+
+    <main class="pdf-flow">
+      {
+        blocks.map((block, index) => {
+          if (block.type === "heading" && block.depth === 1) {
+            chapterNumber += 1;
+            return (
+              <ChapterOpener
+                aliases={block.aliases}
+                id={block.id}
+                label={chapterLabel}
+                number={String(chapterNumber).padStart(2, "0")}
+                title={block.text}
+              />
+            );
+          }
+
+          if (block.type === "heading") {
+            return <SectionHeader aliases={block.aliases} depth={block.depth} id={block.id} title={block.text} />;
+          }
+
+          if (block.type === "paragraph") {
+            const isLead = index < 4;
+            const isCallout = /<strong>/.test(block.html) && block.html.length < 340;
+            if (isCallout) return <EditorialCallout html={block.html} />;
+            return <p class:list={["body-copy", isLead && "body-copy--lead"]} set:html={block.html} />;
+          }
+
+          if (block.type === "list") {
+            return <NumberedConceptTable items={block.items} />;
+          }
+
+          if (block.type === "quote") {
+            return <QuoteBlock lines={block.lines} />;
+          }
+
+          if (block.type === "image") {
+            return <ImageBlock src={block.src} alt={block.alt} />;
+          }
+        })
+      }
+    </main>
+  </body>
+</html>

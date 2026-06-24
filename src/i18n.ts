@@ -4,12 +4,14 @@ export const languages = {
     locale: "pt-BR",
     homePath: "/",
     shortsPath: "/shorts/",
+    productivityPath: "/pdf/productivity/",
   },
   en: {
     label: "EN",
     locale: "en",
     homePath: "/en/",
     shortsPath: "/en/shorts/",
+    productivityPath: "/en/pdf/productivity/",
   },
 } as const;
 
@@ -25,6 +27,11 @@ export const homeCopy = {
     latestShort: "Último short",
     shortsSection: "Shorts",
     shortsHref: languages.pt.shortsPath,
+    productivitySection: "Produtividade",
+    productivityHref: languages.pt.productivityPath,
+    productivityTitle: "OPSEC Bible: Produtividade",
+    productivityDescription:
+      "Edição PDF editorial em português, gerada a partir de Markdown com Astro, CSS print e Playwright.",
     bio: {
       heading: "Hi, I'm Misa.",
       role: "Fullstack Developer • MERN",
@@ -43,6 +50,11 @@ export const homeCopy = {
     latestShort: "Latest short",
     shortsSection: "Shorts",
     shortsHref: languages.en.shortsPath,
+    productivitySection: "Productivity",
+    productivityHref: languages.en.productivityPath,
+    productivityTitle: "OPSEC Bible: Productivity",
+    productivityDescription:
+      "English editorial PDF edition, generated from Markdown with Astro, print CSS, and Playwright.",
     bio: {
       heading: "Hi, I'm Misa.",
       role: "Fullstack Developer • MERN",
@@ -98,8 +110,19 @@ export function getAlternatePath(pathname: string): string {
     return languages.pt.shortsPath;
   }
 
+  if (
+    pathname === "/en/pdf/productivity" ||
+    pathname === "/en/pdf/productivity/"
+  ) {
+    return languages.pt.productivityPath;
+  }
+
   if (pathname === "/shorts" || pathname === "/shorts/") {
     return languages.en.shortsPath;
+  }
+
+  if (pathname === "/pdf/productivity" || pathname === "/pdf/productivity/") {
+    return languages.en.productivityPath;
   }
 
   return languages.en.homePath;

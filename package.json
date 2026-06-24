@@ -9,7 +9,13 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "pdf": "node scripts/sync-pdf-assets.mjs && PDF_PORT=${PDF_PORT:-4321} PDF_PATH=${PDF_PATH:-/pdf/productivity} concurrently -k -s first -n astro,pdf \"astro dev --host 127.0.0.1 --port ${PDF_PORT:-4321} --strictPort\" \"wait-on http://127.0.0.1:${PDF_PORT:-4321}${PDF_PATH:-/pdf/productivity} && node scripts/export-pdf.mjs\"",
+    "pdf:en": "PDF_LANG=en PDF_PATH=/en/pdf/productivity pnpm pdf",
+    "pdf:render": ".venv/bin/python scripts/render_pdf_pages.py output/opsec-bible-productivity-pt.pdf reports/pdf-pages",
+    "pdf:render:en": ".venv/bin/python scripts/render_pdf_pages.py output/opsec-bible-productivity-en.pdf reports/pdf-pages-en",
+    "pdf:check": ".venv/bin/python scripts/check_pdf_layout.py output/opsec-bible-productivity-pt.pdf --lang pt",
+    "pdf:check:en": ".venv/bin/python scripts/check_pdf_layout.py output/opsec-bible-productivity-en.pdf --lang en"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.2",
@@ -30,5 +36,11 @@
     "sharp": "^0.34.5",
     "unocss": "^66.6.7",
     "use-lanyard": "^1.7.0"
+  },
+  "packageManager": "pnpm@10.24.0",
+  "devDependencies": {
+    "concurrently": "^10.0.3",
+    "playwright": "^1.61.1",
+    "wait-on": "^9.0.10"
   }
 }

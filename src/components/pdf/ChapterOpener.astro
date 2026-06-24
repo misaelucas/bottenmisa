@@ -1,0 +1,17 @@
+---
+export interface Props {
+  number: string;
+  title: string;
+  label?: string;
+  id?: string;
+  aliases?: string[];
+}
+
+const { number, title, label = "Capítulo", id, aliases = [] } = Astro.props;
+---
+
+<section class="chapter-opener" id={id}>
+  {aliases.map((alias) => <span class="pdf-anchor" id={alias}></span>)}
+  <p>{label} {number}</p>
+  <h1>{title}</h1>
+</section>

@@ -1,0 +1,11 @@
+---
+export interface Props {
+  html: string;
+}
+
+const { html } = Astro.props;
+---
+
+<aside class="editorial-callout">
+  <p set:html={html} />
+</aside>

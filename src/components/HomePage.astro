@@ -87,6 +87,24 @@ function extractShortExcerpt(body: string) {
             </HomepageSection>
           )
         }
+
+        <HomepageSection>
+          <SectionHeader>{copy.productivitySection}</SectionHeader>
+          <a
+            href={copy.productivityHref}
+            rel="prefetch"
+            class="productivity-link article-entry flex group @container h-full transition-transform duration-300 transform-gpu rounded decoration-none"
+          >
+            <div class="flex flex-col gap-2">
+              <h2 class="article-title productivity-link-title text-xl md:text-2xl font-medium leading-tight w-fit">
+                {copy.productivityTitle}
+              </h2>
+              <p class="productivity-link-description text-sm leading-relaxed max-w-2xl">
+                {copy.productivityDescription}
+              </p>
+            </div>
+          </a>
+        </HomepageSection>
       </div>
       <div class="col-span-full lg:col-span-1 flex flex-col gap-8 min-w-0">
         <LanyardStatus client:load discordId="1184574519692767272" />
@@ -171,5 +189,23 @@ function extractShortExcerpt(body: string) {
 
   .shorts-view-all:hover {
     color: var(--text-800);
+  }
+
+  .productivity-link {
+    padding: 1rem 0 1.1rem;
+    border-top: 1px solid rgb(148 163 184 / 0.16);
+    border-bottom: 1px solid rgb(148 163 184 / 0.16);
+  }
+
+  .productivity-link-title {
+    margin: 0;
+    color: var(--text-800);
+    line-height: 1.05;
+  }
+
+  .productivity-link-description {
+    margin: 0;
+    color: var(--text-400);
+    max-width: 40rem;
   }
 </style>

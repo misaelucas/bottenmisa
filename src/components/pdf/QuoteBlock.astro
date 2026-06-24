@@ -1,0 +1,11 @@
+---
+export interface Props {
+  lines: string[];
+}
+
+const { lines } = Astro.props;
+---
+
+<blockquote class="quote-block">
+  {lines.map((line) => <p>{line}</p>)}
+</blockquote>

@@ -220,9 +220,9 @@ Sem mencionar que, para continuar agarrando a sua atenção, nada está fora dos
 **O vício em conteúdo curto é o principal vetor**, no qual se torna fácil cair em ações repetitivas, em que você pode facilmente passar dias inteiros continuamente procurando por aquele conteúdo a mais na mesma plataforma.
     
     
-    The fastest growing sector of the culture economy is distraction. Or call it scrolling or swiping or wasting time or whatever you want. But it’s not art or entertainment, just ceaseless activity.
-    The key is that each stimulus only lasts a few seconds, and must be repeated.
-    It’s a huge business, and will soon be larger than arts and entertainment combined. Everything is getting turned into TikTok—an aptly named platform for a business based on stimuli that must be repeated after only a few ticks of the clock.
+    O setor que mais cresce na economia da cultura é a distração. Ou chame de rolagem, deslizar, perder tempo ou o que você quiser. Mas não é arte nem entretenimento, apenas atividade incessante.
+    A chave é que cada estímulo dura apenas alguns segundos e precisa ser repetido.
+    É um negócio enorme, e em breve será maior do que as artes e o entretenimento combinados. Tudo está sendo transformado em TikTok, um nome adequado para uma plataforma baseada em estímulos que precisam ser repetidos depois de apenas alguns tiques do relógio.
     Ted Gioia
     
     
@@ -405,21 +405,21 @@ Em resumo, para expulsar as identidades, crenças e vícios venenosos (já que a
 [Opus Nihil](the-opsec-bible/docs/productivity/opus-nihil/index.md) trata de dissolver vícios e compulsões, permitindo que você permaneça imóvel e se sinta inteiro.
     
     
-    I want nothing, I need nothing
+    Eu não quero nada, eu não preciso de nada
     
     
 
 [Scio Nihil](the-opsec-bible/docs/productivity/scio-nihil/index.md) trata de fazer você perceber que não importa o quanto saiba, sempre há mais a saber; assim você nunca mais ficará entediado ou arrogante, e cada dia parecerá ainda uma nova aventura.
     
     
-    I know nothing, I know nothing else
+    Eu não sei nada, eu não sei mais nada
     
     
 
 [Sum Nihil](the-opsec-bible/docs/productivity/sum-nihil/index.md) trata de colocar você de volta no seu lugar, já que você é um acontecimento muito minúsculo no universo, trazendo efetivamente a humildade de volta para você e garantindo que você não esteja mais no caminho das suas próprias ações.
     
     
-    I am nothing, I am no one
+    Eu não sou nada, eu não sou ninguém
     
     
 

@@ -175,6 +175,28 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
     object-fit: cover;
     transition: transform 180ms ease;
   }
+
+  @media (max-width: 520px) {
+    .navbar {
+      padding-inline: 1rem;
+    }
+
+    .nav-control {
+      min-width: 38px;
+      min-height: 32px;
+      padding: 0.35rem;
+    }
+
+    .language-toggle span {
+      display: none;
+    }
+
+    .productivity-nav-link {
+      min-height: 32px;
+      font-size: 0.76rem;
+      padding-inline: 0.35rem;
+    }
+  }
 </style>
 
 <script>

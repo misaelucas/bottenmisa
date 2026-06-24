@@ -299,9 +299,33 @@ li {
     max-height: calc(100vh - 48px);
     padding: 18px 16px;
     overflow: auto;
+    scrollbar-color: rgba(173, 124, 224, 0.68) rgba(19, 11, 31, 0.34);
+    scrollbar-width: thin;
     border: 1px solid rgba(212, 184, 240, 0.2);
     background: rgba(34, 20, 51, 0.82);
     box-shadow: 0 20px 70px rgba(0, 0, 0, 0.22);
+  }
+
+  .pdf-sidebar::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .pdf-sidebar::-webkit-scrollbar-track {
+    border-radius: 999px;
+    background: rgba(19, 11, 31, 0.42);
+  }
+
+  .pdf-sidebar::-webkit-scrollbar-thumb {
+    border: 2px solid rgba(34, 20, 51, 0.82);
+    border-radius: 999px;
+    background:
+      linear-gradient(180deg, rgba(217, 198, 242, 0.86), rgba(173, 124, 224, 0.72));
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+  }
+
+  .pdf-sidebar::-webkit-scrollbar-thumb:hover {
+    background:
+      linear-gradient(180deg, rgba(244, 235, 255, 0.96), rgba(194, 146, 246, 0.86));
   }
 
   .pdf-sidebar summary {
@@ -408,11 +432,23 @@ li {
   }
 
   .pdf-sidebar-meta a {
-    width: fit-content;
+    display: block;
+    width: 100%;
     transition:
       color 320ms ease,
       text-shadow 320ms ease,
       transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .pdf-sidebar-meta code {
+    display: block;
+    max-width: 100%;
+    color: inherit;
+    font-family: "JetBrains Mono", "DejaVu Sans Mono", ui-monospace, monospace;
+    font-size: 7.5pt;
+    line-height: 1.42;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .pdf-sidebar-meta a:hover {

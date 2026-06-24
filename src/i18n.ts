@@ -32,7 +32,7 @@ export const homeCopy = {
       role: "Fullstack Developer",
       intro: "Humanos foram feitos para criar, não para consumir.",
       work: [
-        "Eu crio software para ajudar a mim mesmo e outras pessoas, e também sou meio escritor. Meus principais projetos públicos provavelmente estão no GitHub. Esta é minha página pessoal e, por enquanto, ela ainda está mal escrita.",
+        "Eu crio software para ajudar a mim mesmo e outras pessoas, e também gosto de escrever. Meus principais projetos públicos provavelmente estão no GitHub. Esta é minha página pessoal e, por enquanto, ela ainda está mal escrita.",
       ],
       interests: "agorism • ethical hacking • muay thai • weight lifting",
       location: "Brasil.",

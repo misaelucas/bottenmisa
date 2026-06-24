@@ -7,6 +7,7 @@ import NumberedConceptTable from "./NumberedConceptTable.astro";
 import QuoteBlock from "./QuoteBlock.astro";
 import SectionHeader from "./SectionHeader.astro";
 import { parseProductivityMarkdown } from "../../lib/productivity-markdown";
+import "../../styles/theme.css";
 import "../../styles/pdf.css";
 
 export interface Props {
@@ -18,6 +19,20 @@ const { markdown, lang } = Astro.props;
 const blocks = parseProductivityMarkdown(markdown);
 let chapterNumber = 0;
 const chapterLabel = lang === "en" ? "Chapter" : "Capítulo";
+const tocLabel = lang === "en" ? "Topics" : "Tópicos";
+const authorLabel = lang === "en" ? "Author" : "Autor";
+const donationLabel = lang === "en" ? "Donation" : "Doação";
+const productivityAuthor = "Nihilist";
+const donationAddress =
+  "84Zqdr7o2RfTKRhjc6SR3TdhK1yLxRLMPARU3PMvmyH8XmCgMoBHa7X8YoM7WphfbkJsjQ4SeEQCr4Nn2uzJSfCD9KiBu9E";
+const donationHref = `monero:${donationAddress}`;
+const tocItems = blocks
+  .filter((block) => block.type === "heading" && block.depth === 1)
+  .map((block, index) => ({
+    id: block.id,
+    number: String(index + 1).padStart(2, "0"),
+    title: block.text,
+  }));
 
 const titleBlock = blocks.find((block) => block.type === "heading" && block.depth === 1);
 const title = titleBlock?.type === "heading" ? titleBlock.text : "Productivity";
@@ -28,51 +43,89 @@ const title = titleBlock?.type === "heading" ? titleBlock.text : "Productivity";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;800;900&display=swap"
+      rel="stylesheet"
+    />
     <title>{title} | OPSEC Bible</title>
   </head>
   <body class="pdf-document" id="top">
-    <Cover imageSrc="/pdf-assets/cover-aha.png" />
-
-    <main class="pdf-flow">
-      {
-        blocks.map((block, index) => {
-          if (block.type === "heading" && block.depth === 1) {
-            chapterNumber += 1;
-            return (
-              <ChapterOpener
-                aliases={block.aliases}
-                id={block.id}
-                label={chapterLabel}
-                number={String(chapterNumber).padStart(2, "0")}
-                title={block.text}
-              />
-            );
+    <div class="pdf-shell">
+      <details class="pdf-sidebar" aria-label={tocLabel} open>
+        <summary>{tocLabel}</summary>
+        <nav>
+          {
+            tocItems.map((item) => (
+              <a href={`#${item.id}`}>
+                <span>{item.number}</span>
+                {item.title}
+              </a>
+            ))
           }
+        </nav>
+        <div class="pdf-sidebar-meta">
+          <p>
+            <span>{authorLabel}</span>
+            {productivityAuthor}
+          </p>
+          <a href={donationHref}>
+            <span>{donationLabel}</span>
+            XMR
+          </a>
+        </div>
+      </details>
 
-          if (block.type === "heading") {
-            return <SectionHeader aliases={block.aliases} depth={block.depth} id={block.id} title={block.text} />;
-          }
+      <div class="pdf-pages">
+        <Cover imageSrc="/pdf-assets/cover-aha.png" />
 
-          if (block.type === "paragraph") {
-            const isLead = index < 4;
-            const isCallout = /<strong>/.test(block.html) && block.html.length < 340;
-            if (isCallout) return <EditorialCallout html={block.html} />;
-            return <p class:list={["body-copy", isLead && "body-copy--lead"]} set:html={block.html} />;
-          }
+        <main class="pdf-flow">
+          <aside class="pdf-print-meta" aria-label="Productivity edition metadata">
+            <p>{authorLabel}: {productivityAuthor}</p>
+            <p>{donationLabel} XMR: {donationAddress}</p>
+          </aside>
+          {
+            blocks.map((block, index) => {
+              if (block.type === "heading" && block.depth === 1) {
+                chapterNumber += 1;
+                return (
+                  <ChapterOpener
+                    aliases={block.aliases}
+                    id={block.id}
+                    label={chapterLabel}
+                    number={String(chapterNumber).padStart(2, "0")}
+                    title={block.text}
+                  />
+                );
+              }
 
-          if (block.type === "list") {
-            return <NumberedConceptTable items={block.items} />;
-          }
+              if (block.type === "heading") {
+                return <SectionHeader aliases={block.aliases} depth={block.depth} id={block.id} title={block.text} />;
+              }
 
-          if (block.type === "quote") {
-            return <QuoteBlock lines={block.lines} />;
-          }
+              if (block.type === "paragraph") {
+                const isLead = index < 4;
+                const isCallout = /<strong>/.test(block.html) && block.html.length < 340;
+                if (isCallout) return <EditorialCallout html={block.html} />;
+                return <p class:list={["body-copy", isLead && "body-copy--lead"]} set:html={block.html} />;
+              }
 
-          if (block.type === "image") {
-            return <ImageBlock src={block.src} alt={block.alt} />;
+              if (block.type === "list") {
+                return <NumberedConceptTable items={block.items} />;
+              }
+
+              if (block.type === "quote") {
+                return <QuoteBlock lines={block.lines} />;
+              }
+
+              if (block.type === "image") {
+                return <ImageBlock src={block.src} alt={block.alt} />;
+              }
+            })
           }
-        })
-      }
-    </main>
+        </main>
+      </div>
+    </div>
   </body>
 </html>

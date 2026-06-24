@@ -10,12 +10,7 @@
 
 :root {
   color-scheme: light;
-  font-family:
-    Inter,
-    "Hanken Grotesk",
-    "Noto Sans",
-    Arial,
-    sans-serif;
+  font-family: var(--font-family-sans, "Hanken Grotesk", system-ui, sans-serif);
   font-variant-ligatures: none;
   font-feature-settings:
     "liga" 0,
@@ -86,6 +81,25 @@ code {
   max-width: 100%;
 }
 
+.pdf-sidebar {
+  display: none;
+}
+
+.pdf-print-meta {
+  margin: 0 0 6mm;
+  padding: 0 0 5mm;
+  border-bottom: 0.25mm solid #dcc6ef;
+  color: #6f5a86;
+  font-size: 8.8pt;
+  line-height: 1.45;
+  break-after: avoid;
+}
+
+.pdf-print-meta p {
+  margin: 0 0 1mm;
+  overflow-wrap: anywhere;
+}
+
 .pdf-anchor {
   display: block;
   height: 0;
@@ -116,6 +130,7 @@ code {
   max-width: 142mm;
   margin: 0;
   color: #23133c;
+  font-family: var(--font-family-article-title, "Mackinac", serif);
   font-size: 25pt;
   line-height: 1.08;
   letter-spacing: 0;
@@ -130,6 +145,7 @@ code {
 .section-header h3 {
   margin: 0;
   color: #281044;
+  font-family: var(--font-family-sans, "Hanken Grotesk", system-ui, sans-serif);
   font-weight: 800;
   letter-spacing: 0;
 }
@@ -254,14 +270,162 @@ li {
 
 @media screen {
   body {
-    display: flex;
-    justify-content: center;
     padding: 24px;
     background: #1a1027;
   }
 
   .pdf-document {
     display: block;
+  }
+
+  .pdf-shell {
+    display: grid;
+    grid-template-columns: minmax(160px, 220px) minmax(0, 210mm);
+    gap: 24px;
+    align-items: start;
+    justify-content: center;
+    width: min(100%, 1120px);
+    margin: 0 auto;
+  }
+
+  .pdf-pages {
+    min-width: 0;
+  }
+
+  .pdf-sidebar {
+    position: sticky;
+    top: 24px;
+    display: block;
+    max-height: calc(100vh - 48px);
+    padding: 18px 16px;
+    overflow: auto;
+    border: 1px solid rgba(212, 184, 240, 0.2);
+    background: rgba(34, 20, 51, 0.82);
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.22);
+  }
+
+  .pdf-sidebar summary {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+    list-style: none;
+    margin: 0 0 14px;
+    color: #d9c6f2;
+    font-family: "JetBrains Mono", "DejaVu Sans Mono", monospace;
+    font-size: 8.4pt;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .pdf-sidebar summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .pdf-sidebar summary::after {
+    content: "−";
+    margin-left: auto;
+    color: #ad7ce0;
+    font-size: 10pt;
+  }
+
+  .pdf-sidebar:not([open]) summary {
+    margin-bottom: 0;
+  }
+
+  .pdf-sidebar:not([open]) summary::after {
+    content: "+";
+  }
+
+  .pdf-sidebar nav {
+    display: grid;
+    gap: 8px;
+  }
+
+  .pdf-sidebar a {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 8px;
+    align-items: baseline;
+    padding: 7px 0;
+    color: #f2ebfb;
+    font-family: "Jetbrains Mono", ui-monospace, monospace;
+    font-size: 9.5pt;
+    line-height: 1.25;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(217, 198, 242, 0.12);
+    transform-origin: left center;
+    transition:
+      color 320ms ease,
+      transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 320ms ease,
+      text-shadow 320ms ease;
+  }
+
+  .pdf-sidebar a:hover {
+    color: #ffffff;
+    border-color: rgba(217, 198, 242, 0.16);
+    text-shadow:
+      0 0 6px rgba(255, 255, 255, 0.94),
+      0 0 16px rgba(213, 177, 255, 0.88),
+      0 0 30px rgba(160, 83, 255, 0.72);
+    transform: scale(1.025);
+  }
+
+  .pdf-sidebar span {
+    color: #ad7ce0;
+    font-family: "JetBrains Mono", "DejaVu Sans Mono", monospace;
+    font-size: 7.8pt;
+    font-weight: 800;
+  }
+
+  .pdf-sidebar-meta {
+    display: grid;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(217, 198, 242, 0.16);
+    color: #d9c6f2;
+    font-family: "Jetbrains Mono", ui-monospace, monospace;
+    font-size: 8.2pt;
+    line-height: 1.35;
+  }
+
+  .pdf-sidebar-meta p,
+  .pdf-sidebar-meta a {
+    margin: 0;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .pdf-sidebar-meta span {
+    display: block;
+    margin-bottom: 2px;
+    color: #ad7ce0;
+    font-size: 7.2pt;
+    text-transform: uppercase;
+  }
+
+  .pdf-sidebar-meta a {
+    width: fit-content;
+    transition:
+      color 320ms ease,
+      text-shadow 320ms ease,
+      transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .pdf-sidebar-meta a:hover {
+    color: #ffffff;
+    text-shadow:
+      0 0 6px rgba(255, 255, 255, 0.94),
+      0 0 16px rgba(213, 177, 255, 0.88),
+      0 0 30px rgba(160, 83, 255, 0.72);
+    transform: scale(1.025);
+  }
+
+  .pdf-print-meta {
+    display: none;
   }
 
   .pdf-flow,
@@ -283,6 +447,28 @@ li {
   }
 }
 
+@media screen and (max-width: 1120px) {
+  .pdf-shell {
+    grid-template-columns: minmax(0, 210mm);
+  }
+
+  .pdf-sidebar {
+    position: static;
+    width: min(210mm, calc(100vw - 48px));
+    max-height: none;
+    margin: 0 auto;
+  }
+
+  .pdf-sidebar nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 18px;
+  }
+
+  .pdf-sidebar:not([open]) nav {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 640px) {
   body {
     padding: 12px;
@@ -295,6 +481,23 @@ li {
 
   .pdf-flow {
     padding: 12mm 7mm 14mm;
+  }
+
+  .pdf-shell {
+    gap: 12px;
+  }
+
+  .pdf-sidebar {
+    width: calc(100vw - 24px);
+    padding: 14px 12px;
+  }
+
+  .pdf-sidebar nav {
+    grid-template-columns: 1fr;
+  }
+
+  .pdf-sidebar a {
+    font-size: 9pt;
   }
 
   .chapter-opener h1 {

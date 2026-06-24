@@ -181,7 +181,22 @@ function createHeadingAnchor(text: string): { id: string; aliases: string[] } {
     "cold-showers": ["coldshowers"],
     "discipline-over-comfort": ["discipline"],
     "macro-time-management": ["macroworkflow", "macro-workflow"],
+    "fluxo-geral-visualizar-planejar-fazer-e-revisar": [
+      "the-general-workflow",
+      "generalworkflow",
+      "general-workflow",
+    ],
+    "a-coisa-certa-a-fazer-qual-e-a-razao-por-tras-das-suas-acoes": [
+      "the-right-thing-to-do",
+    ],
+    "energia-mental-voce-sabe-como-gasta-la": ["mental-energy"],
+    "niilismo-mantras-para-reiniciar-a-mente": [
+      "nihilism",
+      "nihilism-mantras",
+    ],
     "the-general-workflow": ["generalworkflow", "general-workflow"],
+    "strategies-to-unwind-addictions": ["unwinding-addictions"],
+    "estrategias-para-desfazer-dependencias": ["unwinding-addictions"],
     "pomodoro-focus-times-intentional-pauses-to-prevent-burnouts": [
       "the-pomodoro-technique",
     ],

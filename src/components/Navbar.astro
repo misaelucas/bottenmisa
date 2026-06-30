@@ -15,6 +15,7 @@ const nextLanguage = getAlternateLanguage(currentLanguage);
 const nextLanguageConfig = languages[nextLanguage];
 const nextLanguageFlag = nextLanguage === "en" ? usaFlag : brFlag;
 const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
+const booksNavLabel = currentLanguage === "pt" ? "livros" : "books";
 ---
 
 <nav class="px-6 py-4 top-0 w-full navbar" id="navbar">
@@ -36,9 +37,14 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
       }
     </li>
     <li class="nav-center">
-      <a href={languages[currentLanguage].productivityPath} class="productivity-nav-link">
-        productivity
-      </a>
+      <div class="nav-center-links">
+        <a href={languages[currentLanguage].productivityPath} class="nav-text-link">
+          productivity
+        </a>
+        <a href={languages[currentLanguage].booksPath} class="nav-text-link">
+          {booksNavLabel}
+        </a>
+      </div>
     </li>
     <li class="flex items-center gap-2">
       <a
@@ -106,7 +112,13 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
     list-style: none;
   }
 
-  .productivity-nav-link {
+  .nav-center-links {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .nav-text-link {
     display: inline-flex;
     align-items: center;
     min-height: 34px;
@@ -125,7 +137,7 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
       transform 180ms ease;
   }
 
-  .productivity-nav-link:hover {
+  .nav-text-link:hover {
     color: var(--text-100);
     text-shadow:
       0 0 12px rgb(201 166 255 / 0.72),
@@ -191,10 +203,25 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
       display: none;
     }
 
-    .productivity-nav-link {
+    .nav-center-links {
+      gap: 0.35rem;
+    }
+
+    .nav-text-link {
       min-height: 32px;
       font-size: 0.76rem;
       padding-inline: 0.35rem;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .nav-center-links {
+      gap: 0.15rem;
+    }
+
+    .nav-text-link {
+      font-size: 0.68rem;
+      padding-inline: 0.25rem;
     }
   }
 </style>

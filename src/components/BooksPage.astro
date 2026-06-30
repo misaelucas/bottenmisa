@@ -1,0 +1,227 @@
+---
+import Navbar from "@components/Navbar.astro";
+import Layout from "@layouts/Layout.astro";
+import { booksCopy, languages, type Language } from "../i18n";
+
+interface Props {
+  language?: Language;
+}
+
+const { language = "pt" } = Astro.props;
+const copy = booksCopy[language];
+
+const books = [
+  {
+    year: "1614",
+    title: {
+      pt: "Fama Fraternitatis",
+      en: "Fama Fraternitatis",
+    },
+    status: "read",
+  },
+  {
+    year: "1615",
+    title: {
+      pt: "Confessio Fraternitatis",
+      en: "Confessio Fraternitatis",
+    },
+    status: "read",
+  },
+  {
+    year: "1616",
+    title: {
+      pt: "O Casamento Alquímico de Christian Rosenkreutz",
+      en: "The Chymical Wedding of Christian Rosenkreutz",
+    },
+    status: "current",
+  },
+] as const;
+---
+
+<Layout
+  title={copy.title}
+  description={copy.description}
+  lang={languages[language].locale}
+  themeColor="#101a2b"
+  class="overflow-x-hidden"
+  style="--un-skew: 5deg; --un-rotate: 9deg; --un-scale: 1.2"
+  alternateLanguages={[
+    { lang: languages.pt.locale, href: new URL(languages.pt.booksPath, Astro.site).toString() },
+    { lang: languages.en.locale, href: new URL(languages.en.booksPath, Astro.site).toString() },
+  ]}
+>
+  <Navbar />
+
+  <main class="books-page flex justify-center w-full mt-xl lg:mt-[3%] px-4 md:px-6">
+    <div class="books-shell w-full max-w-5xl">
+      <header class="books-header">
+        <p>{copy.eyebrow}</p>
+        <h1>{copy.title}</h1>
+      </header>
+
+      <ol class="books-list" aria-label={copy.description}>
+        {
+          books.map((book) => (
+            <li class:list={["book-entry", book.status === "current" && "is-current"]}>
+              <div class="book-year">
+                <span>{book.year}</span>
+                <small>{copy.publishedLabel}</small>
+              </div>
+              <div class="book-copy">
+                <h2>{book.title[language]}</h2>
+                <p>{book.status === "current" ? copy.currentLabel : copy.readLabel}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .books-page {
+    font-family: "Jetbrains Mono", ui-monospace, monospace;
+  }
+
+  .books-shell {
+    max-width: 62rem;
+    padding-inline: 1rem;
+  }
+
+  .books-header {
+    display: grid;
+    gap: 0.9rem;
+    margin-bottom: 3.2rem;
+  }
+
+  .books-header p {
+    margin: 0;
+    color: var(--text-400);
+    font-size: 0.86rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: lowercase;
+  }
+
+  .books-header h1 {
+    margin: 0;
+    color: var(--text-900);
+    font-family: var(--font-family-article-title);
+    font-size: clamp(2.7rem, 6.5vw, 5.5rem);
+    font-weight: 600;
+    line-height: 0.9;
+    letter-spacing: 0;
+  }
+
+  .books-list {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid rgb(148 163 184 / 0.16);
+  }
+
+  .book-entry {
+    display: grid;
+    grid-template-columns: 6.25rem minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(1.1rem, 3vw, 2.4rem);
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgb(148 163 184 / 0.16);
+  }
+
+  .book-year {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    color: var(--text-400);
+  }
+
+  .book-year span {
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .book-year small {
+    color: var(--text-200);
+    font-size: 0.68rem;
+    line-height: 1;
+    text-transform: lowercase;
+  }
+
+  .book-copy {
+    min-width: 0;
+  }
+
+  .book-copy h2 {
+    max-width: 100%;
+    margin: 0;
+    color: var(--text-800);
+    font-size: clamp(1.2rem, 1.8vw, 1.65rem);
+    font-weight: 700;
+    line-height: 1.14;
+    letter-spacing: 0;
+  }
+
+  .book-copy p {
+    margin: 0.7rem 0 0;
+    color: var(--text-300);
+    font-size: 0.78rem;
+    line-height: 1.35;
+    text-transform: lowercase;
+  }
+
+  .book-entry.is-current .book-year span,
+  .book-entry.is-current .book-copy p {
+    color: var(--brand-500);
+  }
+
+  .book-entry.is-current .book-copy h2 {
+    color: var(--text-900);
+    text-decoration: underline;
+    text-decoration-color: rgb(var(--brand-rgb-900) / 0.45);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.28em;
+  }
+
+  @media (max-width: 860px) {
+    .books-shell {
+      padding-inline: 0.5rem;
+    }
+
+    .books-header {
+      margin-bottom: 2.5rem;
+    }
+
+    .book-entry {
+      grid-template-columns: 1fr;
+      gap: 0.65rem;
+      padding-block: 1.2rem;
+    }
+
+    .book-year {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 0.45rem;
+    }
+
+    .book-copy h2 {
+      max-width: 34rem;
+      font-size: clamp(1.35rem, 4.8vw, 1.8rem);
+      line-height: 1.16;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .books-shell {
+      padding-inline: 0.25rem;
+    }
+
+    .book-copy h2 {
+      font-size: 1.35rem;
+    }
+  }
+</style>

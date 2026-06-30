@@ -4,6 +4,7 @@ export const languages = {
     locale: "pt-BR",
     homePath: "/",
     shortsPath: "/shorts/",
+    booksPath: "/books/",
     productivityPath: "/pdf/productivity/",
   },
   en: {
@@ -11,6 +12,7 @@ export const languages = {
     locale: "en",
     homePath: "/en/",
     shortsPath: "/en/shorts/",
+    booksPath: "/en/books/",
     productivityPath: "/en/pdf/productivity/",
   },
 } as const;
@@ -77,6 +79,25 @@ export const shortsCopy = {
   },
 } as const;
 
+export const booksCopy = {
+  pt: {
+    title: "Livros",
+    description: "Leituras a partir de 28 de março.",
+    eyebrow: "leituras a partir de 28 de março",
+    publishedLabel: "publicado",
+    readLabel: "lido",
+    currentLabel: "lendo atualmente",
+  },
+  en: {
+    title: "Books",
+    description: "Readings from March 28 onward.",
+    eyebrow: "readings from March 28 onward",
+    publishedLabel: "published",
+    readLabel: "read",
+    currentLabel: "current reading",
+  },
+} as const;
+
 export function getLanguageFromPath(pathname: string): Language {
   return pathname === "/en" || pathname.startsWith("/en/")
     ? "en"
@@ -100,6 +121,10 @@ export function getAlternatePath(pathname: string): string {
     return languages.pt.shortsPath;
   }
 
+  if (pathname === "/en/books" || pathname === "/en/books/") {
+    return languages.pt.booksPath;
+  }
+
   if (
     pathname === "/en/pdf/productivity" ||
     pathname === "/en/pdf/productivity/"
@@ -109,6 +134,10 @@ export function getAlternatePath(pathname: string): string {
 
   if (pathname === "/shorts" || pathname === "/shorts/") {
     return languages.en.shortsPath;
+  }
+
+  if (pathname === "/books" || pathname === "/books/") {
+    return languages.en.booksPath;
   }
 
   if (pathname === "/pdf/productivity" || pathname === "/pdf/productivity/") {

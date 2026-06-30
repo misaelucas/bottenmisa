@@ -34,9 +34,9 @@ export const homeCopy = {
       role: "Fullstack Developer",
       intro: "Humanos foram feitos para criar, não para consumir.",
       work: [
-        "Eu crio software para ajudar a mim mesmo e outras pessoas, e também gosto de escrever. Meus principais projetos públicos provavelmente estão no GitHub. Esta é minha página pessoal e, por enquanto, ela ainda está mal escrita.",
+        "Eu crio software para ajudar a mim mesmo e outras pessoas, e também gosto de escrever. Meus projetos públicos estão no GitHub. Esta é minha página pessoal e, por enquanto, ela ainda está mal escrita.",
       ],
-      interests: "agorism • ethical hacking • muay thai • weight lifting",
+      interests: "agorism • hacktivism • muay thai • weight lifting",
       location: "Brasil.",
     },
   },
@@ -52,9 +52,9 @@ export const homeCopy = {
       role: "Fullstack Developer",
       intro: "Humans were made to create and not to consume.",
       work: [
-        "I do create software to help myself and others and am a kinda of writer myself. My main public projects you probably can find them at my GitHub. This is my personal page and it's poorly written for now.",
+        "I do create software to help myself and others and am a kinda of writer myself. My public projects you can find them at my GitHub. This is my personal page and it's poorly written for now.",
       ],
-      interests: "agorism • ethical hacking • muay thai • weight lifting",
+      interests: "agorism • hacktivism • muay thai • weight lifting",
       location: "Brazil.",
     },
   },

@@ -35,7 +35,38 @@ const books = [
     },
     status: "current",
   },
+  {
+    year: "2021",
+    title: {
+      pt: "Arquitetura de Software: As Partes Difíceis",
+      en: "Software Architecture: The Hard Parts",
+    },
+    author: "Neal Ford, Mark Richards, Pramod Sadalage e Zhamak Dehghani",
+    status: "current",
+  },
+  {
+    year: "2001",
+    title: {
+      pt: "Democracia: O Deus Que Falhou",
+      en: "Democracy: The God That Failed",
+    },
+    author: "Hans-Hermann Hoppe",
+    status: "read",
+    readAt: "30/06",
+  },
 ] as const;
+
+const getBookStatus = (book: (typeof books)[number]) =>
+  [
+    "author" in book ? book.author : undefined,
+    book.status === "current"
+      ? copy.currentLabel
+      : "readAt" in book
+        ? `${copy.readAtLabel} ${book.readAt}`
+        : copy.readLabel,
+  ]
+    .filter(Boolean)
+    .join(" - ");
 ---
 
 <Layout
@@ -69,7 +100,7 @@ const books = [
               </div>
               <div class="book-copy">
                 <h2>{book.title[language]}</h2>
-                <p>{book.status === "current" ? copy.currentLabel : copy.readLabel}</p>
+                <p>{getBookStatus(book)}</p>
               </div>
             </li>
           ))

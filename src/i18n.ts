@@ -86,6 +86,7 @@ export const booksCopy = {
     eyebrow: "leituras a partir de 28 de março",
     publishedLabel: "publicado",
     readLabel: "lido",
+    readAtLabel: "lido em",
     currentLabel: "lendo atualmente",
   },
   en: {
@@ -94,6 +95,7 @@ export const booksCopy = {
     eyebrow: "readings from March 28 onward",
     publishedLabel: "published",
     readLabel: "read",
+    readAtLabel: "read on",
     currentLabel: "current reading",
   },
 } as const;

@@ -19,7 +19,8 @@
     font-family: var(--font-family-article-title);
   }
 
-  prose-code:before:hidden prose-code:after:hidden {
+  .prose :where(code):not(:where(.not-prose, .not-prose *))::before,
+  .prose :where(code):not(:where(.not-prose, .not-prose *))::after {
     content: none;
   }
 

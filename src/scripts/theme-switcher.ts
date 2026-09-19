@@ -10,7 +10,7 @@ function isMode(input: string): input is Mode {
 }
 
 export function getColorMode(): Mode {
-	const preferenceRaw = document.cookie.match(/theme=(.+);?/)?.[1];
+	const preferenceRaw = document.cookie.match(/(?:^|;\s*)theme=([^;]*)/)?.[1];
 	const isValid = preferenceRaw && isMode(preferenceRaw);
 
 	const preference = isValid ? preferenceRaw : DEFAULT_THEME_MODE;

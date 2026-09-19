@@ -1,0 +1,271 @@
+---
+import { Code } from "astro:components";
+import Navbar from "@components/Navbar.astro";
+import Layout from "@layouts/Layout.astro";
+import { languages, type Language } from "../i18n";
+
+interface Props {
+  language?: Language;
+}
+
+const { language = "pt" } = Astro.props;
+const copy = language === "pt"
+  ? { eyebrow: "projetos / desenvolvimento de software", source: "código", visit: "visitar site", details: "detalhes de implementação", placeholder: "capturas da aplicação em breve", artwork: "arte do projeto" }
+  : { eyebrow: "projects / software development", source: "source", visit: "visit site", details: "implementation details", placeholder: "application screenshots coming soon", artwork: "project artwork" };
+
+// Fixed colors keep each technology consistent across projects and languages.
+const stackColors: Record<string, [string, string]> = {
+  React: ["103 232 249", "14 116 144"],
+  "Node.js": ["163 230 53", "63 98 18"],
+  Express: ["203 213 225", "71 85 105"],
+  MongoDB: ["74 222 128", "21 128 61"],
+  "Socket.IO": ["216 180 254", "126 34 206"],
+  Docker: ["56 189 248", "3 105 161"],
+  Vitest: ["250 204 21", "133 77 14"],
+  Playwright: ["251 146 60", "194 65 12"],
+  TypeScript: ["96 165 250", "29 78 216"],
+  "CSV / PDF": ["253 164 175", "190 18 60"],
+  "Tailwind CSS": ["94 234 212", "15 118 110"],
+  Cypress: ["110 231 183", "4 120 87"],
+  Supertest: ["240 171 252", "162 28 175"],
+};
+
+// Excerpt from RHID-Crawler/src/index.ts, exportEmployeeFromAdmission.
+const rhidCode = `const request: ReportRequest = {
+  employeeIds: [id],
+  start: interval.start,
+  end: interval.end,
+  format: "PDF",
+  report: "extrato_banco_horas",
+  saldoBanco: "TODOS"
+};
+
+const { guid } = await client.requestReport(request);
+await client.waitForReport(guid);`;
+
+const projects = [
+  {
+    name: "Anno Domini",
+    accent: "167 139 250",
+    category: { pt: "ERP · gestão clínica", en: "ERP · clinic management" },
+    description: {
+      pt: "Um ERP para acompanhar o paciente da recepção ao atendimento e manter o financeiro ligado ao que aconteceu na clínica. Agendamento, chegada, fila médica, prontuário, prescrições e pagamentos fazem parte do mesmo fluxo, com áreas próprias para recepção, médicos e administração.",
+      en: "An ERP that follows the patient from reception through consultation and keeps financial records tied to what happened at the clinic. Scheduling, check-in, doctor queues, patient charts, prescriptions and payments share one workflow, with separate workspaces for receptionists, doctors and administrators.",
+    },
+    details: [
+      {
+        pt: "A agenda considera disponibilidade, duração do procedimento, intervalos e fuso da clínica. O servidor revalida conflitos e impede que uma nova tentativa de check-in duplique o atendimento ou a cobrança.",
+        en: "Scheduling accounts for provider availability, procedure duration, breaks and the clinic’s timezone. The server rechecks conflicts and prevents retried check-ins from duplicating a visit or charge.",
+      },
+      {
+        pt: "Pagamentos divididos entre dinheiro, Pix e cartão são validados em centavos. Correções e cancelamentos preservam o histórico; permissões e auditoria são aplicadas no backend.",
+        en: "Split payments across cash, Pix and cards are validated in integer cents. Corrections and cancellations preserve history; permissions and auditing are enforced by the backend.",
+      },
+      {
+        pt: "As adições mais recentes incluem mensagens internas ligadas a pacientes e agendamentos, com notificações via Socket.IO, e integração opcional com Metabase sobre visões de leitura do MongoDB. A aplicação pode ser hospedada na infraestrutura da clínica.",
+        en: "Recent additions include internal conversations linked to patients and appointments, with Socket.IO notifications, and optional Metabase integration over read-only MongoDB views. The application supports hosting on the clinic’s own infrastructure.",
+      },
+    ],
+    stack: ["React", "Node.js", "Express", "MongoDB", "Socket.IO", "Docker", "Vitest", "Playwright"],
+  },
+  {
+    name: "RHID Crawler",
+    accent: "103 232 249",
+    category: { pt: "automação · ponto e banco de horas", en: "automation · attendance and hour-bank records" },
+    description: {
+      pt: "Surgiu de um problema concreto: recuperar históricos de ponto que a interface do RHID dificultava consultar. A investigação das chamadas de rede, com acesso autorizado, identificou dados antigos disponíveis no backend e diferenças entre os relatórios nativos e a tela de apuração.",
+      en: "Built to recover attendance history that was difficult to retrieve through RHID’s interface. Investigating network calls with authorized access revealed older records available in the backend and discrepancies between native reports and the daily attendance screen.",
+    },
+    details: [
+      {
+        pt: "Alguns PDFs nativos retornavam valores zerados mesmo quando a manutenção de ponto mostrava faltas e horas extras. O crawler passou a usar os registros diários dessa tela como fonte para CSVs e PDFs gerados localmente.",
+        en: "Some native PDFs returned zero values even when daily records showed absences and overtime. The crawler uses those daily records as the source for CSVs and locally generated PDFs.",
+      },
+      {
+        pt: "A exportação percorre o histórico de cada funcionário desde a admissão. Consultas são divididas em intervalos configuráveis para lidar com falhas em períodos longos; o CSV mantém o saldo original do RHID separado do saldo calculado.",
+        en: "Exports cover each employee’s history from their admission date. Queries use configurable date ranges to handle failures on long periods; the CSV keeps RHID’s original balance separate from the calculated daily balance.",
+      },
+    ],
+    stack: ["TypeScript", "Node.js", "Playwright", "CSV / PDF"],
+  },
+  {
+    name: "ilovediana.org",
+    image: "/images/portfolio/diana-mark.png",
+    accent: "253 164 175",
+    category: { pt: "aplicação web · treino e nutrição", en: "web application · training and nutrition" },
+    description: {
+      pt: "Um arquivo para documentar treino, nutrição, fotos de progresso e notas ao longo do tempo. Protocolos públicos podem ser pesquisados e compartilhados; registros privados ficam restritos ao dono. Cada protocolo tem sua própria página e pode ser impresso ou salvo em PDF.",
+      en: "An archive for documenting training, nutrition, progress photos and notes over time. Public protocols can be searched and shared; private records remain accessible only to their owner. Each protocol has its own page and can be printed or saved as a PDF.",
+    },
+    details: [
+      {
+        pt: "A API verifica propriedade e visibilidade antes de ler ou alterar registros. Uploads validam o conteúdo real dos arquivos, além da extensão. Testes de segurança cobrem acesso indevido a protocolos privados, falsificação de autoria, XSS e validação de imagens.",
+        en: "The API checks ownership and visibility before reading or changing records. Uploads validate file contents as well as extensions. Security tests cover unauthorized access to private protocols, forged ownership, XSS and image validation.",
+      },
+    ],
+    stack: ["React", "Tailwind CSS", "Node.js", "Express", "MongoDB", "Cypress", "Supertest"],
+    repository: "https://github.com/misaelucas/ilovediana",
+    site: "https://ilovediana.org",
+  },
+];
+---
+
+<Layout
+  title="Portfolio · misa"
+  description="Anno Domini, RHID Crawler, ilovediana.org — portfolio de Misael Lucas."
+  lang={languages[language].locale}
+  style="--un-skew: 5deg; --un-rotate: 9deg; --un-scale: 1.2"
+  alternateLanguages={Object.values(languages).map(({ locale, portfolioPath }) => ({
+    lang: locale, href: new URL(portfolioPath, Astro.site).toString(),
+  }))}
+>
+  <Navbar />
+  <main class="portfolio-page">
+    <header>
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1>Portfolio</h1>
+    </header>
+    <ol class="projects">
+      {projects.map((project, index) => (
+        <li class="project" style={`--project-accent: ${project.accent}`}>
+          <figure class:list={["project-visual", index === 2 && "project-artwork"]}>
+            {index === 0 ? (
+              <div class="screenshot-placeholder" aria-label={copy.placeholder}>
+                <span class="placeholder-cross" aria-hidden="true">+</span>
+                <span class="placeholder-name">anno_domini</span>
+                <span class="placeholder-note">{copy.placeholder}<span class="cursor" aria-hidden="true">_</span></span>
+              </div>
+            ) : index === 1 ? (
+              <div class="code-preview">
+                <Code code={rhidCode} lang="ts" theme="github-dark" />
+              </div>
+            ) : (
+              <img class="project-image" src={project.image} alt="ilovediana.org" width="500" height="500" loading="lazy" />
+            )}
+            <figcaption><span class="project-number">{String(index).padStart(2, "0")}</span> {index === 0 ? "Anno Domini / ERP" : index === 1 ? "src/index.ts · exportEmployeeFromAdmission" : copy.artwork}</figcaption>
+          </figure>
+          <article aria-labelledby={`project-${index}`}>
+            <p class="eyebrow">{project.category[language]}</p>
+            <h2 id={`project-${index}`}>{project.name}</h2>
+            <ul class="stack" aria-label={language === "pt" ? "Tecnologias" : "Technologies"}>
+              {project.stack.map((technology) => (
+                <li style={`--stack-rgb: ${stackColors[technology][0]}; --stack-light-rgb: ${stackColors[technology][1]}`}>
+                  {technology}
+                </li>
+              ))}
+            </ul>
+            <p class="description">{project.description[language]}</p>
+            <details class="project-details">
+              <summary>{copy.details}</summary>
+              {project.details.map((detail) => <p class="detail">{detail[language]}</p>)}
+            </details>
+            {(project.repository || project.site) && <div class="project-links">
+              {project.repository && <a href={project.repository} aria-label={`${project.name} — ${copy.source}`}>{copy.source} <span aria-hidden="true">↗</span></a>}
+              {project.site && <a href={project.site}>{copy.visit} <span aria-hidden="true">↗</span></a>}
+            </div>}
+          </article>
+        </li>
+      ))}
+    </ol>
+  </main>
+</Layout>
+
+<script>
+  import { annotate } from "rough-notation";
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  document.querySelectorAll<HTMLElement>(".portfolio-page h2, .stack li").forEach((label) => {
+    let annotation: ReturnType<typeof annotate> | undefined;
+    label.addEventListener("mouseenter", () => {
+      annotation?.remove();
+      annotation = annotate(label, {
+        type: "underline",
+        color: getComputedStyle(label).color,
+        animate: !reducedMotion.matches,
+        animationDuration: 450,
+        padding: 3,
+        strokeWidth: 1.5,
+      });
+      annotation.show();
+    });
+    label.addEventListener("mouseleave", () => {
+      annotation?.remove();
+      annotation = undefined;
+    });
+  });
+</script>
+
+<style>
+  .portfolio-page { width: min(100%, 86rem); padding: 0 2rem; margin: clamp(2.5rem, 6vw, 5rem) auto 5rem; font-family: "Jetbrains Mono", ui-monospace, monospace; }
+  header { margin-bottom: 3.2rem; }
+  .eyebrow { margin: 0; color: var(--text-400); font-size: 0.78rem; line-height: 1.5; }
+  h1, h2 { color: var(--text-900); font-family: "Jetbrains Mono", ui-monospace, monospace; font-weight: 500; }
+  h1 { margin: 0.9rem 0 1.25rem; font-size: clamp(2rem, 5.5vw, 3.6rem); line-height: 1.15; letter-spacing: -0.055em; }
+  .projects { margin: 0; padding: 0; list-style: none; border-top: 1px solid rgb(148 163 184 / 0.2); }
+  .project { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: start; gap: clamp(2rem, 4vw, 4rem); padding: 3rem 0; border-bottom: 1px solid rgb(148 163 184 / 0.2); }
+  .project-number { padding-top: 0.15rem; color: var(--text-400); font-size: 0.85rem; }
+  .project-number::before { content: "["; }
+  .project-number::after { content: "]"; }
+  .project-details { margin: 1.2rem 0; }
+  summary { width: fit-content; cursor: pointer; color: var(--text-500); font-size: 0.78rem; padding: 0.4rem 0; }
+  summary:hover { color: var(--text-900); }
+  summary:focus-visible { outline: 2px solid rgb(var(--project-accent)); outline-offset: 5px; }
+  .project-visual { margin: 0; min-width: 0; }
+  .project { position: relative; isolation: isolate; }
+  .project::before { content: ""; position: absolute; inset: 0 -1rem; z-index: -1; pointer-events: none; opacity: 0; background: linear-gradient(100deg, rgb(var(--project-accent) / 0.055), transparent 75%); transition: opacity 220ms ease; }
+  .project:is(:hover, :focus-within)::before { opacity: 1; }
+  .project:is(:hover, :focus-within) .project-number { color: var(--text-900); text-shadow: 2px 0 rgb(var(--project-accent) / 0.7); }
+  .project:is(:hover, :focus-within) h2 { animation: signal-lock 400ms steps(2, end); }
+  @keyframes signal-lock {
+    0%, 70% { text-shadow: -2px 0 #67e8f9, 2px 0 #f0abfc; transform: translateX(1px); }
+    35% { text-shadow: 2px 0 #67e8f9, -2px 0 #f0abfc; transform: translateX(-1px); }
+    100% { transform: none; }
+  }
+  .screenshot-placeholder { min-height: 16rem; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 0.75rem; padding: 1rem 2rem; color: var(--text-300); }
+  .placeholder-cross { font-size: 2.5rem; font-weight: 400; color: var(--text-200); transition: transform 300ms ease; }
+  .project:hover .placeholder-cross { transform: rotate(90deg); }
+  .placeholder-name { font-size: 1.2rem; color: var(--text-500); }
+  .placeholder-note { font-size: 0.7rem; line-height: 1.8; }
+  .project:hover .cursor { animation: cursor-blink 900ms steps(1) infinite; }
+  @keyframes cursor-blink { 50% { opacity: 0; } }
+  .code-preview { min-width: 0; padding: 1rem 0; }
+  .code-preview :global(pre.astro-code) { background: transparent !important; outline: none; margin: 0; padding: 0; font-size: clamp(0.65rem, 1vw, 0.8rem); line-height: 1.9; overflow-x: auto; }
+  .code-preview :global(code) { display: block !important; white-space: pre; }
+  .code-preview :global(.line::before) { content: none; }
+  :global(html:not(.dark)) .code-preview { background: #0c1019; padding: 1rem; }
+  .project-image { display: block; width: min(78%, 19rem); height: auto; margin: 0 auto; filter: saturate(0.65); transition: transform 300ms ease, filter 300ms ease; }
+  .project:hover .project-image { transform: rotate(-3deg); filter: saturate(1); }
+  figcaption { display: flex; gap: 0.8rem; align-items: baseline; margin-top: 1.2rem; font-size: 0.65rem; color: var(--text-300); }
+  @media (max-width: 900px) { .project { grid-template-columns: 1fr; } .project-visual { max-width: 38rem; width: 100%; } }
+  @media (prefers-reduced-motion: reduce) {
+    .project:is(:hover, :focus-within) h2, .project:hover .cursor { animation: none; }
+    .project::before, .placeholder-cross, .project-image { transition: none; }
+    .project:hover .project-image, .project:hover .placeholder-cross { transform: none; }
+  }
+  :global(html.dark) h2 { text-shadow: 0 0 22px rgb(185 140 255 / 0.14); }
+  h2 { width: fit-content; max-width: 100%; margin: 0.55rem 0 1.2rem; font-size: clamp(1.4rem, 3.5vw, 2rem); line-height: 1.3; letter-spacing: -0.045em; }
+  .description, .detail { max-width: 70ch; font-size: 0.88rem; line-height: 1.85; }
+  .description { margin: 0; color: var(--text-700); }
+  .detail { margin: 0.8rem 0 0; color: var(--text-300); }
+  .stack { display: flex; flex-wrap: wrap; gap: 0.6rem 1.1rem; list-style: none; padding: 0; margin: -0.25rem 0 1.5rem; font-size: 0.78rem; line-height: 1.7; font-weight: 500; }
+  .stack li { color: rgb(var(--stack-light-rgb)); transition: text-shadow 220ms ease; }
+  :global(html.dark) .stack li {
+    color: rgb(var(--stack-rgb));
+    text-shadow: 0 0 8px rgb(var(--stack-rgb) / 0.45), 0 0 18px rgb(var(--stack-rgb) / 0.2);
+  }
+  :global(html.dark) .stack li:hover {
+    text-shadow: 0 0 6px rgb(var(--stack-rgb) / 0.8), 0 0 16px rgb(var(--stack-rgb) / 0.65), 0 0 30px rgb(var(--stack-rgb) / 0.4);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stack li { transition: none; }
+  }
+  .project-links { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+  .project-links a { color: var(--brand-500); font-size: 0.8rem; text-decoration: underline; text-underline-offset: 0.3em; padding-block: 0.5rem; }
+  .project-links a:hover { color: var(--text-900); }
+  .project-links a:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 5px; }
+  @media (max-width: 600px) {
+    .portfolio-page { padding-inline: 1.25rem; }
+    header { margin-bottom: 2rem; }
+    .project { grid-template-columns: 1fr; gap: 0.75rem; padding-block: 2rem; }
+  }
+</style>

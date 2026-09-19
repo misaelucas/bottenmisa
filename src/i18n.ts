@@ -5,6 +5,7 @@ export const languages = {
     homePath: "/",
     shortsPath: "/shorts/",
     booksPath: "/books/",
+    portfolioPath: "/portfolio/",
     productivityPath: "/pdf/productivity/",
   },
   en: {
@@ -13,6 +14,7 @@ export const languages = {
     homePath: "/en/",
     shortsPath: "/en/shorts/",
     booksPath: "/en/books/",
+    portfolioPath: "/en/portfolio/",
     productivityPath: "/en/pdf/productivity/",
   },
 } as const;
@@ -115,6 +117,14 @@ export function getAlternateLanguage(language: Language): Language {
 }
 
 export function getAlternatePath(pathname: string): string {
+  if (pathname === "/portfolio" || pathname === "/portfolio/") {
+    return languages.en.portfolioPath;
+  }
+
+  if (pathname === "/en/portfolio" || pathname === "/en/portfolio/") {
+    return languages.pt.portfolioPath;
+  }
+
   if (pathname === "/en" || pathname === "/en/") {
     return languages.pt.homePath;
   }

@@ -38,7 +38,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
   }
 
   function getColorMode() {
-    const preferenceRaw = document.cookie.match(/theme=(.+);?/)?.[1];
+    const preferenceRaw = document.cookie.match(/(?:^|;\s*)theme=([^;]*)/)?.[1];
     const isValid = preferenceRaw && isMode(preferenceRaw);
 
     let preference = isValid ? preferenceRaw : DEFAULT_THEME_MODE;

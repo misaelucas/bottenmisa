@@ -38,6 +38,13 @@ const booksNavLabel = currentLanguage === "pt" ? "livros" : "books";
     </li>
     <li class="nav-center">
       <div class="nav-center-links">
+        <a
+          href={languages[currentLanguage].portfolioPath}
+          class="nav-text-link"
+          aria-current={Astro.url.pathname.replace(/\/$/, "") === languages[currentLanguage].portfolioPath.replace(/\/$/, "") ? "page" : undefined}
+        >
+          portfolio
+        </a>
         <a href={languages[currentLanguage].productivityPath} class="nav-text-link">
           productivity
         </a>
@@ -145,6 +152,16 @@ const booksNavLabel = currentLanguage === "pt" ? "livros" : "books";
     transform: translateY(-1px);
   }
 
+  .nav-text-link[aria-current="page"] {
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  .nav-text-link:focus-visible {
+    outline: 2px solid var(--brand-500);
+    outline-offset: 3px;
+  }
+
   .nav-control {
     min-width: 54px;
     min-height: 34px;
@@ -211,6 +228,24 @@ const booksNavLabel = currentLanguage === "pt" ? "livros" : "books";
       min-height: 32px;
       font-size: 0.76rem;
       padding-inline: 0.35rem;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .nav-row {
+      flex-wrap: wrap;
+      row-gap: 0.5rem;
+    }
+
+    .nav-center {
+      position: static;
+      transform: none;
+      order: 1;
+      width: 100%;
+    }
+
+    .nav-center-links {
+      justify-content: center;
     }
   }
 

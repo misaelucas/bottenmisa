@@ -69,7 +69,7 @@ const projects = [
     stack: ["React", "Node.js", "Express", "MongoDB", "Socket.IO", "Docker", "Vitest", "Playwright"],
   },
   {
-    name: "RHID Crawler",
+    name: "RHID Attendance Exporter",
     accent: "103 232 249",
     category: { pt: "automação · ponto e banco de horas", en: "automation · attendance and hour-bank records" },
     description: {
@@ -78,8 +78,8 @@ const projects = [
     },
     details: [
       {
-        pt: "Alguns PDFs nativos retornavam valores zerados mesmo quando a manutenção de ponto mostrava faltas e horas extras. O crawler passou a usar os registros diários dessa tela como fonte para CSVs e PDFs gerados localmente.",
-        en: "Some native PDFs returned zero values even when daily records showed absences and overtime. The crawler uses those daily records as the source for CSVs and locally generated PDFs.",
+        pt: "Alguns PDFs nativos retornavam valores zerados mesmo quando a manutenção de ponto mostrava faltas e horas extras. A ferramenta passou a usar os registros diários dessa tela como fonte para CSVs e PDFs gerados localmente.",
+        en: "Some native PDFs returned zero values even when daily records showed absences and overtime. The exporter uses those daily records as the source for CSVs and locally generated PDFs.",
       },
       {
         pt: "A exportação percorre o histórico de cada funcionário desde a admissão. Consultas são divididas em intervalos configuráveis para lidar com falhas em períodos longos; o CSV mantém o saldo original do RHID separado do saldo calculado.",
@@ -87,6 +87,7 @@ const projects = [
       },
     ],
     stack: ["TypeScript", "Node.js", "Playwright", "CSV / PDF"],
+    repository: "https://github.com/misaelucas/RHID-Crawler",
   },
   {
     name: "ilovediana.org",
@@ -112,7 +113,7 @@ const projects = [
 
 <Layout
   title="Portfolio · misa"
-  description="Anno Domini, RHID Crawler, ilovediana.org — portfolio de Misael Lucas."
+  description="Anno Domini, RHID Attendance Exporter, ilovediana.org — portfolio de Misael Lucas."
   lang={languages[language].locale}
   style="--un-skew: 5deg; --un-rotate: 9deg; --un-scale: 1.2"
   alternateLanguages={Object.values(languages).map(({ locale, portfolioPath }) => ({

@@ -34,12 +34,12 @@ export const homeCopy = {
     bio: {
       heading: "Hi, I'm Misa.",
       role: "Fullstack Developer",
-      intro: "Humanos foram feitos para criar, não para consumir.",
+      intro: "",
       work: [
-        "Eu crio software para ajudar a mim mesmo e outras pessoas, e também gosto de escrever. Meus projetos públicos estão no GitHub. Esta é minha página pessoal e, por enquanto, ela ainda está mal escrita.",
-      ],
-      interests: "agorism • hacktivism • muay thai • weight lifting",
-      location: "Brasil.",
+        "Tempo para ti e tempo para mim, e tempo ainda para uma centena de indecisões, e para uma centena de visões e revisões, antes de se tomar uma torrada e um chá.",
+      ], 
+      interests: "poesia • hacktivism • muay thai • levantamento de peso",
+      location: "In the wired.",
     },
   },
   en: {
@@ -52,12 +52,12 @@ export const homeCopy = {
     bio: {
       heading: "Hi, I'm Misa.",
       role: "Fullstack Developer",
-      intro: "Humans were made to create and not to consume.",
+      intro: "",
       work: [
-        "I do create software to help myself and others and am a kinda of writer myself. My public projects you can find them at my GitHub. This is my personal page and it's poorly written for now.",
+        "Time for you and time for me, and time yet for a hundred indecisions, and for a hundred visions and revisions, before the taking of a toast and tea.",
       ],
-      interests: "agorism • hacktivism • muay thai • weight lifting",
-      location: "Brazil.",
+      interests: "poetry • hacktivism • muay thai • weight lifting",
+      location: "In the wired.",
     },
   },
 } as const;

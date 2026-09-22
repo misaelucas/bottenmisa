@@ -16,10 +16,12 @@ const copy = language === "pt"
 // Fixed colors keep each technology consistent across projects and languages.
 const stackColors: Record<string, [string, string]> = {
   React: ["103 232 249", "14 116 144"],
+  JavaScript: ["253 224 71", "161 98 7"],
   "Node.js": ["163 230 53", "63 98 18"],
   Express: ["203 213 225", "71 85 105"],
   MongoDB: ["74 222 128", "21 128 61"],
   "Socket.IO": ["216 180 254", "126 34 206"],
+  Metabase: ["125 211 252", "3 105 161"],
   Docker: ["56 189 248", "3 105 161"],
   Vitest: ["250 204 21", "133 77 14"],
   Playwright: ["251 146 60", "194 65 12"],
@@ -49,41 +51,45 @@ const projects = [
     accent: "167 139 250",
     category: { pt: "ERP · gestão clínica", en: "ERP · clinic management" },
     description: {
-      pt: "Anno Domini é o principal ERP usado por três empresas no Brasil. Na operação clínica, acompanha o paciente da recepção ao atendimento e mantém o financeiro ligado ao que aconteceu na clínica. Agendamento, chegada, fila médica, prontuário, prescrições e pagamentos fazem parte do mesmo fluxo, com áreas próprias para recepção, médicos e administração.",
-      en: "Anno Domini is the main ERP used by three companies in Brazil. In the clinic, it follows each patient from reception through consultation and keeps financial records tied to what happened during their visit. Scheduling, check-in, doctor queues, patient charts, prescriptions and payments share one workflow, with separate workspaces for receptionists, doctors and administrators.",
+      pt: "Anno Domini é uma plataforma de operações empresariais usada por três empresas no Brasil. Na clínica médica, gerencia todo o fluxo do paciente, do agendamento e recepção à consulta e ao pagamento, conectando dados operacionais, clínicos e financeiros em um único sistema.",
+      en: "Anno Domini is a business operations platform used across three companies in Brazil. At the medical clinic, it manages the complete patient workflow from scheduling and reception through consultation and payment, connecting operational, clinical and financial data in a single system.",
     },
     details: [
       {
-        pt: "A agenda considera disponibilidade, duração do procedimento, intervalos e fuso da clínica. O servidor revalida conflitos e impede que uma nova tentativa de check-in duplique o atendimento ou a cobrança.",
-        en: "Scheduling accounts for provider availability, procedure duration, breaks and the clinic’s timezone. The server rechecks conflicts and prevents retried check-ins from duplicating a visit or charge.",
+        pt: "A plataforma inclui agendamento, check-in, filas médicas, prontuários, prescrições, pagamentos, operações financeiras e administração, com interfaces separadas por função para recepcionistas, médicos e administradores.",
+        en: "The platform includes scheduling, check-in, doctor queues, patient records, prescriptions, payments, financial operations and administration, with separate role-based interfaces for receptionists, doctors and administrators.",
       },
       {
-        pt: "Pagamentos divididos entre dinheiro, Pix e cartão são validados em centavos. Correções e cancelamentos preservam o histórico; permissões e auditoria são aplicadas no backend.",
-        en: "Split payments across cash, Pix and cards are validated in integer cents. Corrections and cancellations preserve history; permissions and auditing are enforced by the backend.",
+        pt: "O trabalho de engenharia inclui validação de conflitos de agenda no servidor, check-ins idempotentes que evitam atendimentos ou cobranças duplicadas, autorização baseada em funções, trilhas de auditoria e operações financeiras com pagamentos divididos entre dinheiro, Pix e cartões, preservando o histórico de correções.",
+        en: "Key engineering work includes server-side scheduling conflict validation, idempotent check-in flows that prevent duplicate visits or charges, role-based authorization, audit trails and financial operations supporting split payments across cash, Pix and cards while preserving a correction history.",
       },
       {
-        pt: "As adições mais recentes incluem mensagens internas ligadas a pacientes e agendamentos, com notificações via Socket.IO, e integração opcional com Metabase sobre visões de leitura do MongoDB. A aplicação pode ser hospedada na infraestrutura da clínica.",
-        en: "Recent additions include internal conversations linked to patients and appointments, with Socket.IO notifications, and optional Metabase integration over read-only MongoDB views. The application supports hosting on the clinic’s own infrastructure.",
+        pt: "A plataforma também oferece conversas internas ligadas a pacientes e agendamentos, com notificações em tempo real via Socket.IO, e análises opcionais no Metabase por meio de visões sanitizadas e somente leitura do MongoDB e embeds assinados. Pode ser hospedada na infraestrutura da própria clínica.",
+        en: "The platform also includes patient- and appointment-linked internal conversations with real-time Socket.IO notifications and optional Metabase analytics through sanitized read-only MongoDB views and signed embeds. It supports self-hosted deployment on the clinic’s own infrastructure.",
       },
     ],
-    stack: ["React", "Node.js", "Express", "MongoDB", "Socket.IO", "Docker", "Vitest", "Playwright"],
+    stack: ["React", "JavaScript", "Node.js", "MongoDB", "Socket.IO", "Metabase"],
   },
   {
-    name: "RHID Attendance Exporter",
+    name: "RHID Historical Attendance Exporter",
     accent: "103 232 249",
     category: { pt: "automação · ponto e banco de horas", en: "automation · attendance and hour-bank records" },
     description: {
-      pt: "A ferramenta recuperou mais de cinco anos de histórico de ponto e banco de horas dos funcionários de uma clínica, que a interface do RHID dificultava consultar. A investigação das chamadas de rede, com acesso autorizado, identificou dados antigos disponíveis no backend e diferenças entre os relatórios nativos e a tela de apuração.",
-      en: "The tool recovered more than five years of employee attendance and hour-bank history for a clinic, which was difficult to retrieve through RHID’s interface. Investigating network calls with authorized access revealed older records available in the backend and discrepancies between native reports and the daily attendance screen.",
+      pt: "O RHID Historical Attendance Exporter foi desenvolvido para recuperar e consolidar mais de cinco anos de histórico de ponto e banco de horas dos funcionários de uma clínica médica. Durante o projeto, investiguei as requisições de rede autenticadas do RHID para acessar registros históricos difíceis de obter pela interface padrão e identifiquei discrepâncias entre alguns relatórios nativos e os registros diários de ponto.",
+      en: "RHID Historical Attendance Exporter was developed to recover and consolidate more than five years of employee attendance and hour-bank history for a medical clinic. During the project, I investigated RHID’s authenticated network requests to access historical records that were difficult to retrieve through the standard interface, and identified discrepancies between some native reports and the underlying daily attendance records.",
     },
     details: [
       {
-        pt: "Alguns PDFs nativos retornavam valores zerados mesmo quando a manutenção de ponto mostrava faltas e horas extras. A ferramenta passou a usar os registros diários dessa tela como fonte para CSVs e PDFs gerados localmente.",
-        en: "Some native PDFs returned zero values even when daily records showed absences and overtime. The exporter uses those daily records as the source for CSVs and locally generated PDFs.",
+        pt: "O exportador usa os registros diários como fonte principal para arquivos CSV estruturados e relatórios PDF gerados localmente.",
+        en: "The exporter uses the daily records as the primary source for structured CSV and locally generated PDF reports.",
       },
       {
-        pt: "A exportação percorre o histórico de cada funcionário desde a admissão. Consultas são divididas em intervalos configuráveis para lidar com falhas em períodos longos; o CSV mantém o saldo original do RHID separado do saldo calculado.",
-        en: "Exports cover each employee’s history from their admission date. Queries use configurable date ranges to handle failures on long periods; the CSV keeps RHID’s original balance separate from the calculated daily balance.",
+        pt: "Ele processa o histórico de cada funcionário desde a data de admissão, divide requisições extensas em intervalos configuráveis para maior confiabilidade e preserva o saldo original informado pelo RHID junto a um saldo calculado a partir dos registros diários.",
+        en: "It processes each employee’s history from their admission date, splits large requests into configurable date ranges for reliability and preserves RHID’s original reported balance alongside a balance calculated from the underlying daily records.",
+      },
+      {
+        pt: "A autenticação e as requisições protegidas são automatizadas com Playwright usando acesso autorizado da clínica.",
+        en: "Authentication and protected requests are automated with Playwright using authorized clinic access.",
       },
     ],
     stack: ["TypeScript", "Node.js", "Playwright", "CSV / PDF"],
@@ -113,7 +119,7 @@ const projects = [
 
 <Layout
   title="Portfolio · misa"
-  description="Anno Domini, RHID Attendance Exporter, ilovediana.org — portfolio de Misael Lucas."
+  description="Anno Domini, RHID Historical Attendance Exporter and ilovediana.org."
   lang={languages[language].locale}
   style="--un-skew: 5deg; --un-rotate: 9deg; --un-scale: 1.2"
   alternateLanguages={Object.values(languages).map(({ locale, portfolioPath }) => ({

@@ -117,6 +117,14 @@ export function getAlternateLanguage(language: Language): Language {
 }
 
 export function getAlternatePath(pathname: string): string {
+  if (pathname === "/portfolio/anno-domini" || pathname === "/portfolio/anno-domini/") {
+    return "/en/portfolio/anno-domini/";
+  }
+
+  if (pathname === "/en/portfolio/anno-domini" || pathname === "/en/portfolio/anno-domini/") {
+    return "/portfolio/anno-domini/";
+  }
+
   if (pathname === "/portfolio" || pathname === "/portfolio/") {
     return languages.en.portfolioPath;
   }

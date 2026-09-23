@@ -1,0 +1,587 @@
+---
+import Navbar from "@components/Navbar.astro";
+import Layout from "@layouts/Layout.astro";
+import { languages, type Language } from "../i18n";
+
+interface Props {
+  language?: Language;
+}
+
+const { language = "pt" } = Astro.props;
+const isPt = language === "pt";
+const portfolioPath = languages[language].portfolioPath;
+const alternateCasePath = isPt ? "/en/portfolio/anno-domini/" : "/portfolio/anno-domini/";
+const imageBase = "/images/portfolio/anno-domini";
+
+const copy = isPt ? {
+  back: "voltar aos projetos",
+  title: "Anno Domini",
+  lead: "Software de operações médicas desenvolvido para o Centro Médico Hebrom.",
+  metadata: [
+    ["período", "2024–2026"],
+    ["papel", "desenvolvimento full-stack"],
+    ["stack", "React · Node.js · MongoDB"],
+    ["código", "sistema interno privado"],
+  ],
+  demo: "Capturas de um ambiente local com dados fictícios. Nenhum dado real de paciente ou da operação é exibido.",
+  heroScreen: ["Agenda", "Horários, disponibilidade e compromissos do dia."],
+  viewer: {
+    label: "Visualizador de capturas do Anno Domini",
+    close: "Fechar visualizador",
+    previous: "Captura anterior",
+    next: "Próxima captura",
+    zoomOut: "Diminuir zoom",
+    zoomIn: "Aumentar zoom",
+    resetZoom: "Restaurar tamanho",
+  },
+  aboutTitle: "Sobre",
+  about: [
+    "O Anno Domini centraliza o trabalho diário de uma clínica médica. Recepção, agendamentos, consultas, procedimentos, documentos e registros financeiros fazem parte do mesmo fluxo e precisam compartilhar o contexto do paciente.",
+    "A aplicação é usada na operação real do Centro Médico Hebrom e faz parte do principal ERP utilizado por três empresas no Brasil. O código permanece privado porque contém regras internas e fluxos relacionados a informações de saúde.",
+  ],
+  areas: ["Agendamentos", "Pacientes", "Prontuários", "Procedimentos", "Financeiro", "Relatórios", "Usuários e permissões", "Documentos e PDFs"],
+  screenSections: [
+    {
+      title: "Recepção",
+      body: "A tela de recepção reúne a fila ativa, a origem do atendimento, o tempo de espera, o estado da visita e as ações usadas pela equipe ao longo do dia.",
+      images: [["anno-domini-reception.webp", "Recepção", "Fila de atendimento e ações operacionais."]],
+    },
+    {
+      title: "Prontuários",
+      body: "A área médica separa pacientes aguardando recepção da fila de consultas em andamento. O resumo do paciente reúne alertas e o histórico de consultas, prescrições, exames, documentos e emendas.",
+      images: [
+        ["anno-domini-doctor-queue.webp", "Área médica", "Atendimento atual e fila organizada pela chegada."],
+        ["anno-domini-patient-chart.webp", "Resumo do paciente", "Histórico clínico e documentos relacionados."],
+      ],
+    },
+    {
+      title: "Financeiro e relatórios",
+      body: "Cobranças ficam ligadas aos atendimentos e podem registrar pagamentos em dinheiro, Pix e cartão. As telas financeiras preservam correções e cancelamentos; os relatórios organizam receitas, despesas e movimento de caixa por período.",
+      images: [
+        ["anno-domini-finance.webp", "Financeiro", "Movimentações, pagamentos e histórico de correções."],
+        ["anno-domini-reports.webp", "Relatórios", "Receitas, despesas e movimento de caixa por período."],
+      ],
+    },
+  ],
+  engineeringTitle: "Engenharia",
+  engineering: [
+    ["Prontuários", "Registros clínicos finalizados não são tratados como formulários comuns. A aplicação preserva o snapshot finalizado, registra emendas com motivo e autor e rejeita gravações feitas a partir de uma versão antiga."],
+    ["Permissões", "As permissões são verificadas na API. Administradores não recebem acesso clínico por padrão; médicos não recebem operações financeiras; a recepção pode trabalhar com pacientes, visitas, agendamentos e cobranças sem editar conteúdo clínico."],
+    ["Agendamentos e atendimentos", "Conflitos de profissional e sala são validados no servidor. Chaves de idempotência e índices únicos evitam atendimentos ou cobranças duplicadas quando uma operação é repetida, e versões esperadas protegem atualizações concorrentes."],
+    ["Documentos e auditoria", "Prescrições e outros documentos clínicos têm rascunho, finalização, versões e PDFs gerados no servidor. Eventos de auditoria registram ações administrativas e clínicas sem copiar o conteúdo do prontuário para o log."],
+  ],
+  architectureTitle: "Arquitetura",
+  architecture: "O frontend é uma aplicação React/Vite. Ela acessa uma API Node.js/Express responsável por autenticação, permissões e regras de negócio. Os registros são armazenados no MongoDB por meio do Mongoose. Socket.IO é usado para notificações internas, e os documentos PDF são gerados no servidor.",
+  architectureFlow: ["React / Vite", "Node.js / Express", "MongoDB / Mongoose"],
+  architectureExtra: "Socket.IO · PDFKit · JWT · Zod",
+  infrastructureTitle: "Infraestrutura",
+  infrastructure: "A aplicação usa Docker Compose em Linux. MongoDB e a API permanecem na rede interna do Compose, enquanto o Nginx publica a interface e encaminha as requisições. O repositório também contém health checks e rotinas documentadas de backup e restauração.",
+  detailsTitle: "Detalhes do projeto",
+  details: [
+    ["papel", "design e desenvolvimento full-stack"],
+    ["período", "2024–2026"],
+    ["organização", "Centro Médico Hebrom"],
+    ["status", "principal ERP usado por três empresas no Brasil"],
+    ["stack", "React, JavaScript, Node.js, Express, MongoDB, Mongoose, Socket.IO, Docker"],
+    ["código", "privado"],
+  ],
+} : {
+  back: "back to projects",
+  title: "Anno Domini",
+  lead: "Medical operations software built for Centro Médico Hebrom.",
+  metadata: [
+    ["period", "2024–2026"],
+    ["role", "full-stack development"],
+    ["stack", "React · Node.js · MongoDB"],
+    ["source", "private internal system"],
+  ],
+  demo: "Screenshots from a local environment with fictional data. No real patient or operational data is shown.",
+  heroScreen: ["Appointments", "Time slots, availability and the day's appointments."],
+  viewer: {
+    label: "Anno Domini screenshot viewer",
+    close: "Close viewer",
+    previous: "Previous screenshot",
+    next: "Next screenshot",
+    zoomOut: "Zoom out",
+    zoomIn: "Zoom in",
+    resetZoom: "Reset size",
+  },
+  aboutTitle: "About",
+  about: [
+    "Anno Domini centralizes the daily work of a medical clinic. Reception, appointments, consultations, procedures, documents and financial records belong to the same workflow and need to share the patient's context.",
+    "The application is used in Centro Médico Hebrom's real operation and is part of the main ERP used by three companies in Brazil. The source remains private because it contains internal rules and workflows related to healthcare information.",
+  ],
+  areas: ["Appointments", "Patients", "Clinical records", "Procedures", "Finance", "Reports", "Users and permissions", "Documents and PDFs"],
+  screenSections: [
+    {
+      title: "Reception",
+      body: "The reception screen combines the active queue, visit origin, waiting time, visit status and the actions staff use throughout the day.",
+      images: [["anno-domini-reception.webp", "Reception", "Patient queue and operational actions."]],
+    },
+    {
+      title: "Clinical records",
+      body: "The doctor workspace separates patients awaiting reception from consultations already in the queue. The patient summary brings together alerts and the history of consultations, prescriptions, exams, documents and amendments.",
+      images: [
+        ["anno-domini-doctor-queue.webp", "Doctor workspace", "Current consultation and queue ordered by arrival."],
+        ["anno-domini-patient-chart.webp", "Patient summary", "Clinical history and related documents."],
+      ],
+    },
+    {
+      title: "Finance and reports",
+      body: "Charges remain linked to visits and can record payments in cash, Pix and cards. Financial screens retain corrections and cancellations; reports organize received revenue, expenses and cash movement by period.",
+      images: [
+        ["anno-domini-finance.webp", "Finance", "Transactions, payments and correction history."],
+        ["anno-domini-reports.webp", "Reports", "Revenue, expenses and cash movement by period."],
+      ],
+    },
+  ],
+  engineeringTitle: "Engineering",
+  engineering: [
+    ["Clinical records", "Finalized clinical records are not treated like ordinary forms. The application preserves the finalized snapshot, records amendments with a reason and author, and rejects writes made against an old version."],
+    ["Permissions", "Permissions are checked by the API. Administrators do not receive clinical access by default; doctors do not receive financial operations; reception can work with patients, visits, appointments and billing without editing clinical content."],
+    ["Appointments and visits", "Provider and room conflicts are validated on the server. Idempotency keys and unique indexes prevent duplicate visits or charges when an operation is repeated, while expected versions protect concurrent updates."],
+    ["Documents and auditing", "Prescriptions and other clinical documents have drafts, finalization, versions and server-generated PDFs. Audit events record administrative and clinical actions without copying chart contents into the log."],
+  ],
+  architectureTitle: "Architecture",
+  architecture: "The frontend is a React/Vite application. It calls a Node.js/Express API responsible for authentication, permissions and business rules. Records are stored in MongoDB through Mongoose. Socket.IO is used for internal notifications, and PDF documents are generated on the server.",
+  architectureFlow: ["React / Vite", "Node.js / Express", "MongoDB / Mongoose"],
+  architectureExtra: "Socket.IO · PDFKit · JWT · Zod",
+  infrastructureTitle: "Infrastructure",
+  infrastructure: "The application uses Docker Compose on Linux. MongoDB and the API remain on the internal Compose network, while Nginx publishes the interface and proxies requests. The repository also contains health checks and documented backup and restore procedures.",
+  detailsTitle: "Project details",
+  details: [
+    ["role", "design and full-stack development"],
+    ["period", "2024–2026"],
+    ["organization", "Centro Médico Hebrom"],
+    ["status", "main ERP used by three companies in Brazil"],
+    ["stack", "React, JavaScript, Node.js, Express, MongoDB, Mongoose, Socket.IO, Docker"],
+    ["source", "private"],
+  ],
+};
+---
+
+<Layout
+  title={`Anno Domini · ${isPt ? "estudo de caso" : "case study"} · misa`}
+  description={copy.lead}
+  lang={languages[language].locale}
+  style="--un-skew: 3deg; --un-rotate: 4deg; --un-scale: 1.12"
+  alternateLanguages={[{ lang: languages[isPt ? "en" : "pt"].locale, href: new URL(alternateCasePath, Astro.site).toString() }]}
+>
+  <Navbar />
+  <main class="case-study">
+    <a class="back-link" href={portfolioPath}>← {copy.back}</a>
+
+    <header class="hero">
+      <h1>{copy.title}</h1>
+      <p class="lead">{copy.lead}</p>
+      <dl class="metadata">
+        {copy.metadata.map(([term, value]) => <div><dt>{term}</dt><dd>{value}</dd></div>)}
+      </dl>
+    </header>
+
+    <figure class="screenshot">
+      <a href={`${imageBase}/anno-domini-scheduling.webp`} target="_blank" rel="noreferrer" data-gallery-item data-gallery-caption={`${copy.heroScreen[0]} — ${copy.heroScreen[1]}`}>
+        <img src={`${imageBase}/anno-domini-scheduling.webp`} alt={`${copy.heroScreen[0]} — ${copy.heroScreen[1]}`} width="1440" height="1000" />
+      </a>
+      <figcaption><strong>{copy.heroScreen[0]}</strong> — {copy.heroScreen[1]}</figcaption>
+    </figure>
+    <p class="demo-note">{copy.demo}</p>
+
+    <section class="text-section" aria-labelledby="about-title">
+      <h2 id="about-title">{copy.aboutTitle}</h2>
+      {copy.about.map((paragraph) => <p>{paragraph}</p>)}
+      <ul class="areas" aria-label={copy.aboutTitle}>
+        {copy.areas.map((area) => <li>{area}</li>)}
+      </ul>
+    </section>
+
+    {copy.screenSections.map((section, sectionIndex) => (
+      <section class="screen-section" aria-labelledby={`screen-section-${sectionIndex}`}>
+        <h2 id={`screen-section-${sectionIndex}`}>{section.title}</h2>
+        <p>{section.body}</p>
+        <div class:list={["screens", section.images.length === 1 && "screens-single"]}>
+          {section.images.map(([file, title, caption]) => (
+            <figure class="screenshot">
+              <a href={`${imageBase}/${file}`} target="_blank" rel="noreferrer" data-gallery-item data-gallery-caption={`${title} — ${caption}`}>
+                <img src={`${imageBase}/${file}`} alt={`${title} — ${caption}`} width="1440" height="1000" loading="lazy" />
+              </a>
+              <figcaption><strong>{title}</strong> — {caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <section aria-labelledby="engineering-title">
+      <h2 id="engineering-title">{copy.engineeringTitle}</h2>
+      <ol class="engineering-list">
+        {copy.engineering.map(([title, description], index) => (
+          <li>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <div><h3>{title}</h3><p>{description}</p></div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="text-section" aria-labelledby="architecture-title">
+      <h2 id="architecture-title">{copy.architectureTitle}</h2>
+      <p>{copy.architecture}</p>
+      <div class="architecture-flow" aria-label={copy.architectureTitle}>
+        {copy.architectureFlow.map((step, index) => <><span>{step}</span>{index < copy.architectureFlow.length - 1 && <b aria-hidden="true">↓</b>}</>)}
+        <small>{copy.architectureExtra}</small>
+      </div>
+    </section>
+
+    <section class="text-section" aria-labelledby="infrastructure-title">
+      <h2 id="infrastructure-title">{copy.infrastructureTitle}</h2>
+      <p>{copy.infrastructure}</p>
+    </section>
+
+    <section class="project-details" aria-labelledby="details-title">
+      <h2 id="details-title">{copy.detailsTitle}</h2>
+      <dl>{copy.details.map(([term, value]) => <div><dt>{term}</dt><dd>{value}</dd></div>)}</dl>
+    </section>
+
+    <a class="back-link closing-link" href={portfolioPath}>← {copy.back}</a>
+
+    <dialog class="image-viewer" aria-label={copy.viewer.label} data-image-viewer>
+      <div class="viewer-shell">
+        <div class="viewer-toolbar">
+          <button type="button" data-viewer-previous aria-label={copy.viewer.previous}>←</button>
+          <button type="button" data-viewer-next aria-label={copy.viewer.next}>→</button>
+          <button type="button" data-viewer-zoom-out aria-label={copy.viewer.zoomOut}>−</button>
+          <button type="button" data-viewer-zoom-in aria-label={copy.viewer.zoomIn}>+</button>
+          <button type="button" class="viewer-reset" data-viewer-reset aria-label={copy.viewer.resetZoom}>FIT</button>
+          <button type="button" class="viewer-close" data-viewer-close aria-label={copy.viewer.close}>×</button>
+        </div>
+        <div class="viewer-stage" data-viewer-stage>
+          <img data-viewer-image alt="" />
+        </div>
+        <p class="viewer-caption" data-viewer-caption aria-live="polite"></p>
+      </div>
+    </dialog>
+  </main>
+</Layout>
+
+<script>
+  function initializeScreenshotViewer() {
+    const root = document.querySelector<HTMLElement>(".case-study");
+    if (!root || root.dataset.viewerReady === "true") return;
+
+    const dialog = root.querySelector<HTMLDialogElement>("[data-image-viewer]");
+    const image = dialog?.querySelector<HTMLImageElement>("[data-viewer-image]");
+    const caption = dialog?.querySelector<HTMLElement>("[data-viewer-caption]");
+    const stage = dialog?.querySelector<HTMLElement>("[data-viewer-stage]");
+    const closeButton = dialog?.querySelector<HTMLButtonElement>("[data-viewer-close]");
+    const previousButton = dialog?.querySelector<HTMLButtonElement>("[data-viewer-previous]");
+    const nextButton = dialog?.querySelector<HTMLButtonElement>("[data-viewer-next]");
+    const zoomOutButton = dialog?.querySelector<HTMLButtonElement>("[data-viewer-zoom-out]");
+    const zoomInButton = dialog?.querySelector<HTMLButtonElement>("[data-viewer-zoom-in]");
+    const resetButton = dialog?.querySelector<HTMLButtonElement>("[data-viewer-reset]");
+    const items = Array.from(root.querySelectorAll<HTMLAnchorElement>("[data-gallery-item]"));
+
+    if (!dialog || !image || !caption || !stage || !closeButton || !previousButton || !nextButton || !zoomOutButton || !zoomInButton || !resetButton || !items.length) return;
+
+    root.dataset.viewerReady = "true";
+    const controller = new AbortController();
+    const { signal } = controller;
+    const zoomLevels = [1, 1.5, 2, 3];
+    let currentIndex = 0;
+    let zoomIndex = 0;
+    let fittedWidth = 0;
+    let returnFocus: HTMLAnchorElement | null = null;
+    let previousOverflow = "";
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let didSwipe = false;
+
+    const updateZoom = () => {
+      const zoom = zoomLevels[zoomIndex];
+      if (zoom === 1) {
+        image.style.removeProperty("width");
+        image.style.removeProperty("max-width");
+        image.style.removeProperty("max-height");
+      } else {
+        if (!fittedWidth) fittedWidth = image.getBoundingClientRect().width;
+        image.style.width = `${fittedWidth * zoom}px`;
+        image.style.maxWidth = "none";
+        image.style.maxHeight = "none";
+      }
+      zoomOutButton.disabled = zoomIndex === 0;
+      zoomInButton.disabled = zoomIndex === zoomLevels.length - 1;
+      resetButton.disabled = zoomIndex === 0;
+    };
+
+    const resetZoom = () => {
+      zoomIndex = 0;
+      fittedWidth = 0;
+      updateZoom();
+      stage.scrollTo({ top: 0, left: 0 });
+    };
+
+    const showItem = (index: number) => {
+      currentIndex = (index + items.length) % items.length;
+      const item = items[currentIndex];
+      const itemImage = item.querySelector<HTMLImageElement>("img");
+      resetZoom();
+      image.src = item.href;
+      image.alt = itemImage?.alt ?? "";
+      caption.textContent = item.dataset.galleryCaption ?? itemImage?.alt ?? "";
+    };
+
+    const openViewer = (item: HTMLAnchorElement) => {
+      returnFocus = item;
+      showItem(items.indexOf(item));
+      previousOverflow = document.documentElement.style.overflow;
+      document.documentElement.style.overflow = "hidden";
+      dialog.showModal();
+      closeButton.focus();
+    };
+
+    const closeViewer = () => {
+      if (dialog.open) dialog.close();
+    };
+
+    items.forEach((item) => {
+      item.addEventListener("click", (event) => {
+        event.preventDefault();
+        openViewer(item);
+      }, { signal });
+      item.addEventListener("keydown", (event) => {
+        if (event.key === " ") {
+          event.preventDefault();
+          openViewer(item);
+        }
+      }, { signal });
+    });
+
+    closeButton.addEventListener("click", closeViewer, { signal });
+    previousButton.addEventListener("click", () => showItem(currentIndex - 1), { signal });
+    nextButton.addEventListener("click", () => showItem(currentIndex + 1), { signal });
+    zoomOutButton.addEventListener("click", () => {
+      zoomIndex = Math.max(0, zoomIndex - 1);
+      updateZoom();
+    }, { signal });
+    zoomInButton.addEventListener("click", () => {
+      if (!fittedWidth) fittedWidth = image.getBoundingClientRect().width;
+      zoomIndex = Math.min(zoomLevels.length - 1, zoomIndex + 1);
+      updateZoom();
+    }, { signal });
+    resetButton.addEventListener("click", resetZoom, { signal });
+
+    dialog.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        showItem(currentIndex + 1);
+      } else if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        showItem(currentIndex - 1);
+      } else if (event.key === "Escape") {
+        event.preventDefault();
+        closeViewer();
+      }
+    }, { signal });
+
+    stage.addEventListener("click", (event) => {
+      if (didSwipe) {
+        didSwipe = false;
+        return;
+      }
+      if (event.target === stage) closeViewer();
+    }, { signal });
+    stage.addEventListener("pointerdown", (event) => {
+      if (event.pointerType !== "touch" || zoomIndex !== 0) return;
+      didSwipe = false;
+      touchStartX = event.clientX;
+      touchStartY = event.clientY;
+    }, { signal });
+    stage.addEventListener("pointerup", (event) => {
+      if (event.pointerType !== "touch" || zoomIndex !== 0) return;
+      const deltaX = event.clientX - touchStartX;
+      const deltaY = event.clientY - touchStartY;
+      if (Math.abs(deltaX) > 60 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        didSwipe = true;
+        showItem(currentIndex + (deltaX < 0 ? 1 : -1));
+      }
+    }, { signal });
+
+    image.addEventListener("load", resetZoom, { signal });
+    dialog.addEventListener("close", () => {
+      document.documentElement.style.overflow = previousOverflow;
+      image.removeAttribute("src");
+      if (returnFocus?.isConnected) returnFocus.focus();
+      returnFocus = null;
+    }, { signal });
+
+    document.addEventListener("astro:before-swap", () => {
+      if (dialog.open) dialog.close();
+      document.documentElement.style.overflow = previousOverflow;
+      controller.abort();
+    }, { once: true, signal });
+  }
+
+  initializeScreenshotViewer();
+  document.addEventListener("astro:page-load", initializeScreenshotViewer);
+</script>
+
+<style>
+  .case-study {
+    --case-accent: var(--highlight);
+    width: min(100%, 86rem);
+    margin: 2.5rem auto 5rem;
+    padding: 0 2rem;
+    color: var(--text-700);
+    font-family: "Jetbrains Mono", ui-monospace, monospace;
+  }
+
+  .back-link {
+    display: inline-flex;
+    padding-block: 0.4rem;
+    color: var(--case-accent);
+    font-size: 0.8rem;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  .back-link:hover { color: var(--text-900); }
+  .back-link:focus-visible, .screenshot a:focus-visible { outline: 2px solid var(--case-accent); outline-offset: 4px; }
+
+  .hero { padding: 2.75rem 0 2.25rem; }
+  h1, h2, h3 { color: var(--text-900); font-family: inherit; font-weight: 500; }
+  h1 { margin: 0 0 0.8rem; font-size: clamp(3.1rem, 7vw, 3.625rem); line-height: 1.05; letter-spacing: -0.045em; }
+  h2 { margin: 0 0 1rem; font-size: clamp(1.25rem, 2.4vw, 1.5rem); line-height: 1.35; letter-spacing: -0.025em; }
+  h3 { margin: 0; font-size: 1rem; line-height: 1.55; }
+  p { max-width: 74ch; margin: 0; font-size: 1.025rem; line-height: 1.68; }
+  p + p { margin-top: 1rem; }
+  .lead { color: var(--text-600); font-size: 1.075rem; line-height: 1.6; }
+
+  .metadata {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem 1.5rem;
+    margin: 2rem 0 0;
+    padding: 1rem 0;
+    border-block: 1px solid rgb(148 163 184 / 0.2);
+  }
+  .metadata::before { position: absolute; top: -1px; left: 0; width: 3rem; height: 2px; background: var(--case-accent); content: ""; }
+  dt { color: var(--text-400); font-size: 0.78rem; line-height: 1.5; text-transform: lowercase; }
+  dd { margin: 0.25rem 0 0; color: var(--text-800); font-size: 0.82rem; line-height: 1.55; }
+  .metadata div:first-child dd { color: var(--case-accent); }
+
+  .screenshot { min-width: 0; margin: 0; }
+  .screenshot a { display: block; cursor: zoom-in; }
+  .screenshot img { display: block; width: 100%; height: auto; border: 1px solid rgb(148 163 184 / 0.22); background: #eef2f7; }
+  figcaption { margin-top: 0.7rem; color: var(--text-400); font-size: 0.8rem; line-height: 1.55; }
+  figcaption strong { color: var(--text-800); font-weight: 500; }
+  .demo-note { margin-top: 0.75rem; color: var(--text-400); font-size: 0.8rem; line-height: 1.55; }
+
+  section { margin-top: 4rem; }
+  .text-section { max-width: 76ch; }
+  .areas { display: flex; flex-wrap: wrap; gap: 0.35rem 0; margin: 1.5rem 0 0; padding: 1rem 0; border-block: 1px solid rgb(148 163 184 / 0.2); list-style: none; }
+  .areas li { color: var(--text-500); font-size: 0.82rem; line-height: 1.6; }
+  .areas li:not(:last-child)::after { content: "·"; margin: 0 0.7rem; color: var(--text-200); }
+
+  .screen-section > p { margin-bottom: 1.5rem; }
+  .screens { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+  .screens-single { grid-template-columns: 1fr; }
+
+  .engineering-list { margin: 0; padding: 0; border-top: 1px solid rgb(148 163 184 / 0.2); list-style: none; }
+  .engineering-list li { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; padding: 1.5rem 0; border-bottom: 1px solid rgb(148 163 184 / 0.2); }
+  .engineering-list > li > span { padding-top: 0.12rem; color: var(--case-accent); font-size: 0.78rem; }
+  .engineering-list p { margin-top: 0.6rem; color: var(--text-500); }
+
+  .architecture-flow { display: grid; width: min(100%, 30rem); margin-top: 1.5rem; padding: 1rem 0; border-block: 1px solid rgb(148 163 184 / 0.2); }
+  .architecture-flow span { color: var(--text-800); font-size: 0.9rem; }
+  .architecture-flow b { margin: 0.35rem 0 0.35rem 1rem; color: var(--case-accent); font-size: 0.78rem; font-weight: 400; }
+  .architecture-flow small { margin-top: 1rem; color: var(--text-300); font-size: 0.78rem; line-height: 1.5; }
+
+  section[aria-labelledby="engineering-title"] { margin-top: 4.75rem; }
+  section[aria-labelledby="architecture-title"] { margin-top: 4.25rem; }
+  section[aria-labelledby="infrastructure-title"] { margin-top: 3.25rem; }
+  section[aria-labelledby="architecture-title"] h2,
+  section[aria-labelledby="infrastructure-title"] h2 { font-size: 1.25rem; color: var(--text-800); }
+  .project-details { margin-top: 4.75rem; }
+  .project-details dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; border-top: 1px solid rgb(148 163 184 / 0.27); }
+  .project-details dl div { padding: 1.15rem 1rem 1.15rem 0; border-bottom: 1px solid rgb(148 163 184 / 0.27); }
+  .closing-link { margin-top: 2rem; }
+
+  .image-viewer {
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #03040a;
+    color: #f8fafc;
+  }
+  .image-viewer::backdrop { background: rgb(0 0 0 / 0.94); }
+  .viewer-shell { box-sizing: border-box; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; height: 100%; padding: 0.75rem; }
+  .viewer-toolbar { display: flex; justify-content: flex-end; gap: 0.4rem; }
+  .viewer-toolbar button {
+    display: grid;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0.45rem;
+    place-items: safe center;
+    border: 1px solid rgb(148 163 184 / 0.35);
+    border-radius: 2px;
+    background: #0a0c14;
+    color: #f8fafc;
+    font: 500 0.9rem/1 "Jetbrains Mono", ui-monospace, monospace;
+    cursor: pointer;
+  }
+  .viewer-toolbar button:hover { border-color: rgb(226 232 240 / 0.7); }
+  .viewer-toolbar button:focus-visible { outline: 2px solid var(--case-accent); outline-offset: 2px; }
+  .viewer-toolbar button:disabled { opacity: 0.35; cursor: default; }
+  .viewer-reset { font-size: 0.72rem !important; }
+  .viewer-close { margin-left: 0.35rem; font-size: 1.2rem !important; }
+  .viewer-stage {
+    display: grid;
+    min-width: 0;
+    min-height: 0;
+    padding: 0.75rem 0;
+    overflow: auto;
+    place-items: center;
+    overscroll-behavior: contain;
+    touch-action: pan-x pan-y pinch-zoom;
+  }
+  .viewer-stage img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: calc(100vw - 1.5rem);
+    max-height: calc(100dvh - 8rem);
+    object-fit: contain;
+  }
+  .viewer-caption {
+    max-width: none;
+    margin: 0.35rem auto 0;
+    color: #cbd5e1;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  @media (max-width: 760px) {
+    .case-study { margin-top: 1.75rem; padding-inline: 1.25rem; }
+    .hero { padding-block: 2rem; }
+    .metadata { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    section { margin-top: 3rem; }
+    section[aria-labelledby="engineering-title"],
+    section[aria-labelledby="architecture-title"],
+    .project-details { margin-top: 3.5rem; }
+    section[aria-labelledby="infrastructure-title"] { margin-top: 2.75rem; }
+    .screens { grid-template-columns: 1fr; gap: 2rem; }
+    .viewer-shell { padding: 0.5rem; }
+    .viewer-stage img { max-width: calc(100vw - 1rem); }
+  }
+
+  @media (max-width: 480px) {
+    .metadata, .project-details dl { grid-template-columns: 1fr; }
+    .engineering-list li { grid-template-columns: 2rem minmax(0, 1fr); }
+  }
+</style>

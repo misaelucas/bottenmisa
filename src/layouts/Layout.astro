@@ -6,6 +6,7 @@ import "💅/links.css";
 import "💅/article.css";
 import BaseHead, { type Props as BaseHeadProps } from "🧱/BaseHead.astro";
 import Footer from "🧱/Footer.astro";
+import { languagePreferenceKey, languages } from "../i18n";
 
 export interface Props extends BaseHeadProps {
   class?: string;
@@ -14,6 +15,7 @@ export interface Props extends BaseHeadProps {
 }
 
 const { class: className, style, lang = "pt-BR", ...rest } = Astro.props;
+const pageLanguage = lang.toLowerCase().startsWith("en") ? "en" : "pt";
 ---
 
 <!doctype html>
@@ -22,6 +24,23 @@ const { class: className, style, lang = "pt-BR", ...rest } = Astro.props;
     <BaseHead {...rest}>
       <slot name="head" slot="head" />
     </BaseHead>
+    <script
+      is:inline
+      define:vars={{ languagePreferenceKey, pageLanguage, englishHomePath: languages.en.homePath }}
+    >
+      try {
+        const storedLanguage = localStorage.getItem(languagePreferenceKey);
+        const isDefaultHome = window.location.pathname === "/";
+
+        if (isDefaultHome && pageLanguage === "pt" && storedLanguage === "en") {
+          window.location.replace(`${englishHomePath}${window.location.search}${window.location.hash}`);
+        } else {
+          localStorage.setItem(languagePreferenceKey, pageLanguage);
+        }
+      } catch {
+        // The URL remains the source of truth when browser storage is unavailable.
+      }
+    </script>
   </head>
   <body style={style} class="overflow-x-hidden app-shell">
     <script is:inline>

@@ -23,7 +23,7 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
     <li>
       {
         showHomeIcon && (
-          <a href="/" rel="prefetch">
+          <a href={languages[currentLanguage].homePath} rel="prefetch">
             <Image
               class="hover:scale-110 transition-all w-[50px]"
               src={avatar}
@@ -56,6 +56,7 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
     <li class="flex items-center gap-2">
       <a
         href={getAlternatePath(Astro.url.pathname)}
+        data-language-choice={nextLanguage}
         class="nav-control language-toggle flex items-center gap-2 bg-body-800 color-text-800 font-700 rounded-lg transition-all duration-300 no-underline text-sm"
         aria-label={`Switch language to ${nextLanguageConfig.locale}`}
       >
@@ -262,8 +263,21 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
 </style>
 
 <script>
+  import { languagePreferenceKey } from "../i18n";
   import { toggleTheme } from "src/scripts/theme-switcher";
 
   const switcher = document.querySelector("#theme-switcher")!;
   switcher.addEventListener("click", toggleTheme);
+
+  const languageToggle = document.querySelector<HTMLAnchorElement>("[data-language-choice]");
+  languageToggle?.addEventListener("click", () => {
+    const language = languageToggle.dataset.languageChoice;
+    if (language === "pt" || language === "en") {
+      try {
+        localStorage.setItem(languagePreferenceKey, language);
+      } catch {
+        // Navigation still works when browser storage is unavailable.
+      }
+    }
+  });
 </script>

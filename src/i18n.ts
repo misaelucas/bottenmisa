@@ -3,7 +3,8 @@ export const languages = {
     label: "BR",
     locale: "pt-BR",
     homePath: "/",
-    shortsPath: "/shorts/",
+    fortitudoPath: "/fortitudo/",
+    statementPath: "/statement/",
     booksPath: "/books/",
     portfolioPath: "/portfolio/",
     productivityPath: "/pdf/productivity/",
@@ -12,7 +13,8 @@ export const languages = {
     label: "EN",
     locale: "en",
     homePath: "/en/",
-    shortsPath: "/en/shorts/",
+    fortitudoPath: "/en/fortitudo/",
+    statementPath: "/en/statement/",
     booksPath: "/en/books/",
     portfolioPath: "/en/portfolio/",
     productivityPath: "/en/pdf/productivity/",
@@ -29,9 +31,6 @@ export const homeCopy = {
     title: "misa",
     description:
       "misa the botter.",
-    latestShort: "Último short",
-    shortsSection: "Shorts",
-    shortsHref: languages.pt.shortsPath,
     bio: {
       heading: "Hi, I'm Misa.",
       role: "Fullstack Developer",
@@ -47,9 +46,6 @@ export const homeCopy = {
     title: "misa",
     description:
       "misa the botter.",
-    latestShort: "Latest short",
-    shortsSection: "Shorts",
-    shortsHref: languages.en.shortsPath,
     bio: {
       heading: "Hi, I'm Misa.",
       role: "Fullstack Developer",
@@ -60,25 +56,6 @@ export const homeCopy = {
       interests: "poetry • hacktivism • muay thai • weight lifting",
       location: "In the wired.",
     },
-  },
-} as const;
-
-export const shortsCopy = {
-  pt: {
-    title: "Shorts",
-    description:
-      "Notas curtas, updates e pequenos fragmentos que não viram artigo completo.",
-    emptyTitle: "Ainda não tem shorts publicados.",
-    homeLink: "Voltar para a home",
-    distanceSuffix: "antes",
-  },
-  en: {
-    title: "Shorts",
-    description:
-      "Short notes, updates, and small fragments that do not become full articles.",
-    emptyTitle: "No shorts published yet.",
-    homeLink: "Back home",
-    distanceSuffix: "earlier",
   },
 } as const;
 
@@ -138,8 +115,12 @@ export function getAlternatePath(pathname: string): string {
     return languages.pt.homePath;
   }
 
-  if (pathname === "/en/shorts" || pathname === "/en/shorts/") {
-    return languages.pt.shortsPath;
+  if (pathname === "/en/fortitudo" || pathname === "/en/fortitudo/") {
+    return languages.pt.fortitudoPath;
+  }
+
+  if (pathname === "/en/statement" || pathname === "/en/statement/") {
+    return languages.pt.statementPath;
   }
 
   if (pathname === "/en/books" || pathname === "/en/books/") {
@@ -153,8 +134,12 @@ export function getAlternatePath(pathname: string): string {
     return languages.pt.productivityPath;
   }
 
-  if (pathname === "/shorts" || pathname === "/shorts/") {
-    return languages.en.shortsPath;
+  if (pathname === "/fortitudo" || pathname === "/fortitudo/") {
+    return languages.en.fortitudoPath;
+  }
+
+  if (pathname === "/statement" || pathname === "/statement/") {
+    return languages.en.statementPath;
   }
 
   if (pathname === "/books" || pathname === "/books/") {

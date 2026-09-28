@@ -21,17 +21,6 @@ const blogCollection = defineCollection({
   schema: ({ image }) => blogSchema({ image }),
 });
 
-const shortsCollection = defineCollection({
-  loader: glob({ pattern: "**/[^_]*.{md,mdx}", base: "./src/content/shorts" }),
-  schema: z.object({
-    title: z.string(),
-    date: z.coerce.date(),
-    language: z.enum(["pt", "en"]).default("pt"),
-    draft: z.boolean().default(false),
-  }),
-});
-
 export const collections = {
   blog: blogCollection,
-  shorts: shortsCollection,
 };

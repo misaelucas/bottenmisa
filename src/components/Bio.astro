@@ -6,10 +6,7 @@ import Github from "./icons/Github.astro";
 import Pinterest from "./icons/Pinterest.astro";
 import Twitter from "./icons/Twitter.astro";
 import avatarMj from "@assets/avatars/itsmisa.png";
-import { getAllShorts } from "@scripts/content";
-import { format } from "date-fns";
-import { enUS, ptBR } from "date-fns/locale";
-import { homeCopy, type Language } from "../i18n";
+import { homeCopy, languages, type Language } from "../i18n";
 
 interface Props {
   language?: Language;
@@ -17,9 +14,6 @@ interface Props {
 
 const { language = "pt" } = Astro.props;
 const copy = homeCopy[language];
-const latestShort = (await getAllShorts(language))[0];
-const dateLocale = language === "pt" ? ptBR : enUS;
-const dateFormat = language === "pt" ? "d LLL yyyy" : "LLL do yyyy";
 const socialEmail = "misaelucas@gmail.com";
 const socialEmailCodePoints = socialEmail
   .split("")
@@ -90,27 +84,9 @@ const socialEmailCodePoints = socialEmail
         </ExternalLink>
       </div>
     </div>
-    {
-      latestShort && (
-        <div class="flex flex-col gap-2 items-center mt-6 group self-start max-md:w-full">
-          <div class="md:hidden self-start flex flex-col gap-1 w-full text-base">
-            <span class="color-text-500">{copy.latestShort}</span>
-            <time class="color-text-300" datetime={latestShort.data.date.toISOString()}>
-              {format(latestShort.data.date, dateFormat, { locale: dateLocale })}
-            </time>
-          </div>
-          <a
-            class="inline-flex flex-col max-md:w-full md:flex-row transition-all gap-3 md:items-center outline outline-1 outline-body-500 group-hover:outline-body-300 md:rounded-[20px] ps-[10px] pe-[20px] py-1 text-base"
-            href={copy.shortsHref}
-          >
-            <h3 class="text-sm transition-all bg-body-600 group-hover:bg-body-300 rounded-[10px] px-3 text-nowrap max-md:hidden">
-              Shorts
-            </h3>
-            {latestShort.data.title}
-          </a>
-        </div>
-      )
-    }
+    <a class="statement-link" href={languages[language].statementPath}>
+      {language === "pt" ? "um fragmento do site →" : "a fragment of the site →"}
+    </a>
   </div>
 
   <div
@@ -173,5 +149,19 @@ const socialEmailCodePoints = socialEmail
   .bio-interests {
     word-break: normal;
     overflow-wrap: break-word;
+  }
+
+  .statement-link {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+    color: var(--text-500);
+    font-family: "Jetbrains Mono", ui-monospace, monospace;
+    font-size: 0.8rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--body-400);
+  }
+
+  .statement-link:hover {
+    color: var(--text-800);
   }
 </style>

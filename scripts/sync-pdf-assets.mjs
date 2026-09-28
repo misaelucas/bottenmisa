@@ -21,6 +21,31 @@ for (const markdownFile of MARKDOWN_FILES) {
   }
 }
 
+const requiredAssets = [
+  path.join(PUBLIC_ASSETS, "cover-aha.png"),
+  ...[...sources]
+    .filter((src) => !/^https?:\/\//.test(src))
+    .map((src) => path.join(PUBLIC_ASSETS, src.replace(/^the-opsec-bible\/docs\//, ""))),
+];
+
+try {
+  await fs.access(SOURCE_ROOT);
+} catch {
+  const missing = [];
+  for (const asset of requiredAssets) {
+    try {
+      await fs.access(asset);
+    } catch {
+      missing.push(asset);
+    }
+  }
+  if (missing.length) {
+    throw new Error(`PDF source is unavailable and ${missing.length} local assets are missing, including ${missing[0]}`);
+  }
+  console.log(`Using ${requiredAssets.length} existing PDF assets in ${PUBLIC_ASSETS}`);
+  process.exit(0);
+}
+
 await copyFile(
   path.join(SOURCE_ROOT, "assets/aha.png"),
   path.join(PUBLIC_ASSETS, "cover-aha.png"),

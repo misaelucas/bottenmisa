@@ -3,7 +3,7 @@
 Personal site built with Astro, UnoCSS, React islands, bilingual routes,
 and a small Last.fm-powered recent tracks section.
 
-Production URL: https://bottenmisa.vercel.app
+Production URL: https://misaa.dev
 
 ## Credits
 
@@ -60,11 +60,10 @@ The site builds without every optional integration configured, but these
 variables are used when available:
 
 ```sh
-SITE=https://bottenmisa.vercel.app
+SITE=https://misaa.dev
 LASTFM_API_KEY=...
 LASTFM_USERNAME=...
 SOCIAL_TWITTER=...
-ME_API_GRAPHQL_URL=...
 ```
 
 Notes:
@@ -73,7 +72,6 @@ Notes:
 - `LASTFM_API_KEY` and `LASTFM_USERNAME` power the recent tracks section.
 - If Last.fm is not configured correctly, the build may log a non-fatal warning
   while still completing.
-- `ME_API_GRAPHQL_URL` is kept for inherited Spotify/Lanyard-related code paths.
 
 ## Content
 
@@ -87,8 +85,12 @@ The current language setup uses:
 ```text
 /              Portuguese home
 /en/           English home
+/portfolio/    Portuguese portfolio
+/en/portfolio/ English portfolio
 /fortitudo/    Portuguese Fortitudo
 /en/fortitudo/ English Fortitudo
+/productivity/  Portuguese Productivity edition
+/en/productivity/ English Productivity edition
 /statement/    Portuguese statement
 /en/statement/ English statement
 ```

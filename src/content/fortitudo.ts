@@ -15,7 +15,6 @@ export interface Passage {
 export interface CanonEntry {
   author: LocalizedText;
   work: LocalizedText;
-  originalLanguage?: string;
   originalLangCode?: string;
   context?: LocalizedText;
   image?: {
@@ -32,7 +31,6 @@ export const fortitudoEntries: CanonEntry[] = [
   {
     author: { pt: "Dante Alighieri", en: "Dante Alighieri" },
     work: { pt: "Inferno, Canto VIII", en: "Inferno, Canto VIII" },
-    originalLanguage: "Italiano",
     originalLangCode: "it",
     context: {
       pt: "Às portas da Cidade de Dite, os anjos caídos recusam passagem a Dante e Virgílio. Dante teme, e até Virgílio parece perturbado. Ainda assim, Virgílio o lembra de que o caminho que lhes foi concedido não pode, em última instância, ser tomado deles.",
@@ -78,7 +76,6 @@ export const fortitudoEntries: CanonEntry[] = [
   {
     author: { pt: "Virgílio", en: "Virgil" },
     work: { pt: "Eneida, Livro I", en: "Aeneid, Book I" },
-    originalLanguage: "Latina",
     originalLangCode: "la",
     context: {
       pt: "Depois de uma tempestade que dispersa a frota troiana, Eneias e seus companheiros chegam exaustos à costa da Líbia. Já em segurança relativa, ele tenta restaurar-lhes a coragem, mesmo ocultando o próprio sofrimento.",

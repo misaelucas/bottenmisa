@@ -10,8 +10,8 @@ interface Props {
 
 const { language = "pt" } = Astro.props;
 const copy = language === "pt"
-  ? { eyebrow: "projetos / desenvolvimento de software", source: "código", visit: "visitar site", details: "detalhes de implementação", caseStudy: "ler estudo de caso", artwork: "arte do projeto" }
-  : { eyebrow: "projects / software development", source: "source", visit: "visit site", details: "implementation details", caseStudy: "read case study", artwork: "project artwork" };
+  ? { eyebrow: "trabalhos selecionados / software e sistemas", source: "código", visit: "visitar site", details: "detalhes de implementação", caseStudy: "ler estudo de caso", artwork: "arte do projeto" }
+  : { eyebrow: "selected work / software & systems", source: "source", visit: "visit site", details: "implementation details", caseStudy: "read case study", artwork: "project artwork" };
 
 // Fixed colors keep each technology consistent across projects and languages.
 const stackColors: Record<string, [string, string]> = {

@@ -7,7 +7,7 @@ export const languages = {
     statementPath: "/statement/",
     booksPath: "/books/",
     portfolioPath: "/portfolio/",
-    productivityPath: "/pdf/productivity/",
+    productivityPath: "/productivity/",
   },
   en: {
     label: "EN",
@@ -17,7 +17,7 @@ export const languages = {
     statementPath: "/en/statement/",
     booksPath: "/en/books/",
     portfolioPath: "/en/portfolio/",
-    productivityPath: "/en/pdf/productivity/",
+    productivityPath: "/en/productivity/",
   },
 } as const;
 
@@ -29,10 +29,9 @@ export const languagePreferenceKey = "misaa-language";
 export const homeCopy = {
   pt: {
     title: "misa",
-    description:
-      "misa the botter.",
+    description: "It's misa!",
     bio: {
-      heading: "Hi, I'm Misa.",
+      heading: "Hi, it's Misa!",
       role: "Fullstack Developer",
       intro: "",
       work: [
@@ -44,10 +43,9 @@ export const homeCopy = {
   },
   en: {
     title: "misa",
-    description:
-      "misa the botter.",
+    description: "It's misa!",
     bio: {
-      heading: "Hi, I'm Misa.",
+      heading: "Hi, it's Misa!",
       role: "Fullstack Developer",
       intro: "",
       work: [
@@ -128,6 +126,8 @@ export function getAlternatePath(pathname: string): string {
   }
 
   if (
+    pathname === "/en/productivity" ||
+    pathname === "/en/productivity/" ||
     pathname === "/en/pdf/productivity" ||
     pathname === "/en/pdf/productivity/"
   ) {
@@ -146,7 +146,7 @@ export function getAlternatePath(pathname: string): string {
     return languages.en.booksPath;
   }
 
-  if (pathname === "/pdf/productivity" || pathname === "/pdf/productivity/") {
+  if (["/productivity", "/productivity/", "/pdf/productivity", "/pdf/productivity/"].includes(pathname)) {
     return languages.en.productivityPath;
   }
 

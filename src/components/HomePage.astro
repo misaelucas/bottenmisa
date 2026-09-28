@@ -3,14 +3,24 @@ import Bio from "./Bio.astro";
 import RecentTracks from "./RecentTracks.astro";
 import Ultrawide from "./misc/Ultrawide.astro";
 import { LanyardStatus } from "./lanyard/LanyardStatus";
-import { homeCopy, type Language } from "../i18n";
+import { languages, type Language } from "../i18n";
 
 interface Props {
   language?: Language;
 }
 
 const { language = "pt" } = Astro.props;
-const copy = homeCopy[language];
+const orientation = language === "pt"
+  ? [
+      { label: "Portfólio", description: "Software e sistemas que construí.", href: languages.pt.portfolioPath },
+      { label: "Fortitudo", description: "Passagens às quais retorno.", href: languages.pt.fortitudoPath },
+      { label: "Produtividade", description: "Notas e material sobre trabalho, disciplina e clareza.", href: languages.pt.productivityPath },
+    ]
+  : [
+      { label: "Portfolio", description: "Software and systems I have built.", href: languages.en.portfolioPath },
+      { label: "Fortitudo", description: "Passages I return to.", href: languages.en.fortitudoPath },
+      { label: "Productivity", description: "Notes and material on work, discipline and clarity.", href: languages.en.productivityPath },
+    ];
 const donationAddress =
   "85mpeMoAmjKj7xDKLFJyToPX4Cbw2ZoT7SvW2AbHNe5wVYwY9pMygurDPkFDPXT11JENjwjeJUEZv5wgKDx7EmzZB6DFXJM";
 const donationHref = `monero:${donationAddress}`;
@@ -23,13 +33,22 @@ const donationHref = `monero:${donationAddress}`;
       <Bio language={language} />
     </div>
 
+    <nav class="site-index" aria-label={language === "pt" ? "Páginas do site" : "Site pages"}>
+      {orientation.map(({ label, description, href }) => (
+        <div class="site-index-entry">
+          <a href={href}>{label}</a>
+          <span>{description}</span>
+        </div>
+      ))}
+    </nav>
+
     <div class="flex flex-col gap-8 min-w-0 w-full lg:max-w-sm lg:ml-auto">
       <LanyardStatus client:load discordId="1184574519692767272" />
       <RecentTracks />
     </div>
 
     <footer class="donation-footer">
-      <span>{language === "pt" ? "donations xmr" : "donations xmr"}</span>
+      <span>{language === "pt" ? "doações xmr" : "xmr donations"}</span>
       <a href={donationHref}>{donationAddress}</a>
     </footer>
   </div>
@@ -37,22 +56,152 @@ const donationHref = `monero:${donationAddress}`;
 
 <Ultrawide />
 
+<script>
+  import { annotate } from "rough-notation";
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const heading = document.querySelector<HTMLElement>(".bio-heading-text");
+  if (heading) {
+    const drawHeadingUnderline = () => {
+      const width = heading.getBoundingClientRect().width;
+      if (!width) return;
+
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", `0 0 ${width} 20`);
+      svg.setAttribute("preserveAspectRatio", "none");
+      svg.setAttribute("aria-hidden", "true");
+      svg.classList.add("heading-underline");
+      svg.style.color = getComputedStyle(heading).color;
+      heading.appendChild(svg);
+
+      const style = Math.floor(Math.random() * 3);
+      const strokes = 2;
+      for (let stroke = 0; stroke < strokes; stroke++) {
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        const segments = 4 + style + Math.floor(Math.random() * 2);
+        const amplitude = [1.8, 2.5, 3.2][style];
+        const start = Math.random() * 5;
+        const end = width - Math.random() * 7;
+        const base = 6 + stroke * 1.2;
+        let x = start;
+        let y = base + (Math.random() - 0.5) * amplitude;
+        let d = `M ${x} ${y}`;
+
+        for (let segment = 1; segment <= segments; segment++) {
+          const nextX = start + ((end - start) * segment) / segments;
+          const nextY = base + (Math.random() - 0.5) * amplitude * 2;
+          const span = nextX - x;
+          d += ` C ${x + span * 0.35} ${y + (Math.random() - 0.5) * amplitude * 2}, ${nextX - span * 0.35} ${nextY + (Math.random() - 0.5) * amplitude * 2}, ${nextX} ${nextY}`;
+          x = nextX;
+          y = nextY;
+        }
+
+        path.setAttribute("d", d);
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", "currentColor");
+        path.setAttribute("stroke-width", "1.15");
+        path.setAttribute("stroke-linecap", "round");
+        path.setAttribute("stroke-linejoin", "round");
+        svg.appendChild(path);
+
+        if (!reducedMotion.matches) {
+          const length = path.getTotalLength();
+          path.style.strokeDasharray = `${length}`;
+          path.style.strokeDashoffset = `${length}`;
+          path.animate(
+            [{ strokeDashoffset: length }, { strokeDashoffset: 0 }],
+            { duration: 1500 - stroke * 120, delay: stroke * 120, fill: "forwards", easing: "ease-out" },
+          );
+        }
+      }
+    };
+
+    document.fonts.ready.then(() => {
+      requestAnimationFrame(() => requestAnimationFrame(drawHeadingUnderline));
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>(".site-index a").forEach((link) => {
+    let annotation: ReturnType<typeof annotate> | undefined;
+    const showUnderline = () => {
+      annotation?.remove();
+      annotation = annotate(link, {
+        type: "underline",
+        color: getComputedStyle(link).color,
+        animate: !reducedMotion.matches,
+        animationDuration: 450,
+        padding: 3,
+        strokeWidth: 1.5,
+      });
+      annotation.show();
+    };
+    const hideUnderline = () => {
+      annotation?.remove();
+      annotation = undefined;
+    };
+    link.addEventListener("mouseenter", showUnderline);
+    link.addEventListener("focus", showUnderline);
+    link.addEventListener("mouseleave", hideUnderline);
+    link.addEventListener("blur", hideUnderline);
+  });
+</script>
+
 <style>
+  :global(.bio-heading-text) { position: relative; display: inline-block; max-width: 100%; }
+  :global(.bio-heading-text .heading-underline) {
+    position: absolute;
+    left: 0;
+    bottom: -0.4rem;
+    width: 100%;
+    height: 1.25rem;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .site-index {
+    display: grid;
+    gap: 0.8rem;
+    width: min(100%, 29rem);
+    padding-left: 0.75rem;
+    border-left: 1px solid rgb(148 163 184 / 0.2);
+  }
+
+  .site-index-entry {
+    display: grid;
+    gap: 0.12rem;
+  }
+
+  .site-index a {
+    width: fit-content;
+    color: var(--text-700);
+    font-family: "Jetbrains Mono", ui-monospace, monospace;
+    font-size: 0.8rem;
+    text-decoration: none;
+  }
+
+  .site-index a:hover { color: var(--text-100); }
+  .site-index a:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 3px; }
+
+  .site-index span {
+    color: var(--text-500);
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
   .donation-footer {
     display: grid;
     gap: 0.45rem;
     max-width: 100%;
-    padding-top: 1rem;
-    border-top: 1px solid rgb(148 163 184 / 0.16);
-    color: var(--text-300);
+    padding-top: 2.5rem;
+    color: var(--text-500);
     font-family: "Jetbrains Mono", ui-monospace, monospace;
-    font-size: 0.78rem;
+    font-size: 0.7rem;
     line-height: 1.45;
   }
 
   .donation-footer span {
     color: var(--text-500);
-    font-size: 0.72rem;
+    font-size: 0.66rem;
     font-weight: 500;
     letter-spacing: 0;
     text-transform: lowercase;

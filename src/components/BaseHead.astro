@@ -7,14 +7,16 @@ export interface Props {
     href: string;
     lang: string;
   }[];
+  ogImage?: string;
 }
 
-const { title, description, themeColor, alternateLanguages = [] } = Astro.props;
-const defaultDescription =
-  "botten misa.";
+const { title, description, themeColor, alternateLanguages = [], ogImage } = Astro.props;
+const defaultDescription = "It's misa!";
 const metaDescription = description ?? defaultDescription;
 const siteName = "Misa";
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const defaultLanguageUrl = alternateLanguages.find((alternate) => alternate.lang === "pt-BR")?.href;
+const socialImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
 ---
 
 <meta charset="UTF-8" />
@@ -100,20 +102,17 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
     <link rel="alternate" hreflang={alternate.lang} href={alternate.href} />
   ))
 }
+{defaultLanguageUrl && <link rel="alternate" hreflang="x-default" href={defaultLanguageUrl} />}
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content={siteName} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={metaDescription} />
 <meta property="og:url" content={canonicalUrl} />
-<meta name="twitter:card" content="summary" />
+{socialImageUrl && <meta property="og:image" content={socialImageUrl} />}
+<meta name="twitter:card" content={socialImageUrl ? "summary_large_image" : "summary"} />
+{socialImageUrl && <meta name="twitter:image" content={socialImageUrl} />}
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={metaDescription} />
-<link
-  rel="alternate"
-  type="application/rss+xml"
-  title={title}
-  href={new URL("rss.xml", Astro.site)}
-/>
 
 <noscript>
   <style>

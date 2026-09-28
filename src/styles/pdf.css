@@ -81,6 +81,14 @@ code {
   max-width: 100%;
 }
 
+.pdf-preface {
+  margin: 0 0 5mm;
+  color: #6f5a86;
+  font-size: 9pt;
+  line-height: 1.5;
+  break-after: avoid;
+}
+
 .pdf-sidebar {
   display: none;
 }

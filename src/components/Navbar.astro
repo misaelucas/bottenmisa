@@ -15,7 +15,6 @@ const nextLanguage = getAlternateLanguage(currentLanguage);
 const nextLanguageConfig = languages[nextLanguage];
 const nextLanguageFlag = nextLanguage === "en" ? usaFlag : brFlag;
 const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
-// const booksNavLabel = currentLanguage === "pt" ? "livros" : "books";
 ---
 
 <nav class="px-6 py-4 top-0 w-full navbar" id="navbar">
@@ -52,12 +51,10 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
         >
           fortitudo
         </a>
-        <a href={languages[currentLanguage].productivityPath} class="nav-text-link">
+        <a href={languages[currentLanguage].productivityPath} class="nav-text-link"
+          aria-current={Astro.url.pathname.replace(/\/$/, "") === languages[currentLanguage].productivityPath.replace(/\/$/, "") ? "page" : undefined}>
           productivity
         </a>
-        <!-- <a href={languages[currentLanguage].booksPath} class="nav-text-link">
-          {booksNavLabel}
-        </a> -->
       </div>
     </li>
     <li class="flex items-center gap-2">

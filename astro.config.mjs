@@ -4,10 +4,10 @@ import UnoCSS from 'unocss/astro';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: process.env.SITE ?? 'https://bottenmisa.vercel.app',
+  site: process.env.SITE ?? 'https://misaa.dev',
   integrations: [
     react(),
-    sitemap(),
+    sitemap({ filter: (page) => !new URL(page).pathname.includes('/pdf/productivity/') }),
     UnoCSS({
       injectReset: true, 
     }),

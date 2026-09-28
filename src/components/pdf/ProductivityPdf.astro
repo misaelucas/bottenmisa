@@ -23,6 +23,10 @@ const tocLabel = lang === "en" ? "Topics" : "Tópicos";
 const authorLabel = lang === "en" ? "Author" : "Autor";
 const donationLabel = lang === "en" ? "Donation" : "Doação";
 const productivityAuthor = "Nihilist";
+const preface = lang === "en"
+  ? "This is a formatted edition of the Productivity material from The OPSEC Bible by Nihilist, kept here because I return to parts of it often."
+  : "Esta é uma edição formatada do material de Produtividade da The OPSEC Bible, de Nihilist, mantida aqui porque retorno com frequência a partes dele.";
+const pagePath = lang === "en" ? "/en/productivity/" : "/productivity/";
 const donationAddress =
   "84Zqdr7o2RfTKRhjc6SR3TdhK1yLxRLMPARU3PMvmyH8XmCgMoBHa7X8YoM7WphfbkJsjQ4SeEQCr4Nn2uzJSfCD9KiBu9E";
 const donationHref = `monero:${donationAddress}`;
@@ -50,6 +54,11 @@ const title = titleBlock?.type === "heading" ? titleBlock.text : "Productivity";
       rel="stylesheet"
     />
     <title>{title} | OPSEC Bible</title>
+    <meta name="description" content={preface} />
+    <link rel="canonical" href={new URL(pagePath, Astro.site)} />
+    <link rel="alternate" hreflang="pt-BR" href={new URL("/productivity/", Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL("/en/productivity/", Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL("/productivity/", Astro.site)} />
   </head>
   <body class="pdf-document" id="top">
     <div class="pdf-shell">
@@ -81,6 +90,7 @@ const title = titleBlock?.type === "heading" ? titleBlock.text : "Productivity";
         <Cover imageSrc="/pdf-assets/cover-aha.png" />
 
         <main class="pdf-flow">
+          <p class="pdf-preface">{preface}</p>
           <aside class="pdf-print-meta" aria-label="Productivity edition metadata">
             <p>{authorLabel}: {productivityAuthor}</p>
             <p>{donationLabel} XMR: {donationAddress}</p>

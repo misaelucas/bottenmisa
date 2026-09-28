@@ -1,6 +1,15 @@
 ---
-import ProductivityPdf from "@components/pdf/ProductivityPdf.astro";
-import markdown from "../../content/pdf/productivity.pt.md?raw";
+const target = "/productivity/";
 ---
 
-<ProductivityPdf markdown={markdown} lang="pt-BR" />
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <link rel="canonical" href={new URL(target, Astro.site)} />
+    <title>Produtividade</title>
+  </head>
+  <body><a href={target}>Produtividade →</a></body>
+</html>

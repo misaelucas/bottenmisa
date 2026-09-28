@@ -45,6 +45,13 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
         >
           portfolio
         </a>
+        <a
+          href={languages[currentLanguage].fortitudoPath}
+          class="nav-text-link"
+          aria-current={Astro.url.pathname.replace(/\/$/, "") === languages[currentLanguage].fortitudoPath.replace(/\/$/, "") ? "page" : undefined}
+        >
+          fortitudo
+        </a>
         <a href={languages[currentLanguage].productivityPath} class="nav-text-link">
           productivity
         </a>

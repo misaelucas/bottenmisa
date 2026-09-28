@@ -1,6 +1,6 @@
 # bottenmisa
 
-Personal site built with Astro, UnoCSS, React islands, bilingual routes, shorts,
+Personal site built with Astro, UnoCSS, React islands, bilingual routes,
 and a small Last.fm-powered recent tracks section.
 
 Production URL: https://bottenmisa.vercel.app
@@ -77,19 +77,20 @@ Notes:
 
 ## Content
 
-Shorts live in:
-
-```text
-src/content/shorts/
-```
+Fortitudo passages live in `src/content/fortitudo.ts`. Entries include an author,
+work, original passage, and translations; context, reference, personal note,
+image, and image caption are optional.
+The permanent statement is rendered by `src/components/StatementPage.astro`.
 
 The current language setup uses:
 
 ```text
 /              Portuguese home
 /en/           English home
-/shorts/       Portuguese shorts
-/en/shorts/    English shorts
+/fortitudo/    Portuguese Fortitudo
+/en/fortitudo/ English Fortitudo
+/statement/    Portuguese statement
+/en/statement/ English statement
 ```
 
 Shared text and route metadata live in:

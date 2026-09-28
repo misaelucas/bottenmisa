@@ -1,0 +1,242 @@
+---
+import { Image } from "astro:assets";
+import Navbar from "@components/Navbar.astro";
+import Layout from "@layouts/Layout.astro";
+import { fortitudoEntries } from "../content/fortitudo";
+import { languages, type Language } from "../i18n";
+
+interface Props { language: Language }
+const { language } = Astro.props;
+const intro = language === "pt"
+  ? "Passagens às quais retorno quando preciso lembrar como continuar. Muitas vezes esquecemos as coisas importantes que aprendemos (qualquer que tenha sido seu custo, qualquer que tenha sido a forma da lição). O homem é uma criatura tola e não deve ser destruído pelo conforto."
+  : "Passages I return to when I need to remember how to continue. We forget, more often than not, the important things we have learned (whatever their cost, whatever form the lesson took). Man is a foolish creature, and should not be destroyed by comfort.";
+---
+
+<Layout
+  title="Fortitudo · misa"
+  description={intro}
+  lang={languages[language].locale}
+  class="fortitudo-layout"
+  alternateLanguages={Object.values(languages).map(({ locale, fortitudoPath }) => ({
+    lang: locale, href: new URL(fortitudoPath, Astro.site).toString(),
+  }))}
+>
+  <Navbar />
+  <main class="canon-page">
+    <header class="page-heading">
+      <h1>Fortitudo</h1>
+      <p>{intro}</p>
+    </header>
+
+    <div class="entries">
+      {fortitudoEntries.map((entry, index) => (
+        <article class="entry">
+          <div class="entry-text">
+            <header class="source">
+              <h2>{entry.author[language]}</h2>
+              <p><cite>{entry.work[language]}</cite></p>
+            </header>
+
+            {entry.image && (
+              <figure class="entry-image" style={`--image-position: ${entry.image.position ?? "center"}`}>
+                <div class="image-frame">
+                  <Image
+                    src={entry.image.src}
+                    alt={entry.image.alt[language]}
+                    widths={[480, 720, 960, 1122]}
+                    sizes="(max-width: 680px) calc(100vw - 2rem), 640px"
+                    loading={index === 0 ? "eager" : "lazy"}
+                  />
+                </div>
+                {entry.image.caption && <figcaption>{entry.image.caption[language]}</figcaption>}
+              </figure>
+            )}
+
+            {entry.context && <p class="context">{entry.context[language]}</p>}
+
+            <div class="passages">
+              {entry.passages.map((passage) => (
+                <section class="passage">
+                  <blockquote lang={entry.originalLangCode}>
+                    {passage.original.map((line) => <span>{line}</span>)}
+                  </blockquote>
+                  <p class="translation">{passage.translation[language]}</p>
+                  {passage.reference && <p class="reference">{passage.reference[language]}</p>}
+                  {passage.note && <p class="note">{passage.note[language]}</p>}
+                </section>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </main>
+</Layout>
+
+<style>
+  :global(.fortitudo-layout .overlay) { display: none; }
+
+  .canon-page {
+    --ink: #3b3027;
+    --ink-muted: #675b4e;
+    --ink-faint: #796e60;
+    --ink-rule: rgb(95 75 58 / 0.23);
+    --ink-note-rule: rgb(95 75 58 / 0.35);
+    width: min(100% - 2.5rem, 49rem);
+    margin: clamp(2rem, 4vw, 3rem) auto 5rem;
+    font-family: "Canela Text", Georgia, serif;
+  }
+
+  :global(html.dark) .canon-page {
+    --ink: #f0e8dc;
+    --ink-muted: #c9bcaa;
+    --ink-faint: #a99c8b;
+    --ink-rule: rgb(213 191 164 / 0.22);
+    --ink-note-rule: rgb(213 191 164 / 0.38);
+  }
+
+  .page-heading {
+    margin-bottom: 2.5rem;
+  }
+
+  h1, h2 { font-family: var(--font-family-article-title); }
+
+  h1 {
+    margin: 0 0 .75rem;
+    color: var(--ink);
+    font-size: clamp(2.8rem, 6vw, 3.9rem);
+    line-height: 1.12;
+  }
+
+  .page-heading p {
+    max-width: 60ch;
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 1.15rem;
+    line-height: 1.66;
+  }
+
+  .entries { display: grid; gap: 2.5rem; }
+  .entry { min-width: 0; }
+
+  .entry + .entry::before {
+    content: "— · —";
+    display: block;
+    width: max-content;
+    margin-bottom: 2.25rem;
+    color: var(--ink-faint);
+    font-size: .92rem;
+    letter-spacing: .12em;
+    line-height: 1;
+  }
+
+  .entry-image {
+    width: min(100%, 40rem);
+    margin: 0 0 1.25rem;
+  }
+
+  .image-frame {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border: 1px solid var(--ink-rule);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.09);
+  }
+
+  .image-frame :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--image-position);
+  }
+
+  .entry-image figcaption {
+    margin-top: .5rem;
+    color: var(--ink-faint);
+    font-size: .86rem;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .entry-text { width: 100%; }
+  .source { margin-bottom: 1.5rem; }
+
+  h2 {
+    margin: 0 0 .25rem;
+    color: var(--ink);
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .source p {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 1.06rem;
+  }
+
+  .source cite { font-style: italic; }
+
+  .context {
+    max-width: 72ch;
+    margin: 0 0 1.75rem;
+    color: var(--ink-muted);
+    font-size: 1.04rem;
+    line-height: 1.65;
+  }
+
+  .passages { display: grid; gap: 1.75rem; }
+  .passage { min-width: 0; }
+
+  blockquote {
+    margin: 0 0 .875rem;
+    color: var(--ink);
+    font-family: "Canela Text", Georgia, serif;
+    font-size: clamp(1.65rem, 2.5vw, 1.95rem);
+    font-weight: 300;
+    line-height: 1.48;
+    letter-spacing: -.012em;
+  }
+
+  blockquote span { display: block; }
+
+  .translation {
+    max-width: 58ch;
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: clamp(1.2rem, 1.8vw, 1.33rem);
+    font-style: normal;
+    line-height: 1.62;
+  }
+
+  .reference {
+    margin: .625rem 0 0;
+    color: var(--ink-faint);
+    font-size: .87rem;
+    font-style: italic;
+    letter-spacing: .015em;
+  }
+
+  .note {
+    max-width: 54ch;
+    margin: 1.75rem 0 0;
+    padding-left: 1rem;
+    border-left: 1px solid var(--ink-note-rule);
+    color: var(--ink-muted);
+    font-size: 1.04rem;
+    font-style: italic;
+    line-height: 1.68;
+  }
+
+  @media (max-width: 680px) {
+    .canon-page { width: min(100% - 2rem, 49rem); margin-top: 1.75rem; }
+    .page-heading { margin-bottom: 2rem; }
+    .page-heading p { font-size: 1.1rem; }
+    .entries { gap: 2.25rem; }
+    .entry + .entry::before { margin-bottom: 1.75rem; }
+    .source { margin-bottom: 1.35rem; }
+    .context { font-size: 1.02rem; margin-bottom: 1.5rem; }
+    blockquote { font-size: 1.6rem; }
+  }
+</style>

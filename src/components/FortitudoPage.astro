@@ -57,9 +57,6 @@ const intro = language === "pt"
             <div class="passages">
               {entry.passages.map((passage) => (
                 <section class="passage">
-                  <blockquote lang={entry.originalLangCode}>
-                    {passage.original.map((line) => <span>{line}</span>)}
-                  </blockquote>
                   <p class="translation">{passage.translation[language]}</p>
                   {passage.reference && <p class="reference">{passage.reference[language]}</p>}
                   {passage.note && <p class="note">{passage.note[language]}</p>}
@@ -189,18 +186,6 @@ const intro = language === "pt"
   .passages { display: grid; gap: 1.75rem; }
   .passage { min-width: 0; }
 
-  blockquote {
-    margin: 0 0 .875rem;
-    color: var(--ink);
-    font-family: "Canela Text", Georgia, serif;
-    font-size: clamp(1.65rem, 2.5vw, 1.95rem);
-    font-weight: 300;
-    line-height: 1.48;
-    letter-spacing: -.012em;
-  }
-
-  blockquote span { display: block; }
-
   .translation {
     max-width: 58ch;
     margin: 0;
@@ -237,6 +222,5 @@ const intro = language === "pt"
     .entry + .entry::before { margin-bottom: 1.75rem; }
     .source { margin-bottom: 1.35rem; }
     .context { font-size: 1.02rem; margin-bottom: 1.5rem; }
-    blockquote { font-size: 1.6rem; }
   }
 </style>

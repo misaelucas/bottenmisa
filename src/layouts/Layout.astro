@@ -58,6 +58,20 @@ const pageLanguage = lang.toLowerCase().startsWith("en") ? "en" : "pt";
         <Footer />
       </div>
     </div>
+    <script>
+      function configureExternalLinks() {
+        document.querySelectorAll<HTMLAnchorElement>("a[href]").forEach((link) => {
+          const url = new URL(link.href, window.location.href);
+          if ((url.protocol === "https:" || url.protocol === "http:") && url.origin !== window.location.origin) {
+            link.target = "_blank";
+            link.relList.add("noopener", "noreferrer");
+          }
+        });
+      }
+
+      configureExternalLinks();
+      document.addEventListener("astro:page-load", configureExternalLinks);
+    </script>
     <style is:global transition:persist>
       * {
         word-break: break-word;

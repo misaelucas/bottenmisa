@@ -93,6 +93,9 @@ export function getAlternateLanguage(language: Language): Language {
 }
 
 export function getAlternatePath(pathname: string): string {
+  if (["/portfolio/gridscope", "/portfolio/gridscope/"].includes(pathname)) return "/en/portfolio/gridscope/";
+  if (["/en/portfolio/gridscope", "/en/portfolio/gridscope/"].includes(pathname)) return "/portfolio/gridscope/";
+
   if (pathname === "/portfolio/anno-domini" || pathname === "/portfolio/anno-domini/") {
     return "/en/portfolio/anno-domini/";
   }

@@ -89,6 +89,10 @@ code {
   break-after: avoid;
 }
 
+.pdf-site-nav {
+  display: none;
+}
+
 .pdf-sidebar {
   display: none;
 }
@@ -557,4 +561,11 @@ li {
     gap: 3mm;
     padding: 3mm;
   }
+}
+
+@media screen {
+  .pdf-site-nav { display: block; grid-column: 1 / -1; }
+  .pdf-site-nav a { color: #d9c6f2; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.85rem; text-underline-offset: 0.3em; }
+  .pdf-site-nav a:hover { color: #ffffff; }
+  .pdf-site-nav a:focus-visible { outline: 2px solid #ad7ce0; outline-offset: 5px; }
 }

@@ -27,25 +27,23 @@ const donationHref = `monero:${donationAddress}`;
 
 ---
 
-<main class="flex justify-center w-full my-7xl lg:my-[10%] homepage px-4 md:px-6">
-  <div class="flex flex-col gap-8 md:gap-12 mx-auto max-w-7xl w-full min-w-0 px-4 md:px-6">
-    <div class="mb-4">
-      <Bio language={language} />
-    </div>
+<main class="homepage">
+  <div class="homepage-content">
+    <Bio language={language}>
+      <nav slot="navigation" class="site-index" aria-label={language === "pt" ? "Páginas do site" : "Site pages"}>
+        {orientation.map(({ label, description, href }) => (
+          <div class="site-index-entry">
+            <a href={href}>{label}</a>
+            <span>{description}</span>
+          </div>
+        ))}
+      </nav>
 
-    <nav class="site-index" aria-label={language === "pt" ? "Páginas do site" : "Site pages"}>
-      {orientation.map(({ label, description, href }) => (
-        <div class="site-index-entry">
-          <a href={href}>{label}</a>
-          <span>{description}</span>
-        </div>
-      ))}
-    </nav>
-
-    <div class="flex flex-col gap-8 min-w-0 w-full lg:max-w-sm lg:ml-auto">
-      <LanyardStatus client:load discordId="1184574519692767272" />
-      <RecentTracks />
-    </div>
+      <div slot="music" class="homepage-music">
+        <LanyardStatus client:load discordId="1184574519692767272" />
+        <RecentTracks />
+      </div>
+    </Bio>
 
     <footer class="donation-footer">
       <span>{language === "pt" ? "doações xmr" : "xmr donations"}</span>
@@ -147,6 +145,11 @@ const donationHref = `monero:${donationAddress}`;
 </script>
 
 <style>
+  .homepage { width: 100%; margin: 3rem auto; padding-inline: 2rem; }
+  .homepage-content { display: flex; flex-direction: column; gap: 2.5rem; width: 100%; max-width: 80rem; margin-inline: auto; min-width: 0; }
+  .homepage-music { display: flex; flex-direction: column; gap: 2rem; width: 100%; min-width: 0; }
+  @media (min-width: 768px) { .homepage { padding-inline: 3rem; } }
+
   :global(.bio-heading-text) { position: relative; display: inline-block; max-width: 100%; }
   :global(.bio-heading-text .heading-underline) {
     position: absolute;
@@ -192,7 +195,8 @@ const donationHref = `monero:${donationAddress}`;
     display: grid;
     gap: 0.45rem;
     max-width: 100%;
-    padding-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgb(148 163 184 / 0.2);
     color: var(--text-500);
     font-family: "Jetbrains Mono", ui-monospace, monospace;
     font-size: 0.7rem;

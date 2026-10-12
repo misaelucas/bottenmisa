@@ -1,0 +1,70 @@
+---
+import Navbar from "@components/Navbar.astro";
+import ExternalLink from "@components/ExternalLink.astro";
+import Layout from "@layouts/Layout.astro";
+import { languages, type Language } from "../i18n";
+interface Props { language?: Language; }
+const { language = "pt" } = Astro.props;
+const isPt = language === "pt";
+const copy = isPt ? {
+  back: "voltar aos projetos",
+  lead: "Análise da intensidade de carbono da eletricidade na Dinamarca.",
+  demo: "Demonstração histórica estática com observações reais do Energinet de 9 de outubro de 2026. Publicada no Cloudflare Pages, usa dados exportados e não depende de um backend ativo. Não é um monitor em tempo real.",
+  alt: "Dashboard do GridScope com resumo de completude e gráfico comparativo de DK1 e DK2 em g CO₂/kWh",
+  source: "código-fonte", visit: "demonstração",
+  sections: [
+    ["Sobre", "GridScope ingere, valida e armazena observações de intensidade de carbono a cada cinco minutos para as regiões DK1 e DK2 da Dinamarca. O dashboard React permite comparar as regiões e consultar leituras com tooltips por mouse ou toque. Os valores em g CO₂/kWh representam intensidade de carbono, não emissões totais."],
+    ["Arquitetura completa", "O pipeline Python 3.11 consulta a API pública do Energinet e valida as observações antes de armazená-las no PostgreSQL. Relatórios SQL calculam resumos e verificam intervalos ausentes. FastAPI disponibiliza os dados para o frontend; Dagster orquestra a ingestão. Essa arquitetura completa está disponível no repositório e é distinta da demonstração estática pública."],
+    ["Qualidade dos dados", "A ingestão é transacional e usa advisory locks do PostgreSQL para coordenar execuções concorrentes. As observações são alinhadas em UTC; os relatórios respeitam o horário de verão de Europe/Copenhagen. Verificações de completude contabilizam intervalos ausentes, e testes automatizados cobrem integração e frontend."],
+    ["Stack e entrega", "Python 3.11 · PostgreSQL · FastAPI · Dagster · React 19 · TypeScript · Vite · Tailwind CSS 4 · Recharts · Docker · GitHub Actions · Cloudflare Pages."],
+  ],
+} : {
+  back: "back to projects",
+  lead: "Danish Electricity Carbon Intensity Analytics",
+  demo: "A static historical demo using real Energinet observations from October 9, 2026. Hosted on Cloudflare Pages, it uses exported data without a live backend. It is not a real-time monitor.",
+  alt: "GridScope dashboard showing completeness summaries and a DK1/DK2 comparison chart in g CO₂/kWh",
+  source: "source code", visit: "live demo",
+  sections: [
+    ["About", "GridScope ingests, validates and stores five-minute carbon-intensity observations for Denmark’s DK1 and DK2 electricity regions. The React dashboard compares regions and exposes readings through hover and touch tooltips. Values in g CO₂/kWh represent carbon intensity, not total emissions."],
+    ["Full application architecture", "The Python 3.11 pipeline queries Energinet’s public API and validates observations before storing them in PostgreSQL. SQL reports calculate summaries and check missing intervals. FastAPI serves data to the frontend; Dagster orchestrates ingestion. This complete architecture is available in the repository and is separate from the public static demo."],
+    ["Data quality", "Transactional ingestion uses PostgreSQL advisory locks to coordinate concurrent runs. Observations are UTC-aligned, while reporting handles Europe/Copenhagen daylight saving time. Completeness checks account for missing intervals, and automated tests cover integration and frontend behavior."],
+    ["Stack and delivery", "Python 3.11 · PostgreSQL · FastAPI · Dagster · React 19 · TypeScript · Vite · Tailwind CSS 4 · Recharts · Docker · GitHub Actions · Cloudflare Pages."],
+  ],
+};
+const alternate = isPt ? "en" : "pt";
+---
+<Layout title={`GridScope · ${isPt ? "estudo de caso" : "case study"} · misa`} description={copy.lead} lang={languages[language].locale} style="--un-skew: 3deg; --un-rotate: 4deg; --un-scale: 1.12" alternateLanguages={[{ lang: languages[alternate].locale, href: new URL(`${languages[alternate].portfolioPath}gridscope/`, Astro.site).toString() }]}>
+  <Navbar />
+  <main class="case-study">
+    <a class="back-link" href={languages[language].portfolioPath}>← {copy.back}</a>
+    <header class="hero"><h1>GridScope</h1><p class="lead">{copy.lead}</p></header>
+    <figure class="screenshot">
+      <a href="/images/portfolio/gridscope/dashboard.webp" target="_blank" rel="noopener noreferrer"><img src="/images/portfolio/gridscope/dashboard.webp" alt={copy.alt} width="1440" height="1000" /></a>
+      <figcaption>{copy.demo}</figcaption>
+    </figure>
+    <div class="project-links">
+      <ExternalLink href="https://gridscope-35d.pages.dev" target="_blank">{copy.visit}</ExternalLink>
+      <ExternalLink href="https://github.com/misaelucas/gridscope" target="_blank">{copy.source}</ExternalLink>
+    </div>
+    {copy.sections.map(([title, body], index) => <section aria-labelledby={`section-${index}`}><h2 id={`section-${index}`}>{title}</h2><p>{body}</p></section>)}
+  </main>
+</Layout>
+<style>
+  .case-study { width: min(100%, 76rem); box-sizing: border-box; margin: 2.5rem auto 5rem; padding: 0 2rem; }
+  .back-link { color: var(--text-400); font-size: 0.78rem; }
+  .back-link:hover { color: var(--text-900); }
+  a:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 4px; }
+  .hero { padding: 2.75rem 0 2.25rem; }
+  h1, h2 { color: var(--text-900); font-weight: 500; }
+  h1 { margin: 0 0 1rem; font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1; letter-spacing: -0.045em; }
+  h2 { margin: 0 0 1rem; font-size: clamp(1.25rem, 2.4vw, 1.5rem); line-height: 1.35; letter-spacing: -0.025em; }
+  p { max-width: 74ch; margin: 0; color: var(--text-700); font-size: 1.025rem; line-height: 1.68; }
+  .lead { color: var(--text-600); font-size: 1.075rem; }
+  .screenshot { margin: 0; }
+  .screenshot a, .screenshot img { display: block; }
+  .screenshot img { width: 100%; height: auto; border: 1px solid rgb(148 163 184 / 0.22); }
+  figcaption { max-width: 90ch; margin-top: 1rem; color: var(--text-400); font-size: 0.8rem; line-height: 1.6; }
+  section { margin-top: 4rem; max-width: 76ch; }
+  .project-links { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.5rem; font-size: 0.8rem; color: var(--brand-500); }
+  @media (max-width: 760px) { .case-study { margin-top: 1.75rem; padding-inline: 1.25rem; } .hero { padding-block: 2rem; } section { margin-top: 3rem; } }
+</style>

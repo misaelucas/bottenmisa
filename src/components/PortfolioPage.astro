@@ -15,6 +15,10 @@ const copy = language === "pt"
 
 // Fixed colors keep each technology consistent across projects and languages.
 const stackColors: Record<string, [string, string]> = {
+  Python: ["147 197 253", "29 78 216"],
+  PostgreSQL: ["125 211 252", "3 105 161"],
+  FastAPI: ["94 234 212", "15 118 110"],
+  Dagster: ["196 181 253", "109 40 217"],
   React: ["103 232 249", "14 116 144"],
   JavaScript: ["253 224 71", "161 98 7"],
   "Node.js": ["163 230 53", "63 98 18"],
@@ -116,12 +120,36 @@ const projects = [
     repository: "https://github.com/misaelucas/ilovediana",
     site: "https://ilovediana.org",
   },
+  {
+    name: "GridScope",
+    image: "/images/portfolio/gridscope/dashboard.webp",
+    caseStudy: language === "pt" ? "/portfolio/gridscope/" : "/en/portfolio/gridscope/",
+    accent: "94 234 212",
+    category: { pt: "dados e analytics · intensidade de carbono na Dinamarca", en: "data & analytics · Danish electricity carbon intensity" },
+    description: {
+      pt: "Plataforma de análise da intensidade de carbono da eletricidade, construída com Python, PostgreSQL e React. Processa observações do Energinet a cada cinco minutos para as regiões DK1 e DK2 da Dinamarca, com ingestão validada, relatórios SQL, verificações de qualidade dos dados e visualizações interativas.",
+      en: "An electricity carbon-intensity analytics platform built with Python, PostgreSQL and React. Processes five-minute Energinet observations for Denmark’s DK1 and DK2 regions, with validated ingestion, SQL reporting, data-quality checks and interactive visualizations.",
+    },
+    details: [
+      {
+        pt: "A aplicação completa inclui uma API FastAPI, PostgreSQL e orquestração com Dagster. A ingestão usa transações e advisory locks do PostgreSQL; os relatórios verificam intervalos ausentes, alinhamento UTC e horário de verão em Europe/Copenhagen.",
+        en: "The full application includes FastAPI, PostgreSQL and Dagster orchestration. Ingestion uses transactions and PostgreSQL advisory locks; reporting checks missing intervals, UTC alignment and Europe/Copenhagen daylight saving time.",
+      },
+      {
+        pt: "A demonstração pública é uma aplicação React estática no Cloudflare Pages, com observações históricas reais de 9 de outubro de 2026. Não usa um backend ativo nem exibe dados em tempo real.",
+        en: "The public demo is a static React application on Cloudflare Pages using real historical observations from October 9, 2026. It has no live backend or real-time data feed.",
+      },
+    ],
+    stack: ["Python", "PostgreSQL", "FastAPI", "Dagster", "React", "TypeScript"],
+    repository: "https://github.com/misaelucas/gridscope",
+    site: "https://gridscope-35d.pages.dev",
+  },
 ];
 ---
 
 <Layout
   title="Portfolio · misa"
-  description="Anno Domini, RHID Historical Attendance Exporter and ilovediana.org."
+  description="GridScope, Anno Domini, RHID Historical Attendance Exporter and ilovediana.org."
   lang={languages[language].locale}
   style="--un-skew: 5deg; --un-rotate: 9deg; --un-scale: 1.2"
   alternateLanguages={Object.values(languages).map(({ locale, portfolioPath }) => ({
@@ -142,6 +170,10 @@ const projects = [
               <a class="case-preview" href={project.caseStudy} aria-label={`${copy.caseStudy}: Anno Domini`}>
                 <img class="project-screenshot" src={project.image} alt={language === "pt" ? "Agenda do Anno Domini com dados fictícios" : "Anno Domini schedule with fictional data"} width="1440" height="1000" loading="eager" />
               </a>
+            ) : project.name === "GridScope" ? (
+              <a class="case-preview" href={project.caseStudy} aria-label={copy.caseStudy + ": GridScope"}>
+                <img class="project-screenshot" src={project.image} alt={language === "pt" ? "Dashboard histórico do GridScope comparando DK1 e DK2 em g CO₂/kWh, em 9 de outubro de 2026" : "GridScope historical dashboard comparing DK1 and DK2 in g CO₂/kWh on October 9, 2026"} width="1440" height="1000" loading="lazy" />
+              </a>
             ) : index === 1 ? (
               <div class="code-preview">
                 <Code code={rhidCode} lang="ts" theme="github-dark" />
@@ -149,7 +181,7 @@ const projects = [
             ) : (
               <img class="project-image" src={project.image} alt="ilovediana.org" width="500" height="500" loading="lazy" />
             )}
-            <figcaption><span class="project-number">{String(index).padStart(2, "0")}</span> {index === 0 ? "Anno Domini / ERP" : index === 1 ? "src/index.ts · exportEmployeeFromAdmission" : copy.artwork}</figcaption>
+            <figcaption><span class="project-number">{String(index).padStart(2, "0")}</span> {index === 0 ? "Anno Domini / ERP" : index === 1 ? "src/index.ts · exportEmployeeFromAdmission" : project.name === "GridScope" ? (language === "pt" ? "GridScope / demonstração histórica" : "GridScope / historical demo") : copy.artwork}</figcaption>
           </figure>
           <article aria-labelledby={`project-${index}`}>
             <p class="eyebrow">{project.category[language]}</p>
@@ -168,8 +200,8 @@ const projects = [
             </details>
             {(project.caseStudy || project.repository || project.site) && <div class="project-links">
               {project.caseStudy && <a href={project.caseStudy}>{copy.caseStudy} <span aria-hidden="true">→</span></a>}
-              {project.repository && <a href={project.repository} aria-label={`${project.name} — ${copy.source}`}>{copy.source} <span aria-hidden="true">↗</span></a>}
-              {project.site && <a href={project.site}>{copy.visit} <span aria-hidden="true">↗</span></a>}
+              {project.repository && <a href={project.repository} target={project.name === "GridScope" ? "_blank" : undefined} rel={project.name === "GridScope" ? "noopener noreferrer" : undefined} aria-label={`${project.name} — ${copy.source}`}>{project.name === "GridScope" ? (language === "pt" ? "código-fonte" : "source code") : copy.source} <span aria-hidden="true">↗</span></a>}
+              {project.site && <a href={project.site} target={project.name === "GridScope" ? "_blank" : undefined} rel={project.name === "GridScope" ? "noopener noreferrer" : undefined}>{project.name === "GridScope" ? (language === "pt" ? "demonstração" : "live demo") : copy.visit} <span aria-hidden="true">↗</span></a>}
             </div>}
           </article>
         </li>

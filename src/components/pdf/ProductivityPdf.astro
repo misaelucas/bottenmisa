@@ -20,6 +20,8 @@ const blocks = parseProductivityMarkdown(markdown);
 let chapterNumber = 0;
 const chapterLabel = lang === "en" ? "Chapter" : "Capítulo";
 const tocLabel = lang === "en" ? "Topics" : "Tópicos";
+const homePath = lang === "en" ? "/en/" : "/";
+const backLabel = lang === "en" ? "Back to misaa.dev" : "Voltar ao misaa.dev";
 const authorLabel = lang === "en" ? "Author" : "Autor";
 const donationLabel = lang === "en" ? "Donation" : "Doação";
 const productivityAuthor = "Nihilist";
@@ -62,6 +64,9 @@ const title = titleBlock?.type === "heading" ? titleBlock.text : "Productivity";
   </head>
   <body class="pdf-document" id="top">
     <div class="pdf-shell">
+      <nav class="pdf-site-nav" aria-label={lang === "en" ? "Site navigation" : "Navegação do site"}>
+        <a href={homePath}><span aria-hidden="true">←</span> {backLabel}</a>
+      </nav>
       <details class="pdf-sidebar" aria-label={tocLabel} open>
         <summary>{tocLabel}</summary>
         <nav>

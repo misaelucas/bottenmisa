@@ -20,7 +20,7 @@ const socialEmailCodePoints = socialEmail
   .map((char) => char.charCodeAt(0));
 ---
 
-<div class="flex flex-col md:flex-row justify-between w-full min-w-0 gap-8">
+<div class="bio-layout">
   <div class="bio-copy flex flex-col gap-4 flex-grow-0 w-full min-w-0 max-w-[44rem] text-xl leading-8">
     <h1 class="text-5xl sm:text-6xl lg:text-7xl font-900 mb-4">
       <span class="bio-heading-text">{copy.bio.heading}</span>
@@ -87,24 +87,28 @@ const socialEmailCodePoints = socialEmail
     <a class="statement-link" href={languages[language].statementPath}>
       {language === "pt" ? "um fragmento do site →" : "a fragment of the site →"}
     </a>
+    <slot name="navigation" />
   </div>
 
-  <div
-    class="relative w-full lg:max-w-[390px] max-w-[300px] aspect-ratio-1 flex-shrink-0 group relative h-min [container-type:inline-size]"
-  >
-    <span
-      class="rounded-md image-container -z-1 outline outline-1 outline-body-800"
-    ></span>
-    <Image
-      id="custom-avatar"
-      alt="Profile picture"
-      quality={100}
-      class="rounded-md z-2 outline outline-1 outline-body-500 h-full bg-body-900 transition-transform duration-300 group-hover:scale-[1.01]"
-      src={avatarMj}
-      width={400}
-      height={400}
-      sizes=""
-    />
+  <div class="bio-aside">
+    <div
+      class="relative w-full lg:max-w-[390px] max-w-[300px] aspect-ratio-1 flex-shrink-0 group relative h-min [container-type:inline-size]"
+    >
+      <span
+        class="rounded-md image-container -z-1 outline outline-1 outline-body-800"
+      ></span>
+      <Image
+        id="custom-avatar"
+        alt="Profile picture"
+        quality={100}
+        class="rounded-md z-2 outline outline-1 outline-body-500 h-full bg-body-900 transition-transform duration-300 group-hover:scale-[1.01]"
+        src={avatarMj}
+        width={400}
+        height={400}
+        sizes=""
+      />
+    </div>
+    <slot name="music" />
   </div>
 </div>
 
@@ -141,6 +145,15 @@ const socialEmailCodePoints = socialEmail
 </script>
 
 <style>
+  .bio-layout { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 2rem; min-width: 0; }
+  .bio-aside { display: flex; flex-direction: column; gap: 2rem; min-width: 0; }
+  @media (min-width: 768px) {
+    .bio-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 3rem; }
+  }
+  @media (min-width: 1024px) {
+    .bio-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 390px); }
+  }
+
   .bio-copy {
     max-width: min(44rem, calc(100vw - 4rem));
     letter-spacing: 0;

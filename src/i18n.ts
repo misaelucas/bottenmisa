@@ -7,7 +7,6 @@ export const languages = {
     statementPath: "/statement/",
     booksPath: "/books/",
     portfolioPath: "/portfolio/",
-    productivityPath: "/productivity/",
   },
   en: {
     label: "EN",
@@ -17,7 +16,6 @@ export const languages = {
     statementPath: "/en/statement/",
     booksPath: "/en/books/",
     portfolioPath: "/en/portfolio/",
-    productivityPath: "/en/productivity/",
   },
 } as const;
 
@@ -128,15 +126,6 @@ export function getAlternatePath(pathname: string): string {
     return languages.pt.booksPath;
   }
 
-  if (
-    pathname === "/en/productivity" ||
-    pathname === "/en/productivity/" ||
-    pathname === "/en/pdf/productivity" ||
-    pathname === "/en/pdf/productivity/"
-  ) {
-    return languages.pt.productivityPath;
-  }
-
   if (pathname === "/fortitudo" || pathname === "/fortitudo/") {
     return languages.en.fortitudoPath;
   }
@@ -147,10 +136,6 @@ export function getAlternatePath(pathname: string): string {
 
   if (pathname === "/books" || pathname === "/books/") {
     return languages.en.booksPath;
-  }
-
-  if (["/productivity", "/productivity/", "/pdf/productivity", "/pdf/productivity/"].includes(pathname)) {
-    return languages.en.productivityPath;
   }
 
   return languages.en.homePath;

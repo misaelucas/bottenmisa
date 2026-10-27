@@ -89,8 +89,6 @@ The current language setup uses:
 /en/portfolio/ English portfolio
 /fortitudo/    Portuguese Fortitudo
 /en/fortitudo/ English Fortitudo
-/productivity/  Portuguese Productivity edition
-/en/productivity/ English Productivity edition
 /statement/    Portuguese statement
 /en/statement/ English statement
 ```

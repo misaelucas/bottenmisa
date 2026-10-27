@@ -9,13 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "pdf": "node scripts/sync-pdf-assets.mjs && astro build && node scripts/export-pdf.mjs",
-    "pdf:en": "PDF_LANG=en npm run pdf",
-    "pdf:render": ".venv/bin/python scripts/render_pdf_pages.py output/opsec-bible-productivity-pt.pdf reports/pdf-pages",
-    "pdf:render:en": ".venv/bin/python scripts/render_pdf_pages.py output/opsec-bible-productivity-en.pdf reports/pdf-pages-en",
-    "pdf:check": ".venv/bin/python scripts/check_pdf_layout.py output/opsec-bible-productivity-pt.pdf --lang pt",
-    "pdf:check:en": ".venv/bin/python scripts/check_pdf_layout.py output/opsec-bible-productivity-en.pdf --lang en"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.2",

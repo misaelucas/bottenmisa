@@ -51,10 +51,6 @@ const { showHomeIcon = Astro.url.pathname !== "/" } = Astro.props;
         >
           fortitudo
         </a>
-        <a href={languages[currentLanguage].productivityPath} class="nav-text-link"
-          aria-current={Astro.url.pathname.replace(/\/$/, "") === languages[currentLanguage].productivityPath.replace(/\/$/, "") ? "page" : undefined}>
-          productivity
-        </a>
       </div>
     </li>
     <li class="flex items-center gap-2">

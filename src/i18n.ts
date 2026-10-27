@@ -35,7 +35,7 @@ export const homeCopy = {
       role: "Fullstack Developer",
       intro: "",
       work: [
-        "Tempo para ti e tempo para mim, e tempo ainda para uma centena de indecisões, e para uma centena de visões e revisões, antes de se tomar uma torrada e um chá.",
+        "Aristóteles disse que algumas pessoas só eram aptas a ser escravas. Não o contradigo. Mas rejeito a escravidão porque não vejo homens aptos a ser senhores.",
       ], 
       interests: "poesia • hacktivism • muay thai • levantamento de peso",
       location: "In the wired.",
@@ -49,7 +49,7 @@ export const homeCopy = {
       role: "Fullstack Developer",
       intro: "",
       work: [
-        "Time for you and time for me, and time yet for a hundred indecisions, and for a hundred visions and revisions, before the taking of a toast and tea.",
+        "Aristotle said that some people were only fit to be slaves. I do not contradict him. But I reject slavery because I see no men fit to be masters.",
       ],
       interests: "poetry • hacktivism • muay thai • weight lifting",
       location: "In the wired.",
